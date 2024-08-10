@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">MealApp</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="enter_email">Enter your E-mail</string>
+    <string name="password">Password</string>
+    <string name="enter_password">Enter your Password</string>
+    <string name="sign_up_subtitle">Sign Up now and explore our distinguish meals</string>
+    <string name="name">Name</string>
+    <string name="enter_name">Enter your Name</string>
+    <string name="confrim_password">Confirm Passowrd</string>
+    <string name="re_enter_password">Re-enter your Password</string>
+    <string name="already_have_an_account">Already have an account</string>
+    <string name="signInNow">Sign in now!</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_subtitle">We missed you sign in now!</string>
+    <string name="dont_have_acc">"Don't have an account? "</string>
+    <string name="welcome">Welcome!</string>
+</resources>
