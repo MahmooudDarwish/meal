@@ -13,6 +13,7 @@ import com.example.mealapp.R;
 import com.example.mealapp.feature.splash.presenter.ISplashPresenter;
 import com.example.mealapp.feature.splash.presenter.SplashPresenter;
 import com.example.mealapp.feature.welcome.view.Welcome;
+import com.google.firebase.FirebaseApp;
 
 public class Splash extends AppCompatActivity implements  ISplash {
 
@@ -21,6 +22,9 @@ public class Splash extends AppCompatActivity implements  ISplash {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
+
+        FirebaseApp.initializeApp(this);
+
 
 
         ImageView logoView = findViewById(R.id.logoView);
