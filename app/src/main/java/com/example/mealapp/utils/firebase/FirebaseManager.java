@@ -66,12 +66,8 @@ public class FirebaseManager {
             firestore.collection("users")
                     .document(userId)
                     .set(user)
-                    .addOnSuccessListener(s -> {
-                        Log.d(TAG, "User data saved successfully");
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e(TAG, "Error saving user data", e);
-                    });
+                    .addOnSuccessListener(s -> Log.d(TAG, "User data saved successfully"))
+                    .addOnFailureListener(e -> Log.e(TAG, "Error saving user data", e));
         }
     }
 
@@ -86,7 +82,9 @@ public class FirebaseManager {
                         if (task.isSuccessful() && task.getResult() != null) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                User user = document.toObject(User.class);
+                                String name = document.getString("name");
+                                String email = document.getString("email");
+                                User user = new User(email, name);
                                 listener.onUserDataRetrieved(user);
                             } else {
                                 listener.onError(new Exception("No user data found"));

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ public class SignIn extends AppCompatActivity implements  ISignIn{
     private ISignInPresenter presenter;
     private ProgressDialog progressDialog;
     private CheckBox staySignedIn;
+    private static final String TAG = "SignIn";
 
 
     @Override
@@ -86,11 +88,13 @@ public class SignIn extends AppCompatActivity implements  ISignIn{
 
     @Override
     public void signInSuccess(User user) {
+        Log.i(TAG, "signInSuccess: " + user.getName());
         if(staySignedIn.isChecked()) {
+            Log.i(TAG, "staySignedIn is checked:"  + user.getName());
             addUserToSharedPreferences(user);
         }
         hideLoading();
-        Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Welcome Back!", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(SignIn.this, Home.class);
         startActivity(intent);
     }

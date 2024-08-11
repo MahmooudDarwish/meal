@@ -18,4 +18,5 @@ public class WelcomePresenter implements  IWelcomePresenter {
     public void onSignUpClicked() {
         view.navigateToSignUp();
     }
+
 }
