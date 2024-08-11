@@ -4,4 +4,5 @@ public interface IWelcome {
     void navigateToSignIn();
     void navigateToSignUp();
 
+
 }

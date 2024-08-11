@@ -87,6 +87,14 @@
             android:textColorHint="#BAFFEB3B"
             tools:drawableTint="@android:color/holo_orange_light" />
 
+        <CheckBox
+            android:id="@+id/staySignedIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:buttonTint="#BAFFEB3B"
+            android:text="@string/stay_logged_in" />
+
         <Button
             android:id="@+id/signInBtn"
             android:layout_width="match_parent"

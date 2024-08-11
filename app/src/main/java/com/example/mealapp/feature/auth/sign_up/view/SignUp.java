@@ -102,6 +102,5 @@ public class SignUp extends AppCompatActivity implements ISignUp {
         Toast.makeText(this, "Sign Up Successful! Welcome " + user.getEmail(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(SignUp.this, SignIn.class);
         startActivity(intent);
-
     }
 }

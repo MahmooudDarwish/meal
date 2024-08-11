@@ -48,9 +48,6 @@ public class FirebaseManager {
 
 
     public void signIn(@NonNull String email, @NonNull String password, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            throw new IllegalArgumentException("Email and Password must not be empty");
-        }
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(onCompleteListener);
     }
@@ -69,7 +66,7 @@ public class FirebaseManager {
             firestore.collection("users")
                     .document(userId)
                     .set(user)
-                    .addOnSuccessListener(aVoid -> {
+                    .addOnSuccessListener(s -> {
                         Log.d(TAG, "User data saved successfully");
                     })
                     .addOnFailureListener(e -> {
