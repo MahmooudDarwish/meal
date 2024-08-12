@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">MealApp</string>
+    <string name="client_id">888404159185-g38llii2eq74ttrm8f315k5ju27o4lii.apps.googleusercontent.com</string>
     <string name="sign_up">Sign Up</string>
     <string name="email">Email</string>
     <string name="enter_email">Enter your E-mail</string>
@@ -17,4 +18,7 @@
     <string name="dont_have_acc">"Don't have an account? "</string>
     <string name="welcome">Welcome!</string>
     <string name="stay_logged_in">Stay Signed in</string>
+    <string name="or">OR</string>
+    <string name="sign_in_google">Sign in wtih Google</string>
+    <string name="sign_in_guest">Sign in as Guest</string>
 </resources>

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mealapp.R;
@@ -20,15 +21,23 @@ import com.example.mealapp.feature.auth.sign_in.presenter.SignInPresenter;
 import com.example.mealapp.feature.auth.sign_up.view.SignUp;
 import com.example.mealapp.feature.home.view.Home;
 import com.example.mealapp.utils.common_layer.models.User;
-
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 public class SignIn extends AppCompatActivity implements  ISignIn{
 
     private EditText emailField, passwordField;
-    private Button signInBtn;
+    private Button signInBtn, signInWithGoogleBtn, singInAsGuestBtn;
     private TextView signUpTextBtn;
     private ISignInPresenter presenter;
     private ProgressDialog progressDialog;
     private CheckBox staySignedIn;
+
+    private static final int REQ_ONE_TAP = 2;
+    private GoogleSignInClient googleSignInClient;
     private static final String TAG = "SignIn";
 
 
@@ -37,6 +46,13 @@ public class SignIn extends AppCompatActivity implements  ISignIn{
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_in);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
         presenter = new SignInPresenter(this);
         initUI();
         setUpListeners();
@@ -60,6 +76,11 @@ public class SignIn extends AppCompatActivity implements  ISignIn{
             presenter.signIn(email, password);
         });
 
+        signInWithGoogleBtn.setOnClickListener(v -> signInWithGoogle());
+        singInAsGuestBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(SignIn.this, Home.class);
+            startActivity(intent);
+        });
 
     }
 
@@ -84,6 +105,9 @@ public class SignIn extends AppCompatActivity implements  ISignIn{
         signInBtn = findViewById(R.id.signInBtn);
         signUpTextBtn = findViewById(R.id.signUpTextBtn);
         staySignedIn = findViewById(R.id.staySignedIn);
+        signInWithGoogleBtn = findViewById(R.id.googleSignInBtn);
+        singInAsGuestBtn = findViewById(R.id.guestSignInBtn);
+
     }
 
     @Override
@@ -111,5 +135,27 @@ public class SignIn extends AppCompatActivity implements  ISignIn{
     public void signInError(String errorMsg) {
         hideLoading();
         Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQ_ONE_TAP) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount googleSignInAccount = task.getResult(ApiException.class);
+                if (googleSignInAccount != null) {
+                    presenter.signInWithGoogle(googleSignInAccount);
+                }
+            } catch (ApiException e) {
+                Log.w(TAG, "Google sign-in failed", e);
+                signInError("Google sign-in failed. Please try again.");
+            }
+        }
+    }
+    private void signInWithGoogle() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, REQ_ONE_TAP);
     }
 }

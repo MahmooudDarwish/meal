@@ -1,16 +1,17 @@
 package com.example.mealapp.utils.firebase;
-
-import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.mealapp.feature.auth.sign_in.view.OnUserRetrieveData;
 import com.example.mealapp.utils.common_layer.models.User;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -32,6 +33,12 @@ public class FirebaseManager {
         }
         return instance;
     }
+    public void signInWithGoogle(GoogleSignInAccount account, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(onCompleteListener);
+    }
+
 
     public void signUp(@NonNull String email, @NonNull String password, @NonNull String name, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -45,7 +52,6 @@ public class FirebaseManager {
                     onCompleteListener.onComplete(task);
                 });
     }
-
 
     public void signIn(@NonNull String email, @NonNull String password, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
