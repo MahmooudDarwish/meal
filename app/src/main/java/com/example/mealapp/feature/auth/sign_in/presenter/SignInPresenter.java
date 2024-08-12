@@ -29,6 +29,7 @@ public class SignInPresenter implements  ISignInPresenter{
                 FirebaseManager.getInstance().getUserData(new OnUserRetrieveData() {
                     public void onUserDataRetrieved(User user) {
                         if (user != null) {
+                            FirebaseManager.getInstance().saveUserData(user);
                             view.signInSuccess(user);
                         } else {
                             view.signInError("User data retrieval failed.");
@@ -55,6 +56,10 @@ public class SignInPresenter implements  ISignInPresenter{
                     @Override
                     public void onUserDataRetrieved(User user) {
                         if (user != null) {
+                            Log.i(TAG, "Google sign-in: success");
+                            Log.i(TAG, "User data retrieved: " + user);
+                            Log.i(TAG, "User email: " + user.getEmail());
+                            Log.i(TAG, "User name: " + user.getName());
                             view.signInSuccess(user);
                         } else {
                             view.signInError("User data retrieval failed.");

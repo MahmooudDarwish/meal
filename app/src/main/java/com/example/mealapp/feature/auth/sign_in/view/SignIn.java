@@ -124,6 +124,8 @@ public class SignIn extends AppCompatActivity implements  ISignIn{
     }
 
     private void addUserToSharedPreferences(User user){
+        Log.i(TAG, "addUserToSharedPreferences: " + user.getName());
+        Log.i(TAG, "addUserToSharedPreferences: " + user.getEmail());
         SharedPreferences sharedPreferences = getSharedPreferences("user_data", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("user_name", user.getName());
@@ -146,6 +148,7 @@ public class SignIn extends AppCompatActivity implements  ISignIn{
             try {
                 GoogleSignInAccount googleSignInAccount = task.getResult(ApiException.class);
                 if (googleSignInAccount != null) {
+                    showLoading();
                     presenter.signInWithGoogle(googleSignInAccount);
                 }
             } catch (ApiException e) {

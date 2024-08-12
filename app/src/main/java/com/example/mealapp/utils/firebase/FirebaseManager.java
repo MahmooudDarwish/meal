@@ -66,7 +66,7 @@ public class FirebaseManager {
         firebaseAuth.signOut();
     }
 
-    private void saveUserData(User user) {
+    public void saveUserData(User user) {
         if (firebaseAuth.getCurrentUser() != null) {
             String userId = firebaseAuth.getCurrentUser().getUid();
             firestore.collection("users")
