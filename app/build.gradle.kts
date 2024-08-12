@@ -42,9 +42,19 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
+    implementation("androidx.navigation:navigation-fragment:2.5.3" )
+    implementation("androidx.navigation:navigation-ui:2.5.3" )
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.airbnb.android:lottie:6.1.0")
+    implementation ("androidx.room:room-runtime:2.4.1")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.converter.scalars)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    annotationProcessor("androidx.room:room-compiler:2.4.1")
+
 
 }
