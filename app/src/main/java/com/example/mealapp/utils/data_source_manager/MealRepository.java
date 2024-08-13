@@ -7,5 +7,8 @@ import com.example.mealapp.utils.network.NetworkDelegate;
 public interface MealRepository {
 
      void getRandomMeal(NetworkDelegate networkDelegate);
+     void getAllCategories(NetworkDelegate networkDelegate);
+
+     void getAllCountries(NetworkDelegate networkDelegate);
 
 }

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Light Theme Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="orange">#FFA500</color>
+    <color name="orangeLight">#FFCC80</color>
+    <color name="orangeDark">#FF8C00</color>
+
+    <!-- Dark Theme Colors -->
+    <color name="blackDark">#121212</color>
+    <color name="orangeDarkTheme">#FF5722</color>
 </resources>
