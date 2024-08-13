@@ -22,5 +22,11 @@ public interface MealService
     @GET("lookup.php")
     Call<DetailedMealResponse> getMealDetails(@Query("i") String id);
 
+    @GET("filter.php")
+    Call<PreviewMealResponse> getMealsByCategory(@Query("c") String category);
+
+    @GET("filter.php")
+    Call<PreviewMealResponse> getMealsByCountry(@Query("a") String country);
+
 
 }

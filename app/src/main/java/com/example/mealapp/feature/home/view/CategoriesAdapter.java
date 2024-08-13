@@ -18,10 +18,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder> {
 
-    private List<Category> categoryList;
+    private final List<Category> categoryList;
 
-    public CategoriesAdapter(List<Category> categoryList) {
+    private final OnCategoryClickedListener listener;
+
+    public CategoriesAdapter(List<Category> categoryList, OnCategoryClickedListener listener) {
         this.categoryList = categoryList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -38,6 +41,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         Glide.with(holder.itemView.getContext())
                 .load(category.getStrCategoryThumb())
                 .into(holder.categoryImage);
+
+        holder.itemView.setOnClickListener(v -> listener.onCategoryClicked(category.getStrCategory()));
     }
 
     @Override

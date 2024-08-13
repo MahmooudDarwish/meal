@@ -13,6 +13,10 @@ public interface HomeNetworkDelegate {
 
      void onGetAllCountriesSuccessResult(List<Country> countries);
 
+     void onGetAllMealsByCategorySuccessResult(List<PreviewMeal> meals);
+
+     void onGetAllMealsByCountrySuccessResult(List<PreviewMeal> meals);
+
      void onFailureResult(String errorMsg);
 
 }

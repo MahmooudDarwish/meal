@@ -1,6 +1,6 @@
 package com.example.mealapp.utils.common_layer.models;
 
-import com.google.gson.annotations.SerializedName;
+
 
 public class PreviewMeal {
 

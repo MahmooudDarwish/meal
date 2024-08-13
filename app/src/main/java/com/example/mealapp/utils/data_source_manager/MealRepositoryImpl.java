@@ -48,4 +48,14 @@ public class MealRepositoryImpl implements MealRepository{
         remoteSource.getMealDetailsCall(mealDetailsNetworkDelegate, mealId);
 
     }
+
+    @Override
+    public void getMealsByCategory(HomeNetworkDelegate homeNetworkDelegate, String category) {
+        remoteSource.getAllMealsByCategoryCall(homeNetworkDelegate, category);
+    }
+
+    @Override
+    public void getMealsByCountry(HomeNetworkDelegate homeNetworkDelegate, String country) {
+        remoteSource.getAllMealsByCountryCall(homeNetworkDelegate, country);
+    }
 }

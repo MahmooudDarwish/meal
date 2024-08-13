@@ -131,4 +131,50 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
 
     }
 
+    @Override
+    public void getAllMealsByCountryCall(HomeNetworkDelegate homeNetworkDelegate, String countryName) {
+         Call<PreviewMealResponse> call = mealService.getMealsByCountry(countryName);
+        call.enqueue(new Callback<PreviewMealResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<PreviewMealResponse> call, @NonNull Response<PreviewMealResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.i(TAG, "onResponse: " + response.body().getMeals());
+                    homeNetworkDelegate.onGetAllMealsByCountrySuccessResult(response.body().getMeals());
+                } else {
+                    homeNetworkDelegate.onFailureResult("Response unsuccessful");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<PreviewMealResponse> call, @NonNull Throwable throwable) {
+                homeNetworkDelegate.onFailureResult(throwable.getMessage());
+                Log.e(TAG, "onFailure: " + throwable.getMessage());
+            }
+        });
+
+    }
+
+    @Override
+    public void getAllMealsByCategoryCall(HomeNetworkDelegate homeNetworkDelegate, String categoryName) {
+        Call<PreviewMealResponse> call = mealService.getMealsByCategory(categoryName);
+        call.enqueue(new Callback<PreviewMealResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<PreviewMealResponse> call, @NonNull Response<PreviewMealResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.i(TAG, "onResponse: " + response.body().getMeals());
+                    homeNetworkDelegate.onGetAllMealsByCategorySuccessResult(response.body().getMeals());
+                } else {
+                    homeNetworkDelegate.onFailureResult("Response unsuccessful");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<PreviewMealResponse> call, @NonNull Throwable throwable) {
+                homeNetworkDelegate.onFailureResult(throwable.getMessage());
+                Log.e(TAG, "onFailure: " + throwable.getMessage());
+            }
+        });
+
+    }
+
 }

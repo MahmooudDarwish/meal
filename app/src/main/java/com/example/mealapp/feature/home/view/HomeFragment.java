@@ -23,6 +23,7 @@ import com.example.mealapp.R;
 import com.example.mealapp.feature.home.presenter.HomePresenter;
 import com.example.mealapp.feature.home.presenter.IHomePresenter;
 import com.example.mealapp.feature.meal_details.view.MealDetails;
+import com.example.mealapp.feature.meals_viewer.view.MealsViewer;
 import com.example.mealapp.utils.common_layer.models.Category;
 import com.example.mealapp.utils.common_layer.models.Country;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
@@ -31,18 +32,14 @@ import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment implements  IHome {
+public class HomeFragment extends Fragment implements  IHome, OnCategoryClickedListener, OnCountryClickedListener {
 
     ImageView mealOfDayImage;
     TextView mealOfDayTitle;
     CardView mealOfDayCard;
     RecyclerView categoriesRecycler;
     RecyclerView countriesRecycler;
-
-
     IHomePresenter presenter;
-
-
     private static final String TAG = "HomeFragment";
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,19 +101,42 @@ public class HomeFragment extends Fragment implements  IHome {
 
     @Override
     public void showCategories(List<Category> categories) {
-        CategoriesAdapter adapter = new CategoriesAdapter(categories);
+        CategoriesAdapter adapter = new CategoriesAdapter(categories, this);
         categoriesRecycler.setAdapter(adapter);
     }
 
     @Override
     public void showCountries(List<Country> countries) {
-        CountriesAdapter adapter = new CountriesAdapter(countries);
+        CountriesAdapter adapter = new CountriesAdapter(countries, this);
         countriesRecycler.setAdapter(adapter);
     }
 
+    @Override
+    public void countryClicked(List<PreviewMeal> meals) {
+        Intent intent = new Intent(getContext(), MealsViewer.class);
+        startActivity(intent);
 
+    }
+
+    @Override
+    public void categoryClicked(List<PreviewMeal> meals) {
+        Intent intent = new Intent(getContext(), MealsViewer.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onCategoryClicked(String categoryName) {
+        presenter.getMealsByCategory(categoryName);
+    }
+
+    @Override
+    public void onCountryClicked(String countryName) {
+        presenter.getMealsByCountry(countryName);
+
+    }
     @Override
     public void onFailureResult(String errorMsg) {
         Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
     }
+
 }

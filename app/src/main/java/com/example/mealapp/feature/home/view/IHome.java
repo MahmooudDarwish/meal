@@ -11,5 +11,10 @@ public interface IHome {
     void showRandomMeal(PreviewMeal meal);
     void showCategories(List<Category> categories);
     void showCountries(List<Country> countries);
+
+    void countryClicked(List<PreviewMeal> meals);
+
+    void categoryClicked(List<PreviewMeal> meals);
+
     void onFailureResult(String errorMsg);
 }
