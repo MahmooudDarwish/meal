@@ -1,11 +1,12 @@
 package com.example.mealapp.utils.network;
 
 public interface MealRemoteDataSource {
-     void getRandomMealCall(NetworkDelegate networkDelegate);
+     void getRandomMealCall(HomeNetworkDelegate homeNetworkDelegate);
 
-     void getAllCategoriesCall(NetworkDelegate networkDelegate);
+     void getAllCategoriesCall(HomeNetworkDelegate homeNetworkDelegate);
 
-     void getAllCountriesCall(NetworkDelegate networkDelegate);
+     void getAllCountriesCall(HomeNetworkDelegate homeNetworkDelegate);
 
+      void getMealDetailsCall(MealDetailsNetworkDelegate mealDetailsNetworkDelegate, String mealId);
 
 }

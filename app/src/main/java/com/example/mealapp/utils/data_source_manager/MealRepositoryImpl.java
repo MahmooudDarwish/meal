@@ -1,7 +1,8 @@
 package com.example.mealapp.utils.data_source_manager;
 
+import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
 import com.example.mealapp.utils.network.MealRemoteDataSource;
-import com.example.mealapp.utils.network.NetworkDelegate;
+import com.example.mealapp.utils.network.HomeNetworkDelegate;
 
 public class MealRepositoryImpl implements MealRepository{
 
@@ -27,18 +28,24 @@ public class MealRepositoryImpl implements MealRepository{
 
 
     @Override
-    public void getRandomMeal(NetworkDelegate networkDelegate) {
-        remoteSource.getRandomMealCall(networkDelegate);
+    public void getRandomMeal(HomeNetworkDelegate homeNetworkDelegate) {
+        remoteSource.getRandomMealCall(homeNetworkDelegate);
     }
 
     @Override
-    public void getAllCategories(NetworkDelegate networkDelegate) {
-        remoteSource.getAllCategoriesCall(networkDelegate);
+    public void getAllCategories(HomeNetworkDelegate homeNetworkDelegate) {
+        remoteSource.getAllCategoriesCall(homeNetworkDelegate);
     }
 
     @Override
-    public void getAllCountries(NetworkDelegate networkDelegate) {
-        remoteSource.getAllCountriesCall(networkDelegate);
+    public void getAllCountries(HomeNetworkDelegate homeNetworkDelegate) {
+        remoteSource.getAllCountriesCall(homeNetworkDelegate);
+
+    }
+
+    @Override
+    public void getMealDetails(MealDetailsNetworkDelegate mealDetailsNetworkDelegate, String mealId) {
+        remoteSource.getMealDetailsCall(mealDetailsNetworkDelegate, mealId);
 
     }
 }

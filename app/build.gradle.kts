@@ -47,9 +47,11 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.airbnb.android:lottie:6.1.0")
     implementation ("androidx.room:room-runtime:2.4.1")
+    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.0.1")
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.converter.scalars)
+    implementation(libs.gridlayout)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

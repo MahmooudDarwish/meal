@@ -223,55 +223,54 @@ public class DetailedMeal {
         this.dateModified = dateModified;
     }
 
-    public List<String> getIngredients() {
-        List<String> ingredients = new ArrayList<>();
-        if (strIngredient1 != null && !strIngredient1.isEmpty()) ingredients.add(strIngredient1);
-        if (strIngredient2 != null && !strIngredient2.isEmpty()) ingredients.add(strIngredient2);
-        if (strIngredient3 != null && !strIngredient3.isEmpty()) ingredients.add(strIngredient3);
-        if (strIngredient4 != null && !strIngredient4.isEmpty()) ingredients.add(strIngredient4);
-        if (strIngredient5 != null && !strIngredient5.isEmpty()) ingredients.add(strIngredient5);
-        if (strIngredient6 != null && !strIngredient6.isEmpty()) ingredients.add(strIngredient6);
-        if (strIngredient7 != null && !strIngredient7.isEmpty()) ingredients.add(strIngredient7);
-        if (strIngredient8 != null && !strIngredient8.isEmpty()) ingredients.add(strIngredient8);
-        if (strIngredient9 != null && !strIngredient9.isEmpty()) ingredients.add(strIngredient9);
-        if (strIngredient10 != null && !strIngredient10.isEmpty()) ingredients.add(strIngredient10);
-        if (strIngredient11 != null && !strIngredient11.isEmpty()) ingredients.add(strIngredient11);
-        if (strIngredient12 != null && !strIngredient12.isEmpty()) ingredients.add(strIngredient12);
-        if (strIngredient13 != null && !strIngredient13.isEmpty()) ingredients.add(strIngredient13);
-        if (strIngredient14 != null && !strIngredient14.isEmpty()) ingredients.add(strIngredient14);
-        if (strIngredient15 != null && !strIngredient15.isEmpty()) ingredients.add(strIngredient15);
-        if (strIngredient16 != null && !strIngredient16.isEmpty()) ingredients.add(strIngredient16);
-        if (strIngredient17 != null && !strIngredient17.isEmpty()) ingredients.add(strIngredient17);
-        if (strIngredient18 != null && !strIngredient18.isEmpty()) ingredients.add(strIngredient18);
-        if (strIngredient19 != null && !strIngredient19.isEmpty()) ingredients.add(strIngredient19);
-        if (strIngredient20 != null && !strIngredient20.isEmpty()) ingredients.add(strIngredient20);
+    public List<Ingredient> getIngredients() {
+        List<Ingredient> ingredients = new ArrayList<>();
+
+
+        if (strIngredient1 != null && !strIngredient1.isEmpty())
+            ingredients.add(new Ingredient(strIngredient1, strMeasure1));
+        if (strIngredient2 != null && !strIngredient2.isEmpty())
+            ingredients.add(new Ingredient(strIngredient2, strMeasure2));
+        if (strIngredient3 != null && !strIngredient3.isEmpty())
+            ingredients.add(new Ingredient(strIngredient3, strMeasure3));
+        if (strIngredient4 != null && !strIngredient4.isEmpty())
+            ingredients.add(new Ingredient(strIngredient4, strMeasure4));
+        if (strIngredient5 != null && !strIngredient5.isEmpty())
+            ingredients.add(new Ingredient(strIngredient5, strMeasure5));
+        if (strIngredient6 != null && !strIngredient6.isEmpty())
+            ingredients.add(new Ingredient(strIngredient6, strMeasure6));
+        if (strIngredient7 != null && !strIngredient7.isEmpty())
+            ingredients.add(new Ingredient(strIngredient7, strMeasure7));
+        if (strIngredient8 != null && !strIngredient8.isEmpty())
+            ingredients.add(new Ingredient(strIngredient8, strMeasure8));
+        if (strIngredient9 != null && !strIngredient9.isEmpty())
+            ingredients.add(new Ingredient(strIngredient9, strMeasure9));
+        if (strIngredient10 != null && !strIngredient10.isEmpty())
+            ingredients.add(new Ingredient(strIngredient10, strMeasure10));
+        if (strIngredient11 != null && !strIngredient11.isEmpty())
+            ingredients.add(new Ingredient(strIngredient11, strMeasure11));
+        if (strIngredient12 != null && !strIngredient12.isEmpty())
+            ingredients.add(new Ingredient(strIngredient12, strMeasure12));
+        if (strIngredient13 != null && !strIngredient13.isEmpty())
+            ingredients.add(new Ingredient(strIngredient13, strMeasure13));
+        if (strIngredient14 != null && !strIngredient14.isEmpty())
+            ingredients.add(new Ingredient(strIngredient14, strMeasure14));
+        if (strIngredient15 != null && !strIngredient15.isEmpty())
+            ingredients.add(new Ingredient(strIngredient15, strMeasure15));
+        if (strIngredient16 != null && !strIngredient16.isEmpty())
+            ingredients.add(new Ingredient(strIngredient16, strMeasure16));
+        if (strIngredient17 != null && !strIngredient17.isEmpty())
+            ingredients.add(new Ingredient(strIngredient17, strMeasure17));
+        if (strIngredient18 != null && !strIngredient18.isEmpty())
+            ingredients.add(new Ingredient(strIngredient18, strMeasure18));
+        if (strIngredient19 != null && !strIngredient19.isEmpty())
+            ingredients.add(new Ingredient(strIngredient19, strMeasure19));
+        if (strIngredient20 != null && !strIngredient20.isEmpty())
+            ingredients.add(new Ingredient(strIngredient20, strMeasure20));
+
         return ingredients;
     }
 
-    public List<String> getMeasures() {
-        List<String> measures = new ArrayList<>();
-        if (strMeasure1 != null && !strMeasure1.isEmpty()) measures.add(strMeasure1);
-        if (strMeasure2 != null && !strMeasure2.isEmpty()) measures.add(strMeasure2);
-        if (strMeasure3 != null && !strMeasure3.isEmpty()) measures.add(strMeasure3);
-        if (strMeasure4 != null && !strMeasure4.isEmpty()) measures.add(strMeasure4);
-        if (strMeasure5 != null && !strMeasure5.isEmpty()) measures.add(strMeasure5);
-        if (strMeasure6 != null && !strMeasure6.isEmpty()) measures.add(strMeasure6);
-        if (strMeasure7 != null && !strMeasure7.isEmpty()) measures.add(strMeasure7);
-        if (strMeasure8 != null && !strMeasure8.isEmpty()) measures.add(strMeasure8);
-        if (strMeasure9 != null && !strMeasure9.isEmpty()) measures.add(strMeasure9);
-        if (strMeasure10 != null && !strMeasure10.isEmpty()) measures.add(strMeasure10);
-        if (strMeasure11 != null && !strMeasure11.isEmpty()) measures.add(strMeasure11);
-        if (strMeasure12 != null && !strMeasure12.isEmpty()) measures.add(strMeasure12);
-        if (strMeasure13 != null && !strMeasure13.isEmpty()) measures.add(strMeasure13);
-        if (strMeasure14 != null && !strMeasure14.isEmpty()) measures.add(strMeasure14);
-        if (strMeasure15 != null && !strMeasure15.isEmpty()) measures.add(strMeasure15);
-        if (strMeasure16 != null && !strMeasure16.isEmpty()) measures.add(strMeasure16);
-        if (strMeasure17 != null && !strMeasure17.isEmpty()) measures.add(strMeasure17);
-        if (strMeasure18 != null && !strMeasure18.isEmpty()) measures.add(strMeasure18);
-        if (strMeasure19 != null && !strMeasure19.isEmpty()) measures.add(strMeasure19);
-        if (strMeasure20 != null && !strMeasure20.isEmpty()) measures.add(strMeasure20);
-        return measures;
-    }
 
 
     public String getIdMeal() {

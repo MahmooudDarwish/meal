@@ -33,14 +33,14 @@
         app:layout_constraintTop_toBottomOf="@+id/mealOfTheDayText">
 
         <ImageView
-            android:id="@+id/mealOfTheDayImage"
+            android:id="@+id/mealImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/logo" />
 
         <TextView
-            android:id="@+id/mealOfTheDayTitle"
+            android:id="@+id/mealName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -92,6 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
+        android:paddingBottom="20dp"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/countriesText" />

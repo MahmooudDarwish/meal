@@ -6,7 +6,7 @@ import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 
 import java.util.List;
 
-public interface NetworkDelegate {
+public interface HomeNetworkDelegate {
      void onGetRandomMealSuccessResult(PreviewMeal previewMeal);
 
      void onGetAllCategoriesSuccessResult(List<Category> categories);

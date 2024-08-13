@@ -7,11 +7,11 @@ import com.example.mealapp.utils.common_layer.models.Category;
 import com.example.mealapp.utils.common_layer.models.Country;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
-import com.example.mealapp.utils.network.NetworkDelegate;
+import com.example.mealapp.utils.network.HomeNetworkDelegate;
 
 import java.util.List;
 
-public class HomePresenter implements IHomePresenter, NetworkDelegate {
+public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
 
     private final IHome _view;
     private final MealRepository _repo;

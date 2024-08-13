@@ -31,4 +31,7 @@
     <string name="meals">Meals</string>
     <string name="categories">Categories</string>
     <string name="countries">Countries</string>
+    <string name="ingrediants">Ingredients</string>
+    <string name="country">Country:</string>
+    <string name="instructions">Instructions</string>
 </resources>

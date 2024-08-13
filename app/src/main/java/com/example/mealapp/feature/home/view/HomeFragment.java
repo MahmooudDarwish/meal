@@ -1,9 +1,11 @@
 package com.example.mealapp.feature.home.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.mealapp.R;
 import com.example.mealapp.feature.home.presenter.HomePresenter;
 import com.example.mealapp.feature.home.presenter.IHomePresenter;
+import com.example.mealapp.feature.meal_details.view.MealDetails;
 import com.example.mealapp.utils.common_layer.models.Category;
 import com.example.mealapp.utils.common_layer.models.Country;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
@@ -32,10 +35,14 @@ public class HomeFragment extends Fragment implements  IHome {
 
     ImageView mealOfDayImage;
     TextView mealOfDayTitle;
+    CardView mealOfDayCard;
     RecyclerView categoriesRecycler;
     RecyclerView countriesRecycler;
 
+
     IHomePresenter presenter;
+
+
     private static final String TAG = "HomeFragment";
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,9 +66,12 @@ public class HomeFragment extends Fragment implements  IHome {
         super.onViewCreated(view, savedInstanceState);
     }
 
+
+
     void initUI(View v){
-        mealOfDayImage = v.findViewById(R.id.mealOfTheDayImage);
-        mealOfDayTitle = v.findViewById(R.id.mealOfTheDayTitle);
+        mealOfDayCard = v.findViewById(R.id.mealOfTheDayCard);
+        mealOfDayImage = v.findViewById(R.id.mealImage);
+        mealOfDayTitle = v.findViewById(R.id.mealName);
         categoriesRecycler = v.findViewById(R.id.categoriesRecycler);
         categoriesRecycler.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -71,12 +81,25 @@ public class HomeFragment extends Fragment implements  IHome {
 
     }
 
+    private void setUpListeners(String mealId) {
+        mealOfDayCard.setOnClickListener(v -> {
+            Log.i(TAG, "setUpListeners: mealOfDayCard Clicked");
+            Intent intent = new Intent(getContext(), MealDetails.class);
+            intent.putExtra("MEAL_ID", mealId);
+            startActivity(intent);
+        });
+    }
+
     @Override
     public void showRandomMeal(PreviewMeal meal) {
         mealOfDayTitle.setText(meal.getStrMeal());
         Glide.with(this)
                 .load(meal.getStrMealThumb())
                 .into(mealOfDayImage);
+        setUpListeners(meal.getIdMeal());
+
+
+
     }
 
     @Override
