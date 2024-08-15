@@ -7,7 +7,10 @@ import com.example.mealapp.feature.meals_viewer.model.MealsViewModel;
 import com.example.mealapp.utils.common_layer.models.Category;
 import com.example.mealapp.utils.common_layer.models.Country;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
+import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
+import com.example.mealapp.utils.firebase.FirebaseManager;
+import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
 
 import java.util.List;
@@ -45,6 +48,30 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
     }
 
     @Override
+    public void getCurrentUser() {
+        FirebaseManager.getInstance().getCurrentUser(
+                new OnUserRetrieveData() {
+                    public void onUserDataRetrieved(User user) {
+                        if (user != null) {
+                            _view.getCurrentUserSuccessfully(user);
+                        } else {
+                            Log.i(TAG, "User is null");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Log.i(TAG, "Error getting user data: " + e.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    public void signOut() {
+        FirebaseManager.getInstance().signOut();
+    }
+
+    @Override
     public void getMealsByCountry(String country) {
         _repo.getMealsByCountry( this, country);
     }
@@ -78,6 +105,11 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
     public void onGetAllMealsByCountrySuccessResult(List<PreviewMeal> meals) {
         MealsViewModel.getInstance().setMeals(meals);
         _view.countryClicked(meals);
+    }
+
+    @Override
+    public void onSignOut() {
+
     }
 
     @Override

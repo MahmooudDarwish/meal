@@ -13,6 +13,16 @@
         android:layout_height="match_parent"
         android:paddingStart="16dp">
 
+        <include
+            android:id="@+id/bannerNoInternet"
+            layout="@layout/banner_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginTop="30dp" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/mealCard"
             android:layout_width="match_parent"
@@ -25,7 +35,7 @@
             app:cardCornerRadius="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@+id/bannerNoInternet">
 
             <ImageView
                 android:id="@+id/mealImage"

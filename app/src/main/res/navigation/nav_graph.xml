@@ -25,4 +25,9 @@
         android:name="com.example.mealapp.feature.search.view.SearchFragment"
         android:label="@string/search"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/foodPlannedPreviewFragment"
+        android:name="com.example.mealapp.feature.food_planner_preview.view.FoodPlannedPreviewFragment"
+        android:label="Food Planned"
+        tools:layout="@layout/fragment_food_planned_preview" />
 </navigation>

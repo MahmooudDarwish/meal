@@ -3,7 +3,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.mealapp.feature.auth.sign_in.view.OnUserRetrieveData;
 import com.example.mealapp.utils.common_layer.models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -58,13 +57,38 @@ public class FirebaseManager {
                 .addOnCompleteListener(onCompleteListener);
     }
 
-    public FirebaseUser getCurrentUser() {
-        return firebaseAuth.getCurrentUser();
+    public void getCurrentUser(@NonNull OnUserRetrieveData listener) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            firestore.collection("users")
+                    .document(userId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                String name = document.getString("name");
+                                String email = document.getString("email");
+                                User user = new User(email, name);
+                                listener.onUserDataRetrieved(user);
+                            } else {
+                                listener.onError(new Exception("No user data found"));
+                            }
+                        } else {
+                            listener.onError(task.getException());
+                        }
+                    });
+        } else {
+            listener.onError(new Exception("No current user"));
+        }
     }
+
 
     public void signOut() {
         firebaseAuth.signOut();
     }
+
 
     public void saveUserData(User user) {
         if (firebaseAuth.getCurrentUser() != null) {

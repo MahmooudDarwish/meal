@@ -1,100 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".feature.home.view.HomeFragment">
 
-    <TextView
-        android:id="@+id/mealOfTheDayText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="35dp"
-        android:text="@string/meal_of_the_day"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/mealOfTheDayCard"
-        android:layout_width="369dp"
-        android:layout_height="195dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="21dp"
-        android:elevation="8dp"
-        android:radius="12dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mealOfTheDayText">
-
-        <ImageView
-            android:id="@+id/mealImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/logo" />
-
+        <!-- Welcome Text -->
         <TextView
-            android:id="@+id/mealName"
+            android:id="@+id/welcomeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="35dp"
+            android:text="@string/welcome"
+            android:textColor="#FFBB33"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- User Name -->
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="35dp"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/welcomeText"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Sign Out Icon -->
+        <ImageView
+            android:id="@+id/signOutIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="21dp"
+            android:src="@drawable/sign_out_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Meal of the Day Text -->
+        <TextView
+            android:id="@+id/mealOfTheDayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/meal_of_the_day"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
+
+        <!-- Meal of the Day Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/mealOfTheDayCard"
+            android:layout_width="369dp"
+            android:layout_height="195dp"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="21dp"
+            android:elevation="8dp"
+            android:radius="12dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mealOfTheDayText">
+
+            <ImageView
+                android:id="@+id/mealImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/mealName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@android:drawable/screen_background_dark_transparent"
+                android:maxLines="1"
+                android:paddingStart="21dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="21dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Categories Text -->
+        <TextView
+            android:id="@+id/mealsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/categories"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mealOfTheDayCard" />
+
+        <!-- Categories RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/categoriesRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@android:drawable/screen_background_dark_transparent"
-            android:maxLines="1"
-            android:paddingStart="21dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="21dp"
-            android:paddingBottom="10dp"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mealsText" />
 
-    </androidx.cardview.widget.CardView>
+        <!-- Countries Text -->
+        <TextView
+            android:id="@+id/countriesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/countries"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoriesRecycler" />
 
-    <TextView
-        android:id="@+id/mealsText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/categories"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mealOfTheDayCard" />
+        <!-- Countries RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/countriesRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:paddingBottom="20dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/countriesText" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/categoriesRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mealsText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/countriesText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/countries"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categoriesRecycler" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/countriesRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:paddingBottom="20dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countriesText" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

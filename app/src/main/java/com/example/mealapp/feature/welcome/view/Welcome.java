@@ -15,6 +15,8 @@ import com.example.mealapp.feature.auth.sign_up.view.SignUp;
 import com.example.mealapp.feature.home.view.Home;
 import com.example.mealapp.feature.welcome.presenter.IWelcomePresenter;
 import com.example.mealapp.feature.welcome.presenter.WelcomePresenter;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class Welcome extends AppCompatActivity implements  IWelcome{
     IWelcomePresenter presenter;
@@ -60,9 +62,10 @@ public class Welcome extends AppCompatActivity implements  IWelcome{
 
     @Override
     public void navigateToSignIn() {
-        Intent intent = new Intent(Welcome.this, SignIn.class);
-        startActivity(intent);
+        SignIn signInFragment = new SignIn();
+        signInFragment.show(getSupportFragmentManager(), "signInFragment");
     }
+
 
     @Override
     public void navigateToSignUp() {

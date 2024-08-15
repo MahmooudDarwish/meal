@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.mealapp.feature.auth.sign_in.view.ISignIn;
-import com.example.mealapp.feature.auth.sign_in.view.OnUserRetrieveData;
+import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.firebase.FirebaseManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;

@@ -14,6 +14,6 @@ public class SplashPresenter implements ISplashPresenter{
 
     @Override
     public void start() {
-        new Handler().postDelayed(splashView::navigateToWelcome, 3000); // 3-second delay
+        new Handler().postDelayed(splashView::navigateToHome, 3000); // 3-second delay
     }
 }

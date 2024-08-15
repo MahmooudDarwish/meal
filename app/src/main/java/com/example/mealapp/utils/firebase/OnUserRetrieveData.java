@@ -1,4 +1,4 @@
-package com.example.mealapp.feature.auth.sign_in.view;
+package com.example.mealapp.utils.firebase;
 
 import com.example.mealapp.utils.common_layer.models.User;
 

@@ -7,6 +7,10 @@ public interface IHomePresenter {
      void getAllCountries();
      void getMealsByCategory(String category);
 
+     void getCurrentUser();
+
+     void signOut();
+
      void getMealsByCountry(String country);
 
 }

@@ -10,6 +10,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mealapp.R;
+import com.example.mealapp.feature.home.view.Home;
 import com.example.mealapp.feature.splash.presenter.ISplashPresenter;
 import com.example.mealapp.feature.splash.presenter.SplashPresenter;
 import com.example.mealapp.feature.welcome.view.Welcome;
@@ -40,8 +41,8 @@ public class Splash extends AppCompatActivity implements  ISplash {
         view.startAnimation(bounceAnimation);
     }
     @Override
-    public void navigateToWelcome() {
-        Intent intent = new Intent(Splash.this, Welcome.class);
+    public void navigateToHome() {
+        Intent intent = new Intent(Splash.this, Home.class);
         startActivity(intent);
         finish();
     }

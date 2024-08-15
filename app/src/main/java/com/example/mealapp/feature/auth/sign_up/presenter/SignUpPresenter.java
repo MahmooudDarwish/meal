@@ -57,17 +57,12 @@ public class SignUpPresenter implements ISignUpPresenter {
     private void signUp(User user, String password) {
         FirebaseManager.getInstance().signUp(user.getEmail(), password, user.getName(), task -> {
             if (task.isSuccessful()) {
-                FirebaseUser firebaseUser = FirebaseManager.getInstance().getCurrentUser();
-                  if (firebaseUser != null) {
-                      Log.i(TAG, "createUserWithEmail:success" +firebaseUser.getEmail());
-                      view.signUpSuccess(firebaseUser);
-                } else {
-                    view.showError("Sign Up Failed: User not found");
-                }
+                view.signUpSuccess();
             } else {
                 Log.i(TAG, "createUserWithEmail:failure", task.getException());
                 view.showError("Authentication failed. Please check your credentials and try again.");
             }
         });
     }
+
 }

@@ -17,6 +17,8 @@ public interface HomeNetworkDelegate {
 
      void onGetAllMealsByCountrySuccessResult(List<PreviewMeal> meals);
 
+     void onSignOut();
+
      void onFailureResult(String errorMsg);
 
 }

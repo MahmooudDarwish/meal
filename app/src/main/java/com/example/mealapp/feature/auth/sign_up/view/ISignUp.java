@@ -5,5 +5,5 @@ import com.google.firebase.auth.FirebaseUser;
 
 public interface ISignUp {
     void showError(String message);
-    void signUpSuccess(FirebaseUser user);
+    void signUpSuccess();
 }

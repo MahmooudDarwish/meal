@@ -11,6 +11,8 @@ import com.example.mealapp.utils.common_layer.models.DetailedMealResponse;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.common_layer.models.PreviewMealResponse;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,14 +52,18 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
                     homeNetworkDelegate.onGetRandomMealSuccessResult(meal);
                 }
                 else {
-                    homeNetworkDelegate.onFailureResult("Response unsuccessful");
+                    String errorMessage = "Failed to fetch Meal of the day. Response unsuccessful or data is null.";
+
+                    homeNetworkDelegate.onFailureResult(errorMessage);
+                    Log.e(TAG, "onResponse: " + errorMessage);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<PreviewMealResponse> call, @NonNull Throwable throwable) {
-                Log.e(TAG, "onFailure Getting Random Meal" + throwable.getMessage());
-                homeNetworkDelegate.onFailureResult(throwable.getMessage());
+                String errorMessage = getErrorMessage(throwable) ;
+                homeNetworkDelegate.onFailureResult(errorMessage);
+                Log.e(TAG, "onFailure: " + throwable.getMessage(), throwable);
             }
         });
     }
@@ -71,40 +77,44 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
                 if (response.isSuccessful() && response.body() != null) {
                     homeNetworkDelegate.onGetAllCategoriesSuccessResult(response.body().getCategories());
                 } else {
-                    homeNetworkDelegate.onFailureResult("Response unsuccessful");
+                    String errorMessage = "Failed to fetch categories. Response unsuccessful or data is null.";
+                    homeNetworkDelegate.onFailureResult(errorMessage);
+                    Log.e(TAG, errorMessage);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CategoryResponse> call, @NonNull Throwable throwable) {
-                homeNetworkDelegate.onFailureResult(throwable.getMessage());
-                Log.e(TAG, "onFailure: " + throwable.getMessage());
+                String errorMessage = getErrorMessage(throwable) ;
+                homeNetworkDelegate.onFailureResult(errorMessage);
+                Log.e(TAG, "onFailure: " + throwable.getMessage(), throwable);
             }
         });
     }
-
     @Override
     public void getAllCountriesCall(HomeNetworkDelegate homeNetworkDelegate) {
-        Log.i(TAG, "getAllCountriesCall: ");
+        Log.i(TAG, "getAllCountriesCall initiated");
         Call<CountryResponse> call = mealService.getCountries();
         call.enqueue(new Callback<CountryResponse>() {
             @Override
             public void onResponse(@NonNull Call<CountryResponse> call, @NonNull Response<CountryResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.i(TAG, "onResponse: " + response.body().getCountries());
+                    Log.i(TAG, "Countries fetched successfully: " + response.body().getCountries());
                     homeNetworkDelegate.onGetAllCountriesSuccessResult(response.body().getCountries());
                 } else {
-                    homeNetworkDelegate.onFailureResult("Response unsuccessful");
+                    String errorMessage = "Failed to fetch countries. Response unsuccessful or data is null.";
+                    homeNetworkDelegate.onFailureResult(errorMessage);
+                    Log.e(TAG, errorMessage);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CountryResponse> call, @NonNull Throwable throwable) {
-                homeNetworkDelegate.onFailureResult(throwable.getMessage());
-                Log.e(TAG, "onFailure: " + throwable.getMessage());
+                String errorMessage = getErrorMessage(throwable) ;
+                homeNetworkDelegate.onFailureResult(errorMessage);
+                Log.e(TAG, errorMessage, throwable);
             }
         });
-
     }
 
     @Override
@@ -124,7 +134,8 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
 
             @Override
             public void onFailure(@NonNull Call<DetailedMealResponse> call, @NonNull Throwable throwable) {
-                mealDetailsNetworkDelegate.onFailureResult(throwable.getMessage());
+                String errorMessage = getErrorMessage(throwable) ;
+                mealDetailsNetworkDelegate.onFailureResult(errorMessage);
                 Log.e(TAG, "onFailure: " + throwable.getMessage());
             }
         });
@@ -147,7 +158,8 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
 
             @Override
             public void onFailure(@NonNull Call<PreviewMealResponse> call, @NonNull Throwable throwable) {
-                homeNetworkDelegate.onFailureResult(throwable.getMessage());
+                String errorMessage = getErrorMessage(throwable) ;
+                homeNetworkDelegate.onFailureResult(errorMessage);
                 Log.e(TAG, "onFailure: " + throwable.getMessage());
             }
         });
@@ -170,11 +182,20 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
 
             @Override
             public void onFailure(@NonNull Call<PreviewMealResponse> call, @NonNull Throwable throwable) {
-                homeNetworkDelegate.onFailureResult(throwable.getMessage());
+                String errorMessage = getErrorMessage(throwable) ;
+                homeNetworkDelegate.onFailureResult(errorMessage);
                 Log.e(TAG, "onFailure: " + throwable.getMessage());
             }
         });
 
+    }
+
+    private String getErrorMessage(Throwable throwable) {
+        if (throwable instanceof IOException) {
+            return "Network error: Please check your internet connection and try again.";
+        } else {
+            return "Unexpected error: " + throwable.getMessage();
+        }
     }
 
 }

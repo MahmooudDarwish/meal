@@ -17,6 +17,11 @@
         android:title="@string/favourites" />
 
     <item
+        android:id="@+id/foodPlannedPreviewFragment"
+        android:icon="@drawable/resturant_icon"
+        android:title="@string/planner" />
+
+    <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/settings_icon"
         android:title="@string/settings" />
