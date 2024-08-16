@@ -3,18 +3,19 @@ package com.example.mealapp.utils.data_source_manager;
 
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
 import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
+import com.example.mealapp.utils.network.SearchNetworkDelegate;
 
 
 public interface MealRepository {
 
      void getRandomMeal(HomeNetworkDelegate homeNetworkDelegate);
-     void getAllCategories(HomeNetworkDelegate homeNetworkDelegate);
+     void getAllCategories(SearchNetworkDelegate searchNetworkDelegate);
 
-     void getAllCountries(HomeNetworkDelegate homeNetworkDelegate);
+     void getAllCountries(SearchNetworkDelegate searchNetworkDelegate);
 
      void getMealDetails(MealDetailsNetworkDelegate mealDetailsNetworkDelegate, String mealId);
 
-     void getMealsByCategory(HomeNetworkDelegate homeNetworkDelegate, String category);
-     void getMealsByCountry(HomeNetworkDelegate homeNetworkDelegate, String country);
+     void getMealsByCategory(SearchNetworkDelegate searchNetworkDelegate, String category);
+     void getMealsByCountry(SearchNetworkDelegate searchNetworkDelegate, String country);
 
 }

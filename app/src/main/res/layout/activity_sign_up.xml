@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
             android:text="@string/sign_up_subtitle"
-            android:textColor="@android:color/holo_orange_light"
+            android:textColor="@android:color/holo_orange_dark"
             android:textSize="20sp" />
 
             <TextView
@@ -76,11 +76,11 @@
                 android:autofillHints=""
                 android:drawableStart="@drawable/person_icon"
                 android:drawablePadding="10dp"
-                android:drawableTint="@android:color/holo_orange_light"
+                android:drawableTint="@android:color/holo_orange_dark"
                 android:hint="@string/enter_name"
                 android:inputType="textEmailAddress"
                 android:paddingTop="20dp"
-                android:textColorHint="@android:color/holo_orange_light" />
+                android:textColorHint="@android:color/holo_orange_dark" />
 
             <TextView
                 android:id="@+id/emailText"
@@ -97,11 +97,11 @@
                 android:autofillHints=""
                 android:drawableStart="@android:drawable/sym_action_email"
                 android:drawablePadding="10dp"
-                android:drawableTint="@android:color/holo_orange_light"
+                android:drawableTint="@android:color/holo_orange_dark"
                 android:hint="@string/enter_email"
                 android:inputType="textEmailAddress"
                 android:paddingTop="20dp"
-                android:textColorHint="@android:color/holo_orange_light" />
+                android:textColorHint="@android:color/holo_orange_dark" />
 
             <TextView
                 android:id="@+id/passwordText"
@@ -117,13 +117,12 @@
                 android:layout_height="60dp"
                 android:autofillHints=""
                 android:drawableStart="@android:drawable/ic_lock_lock"
-                android:drawableEnd="@drawable/visability_off_icon"
                 android:drawablePadding="10dp"
                 android:hint="@string/enter_password"
                 android:inputType="textPassword"
                 android:paddingTop="20dp"
-                android:textColorHint="@android:color/holo_orange_light"
-                app:drawableTint="@android:color/holo_orange_light" />
+                android:textColorHint="@android:color/holo_orange_dark"
+                app:drawableTint="@android:color/holo_orange_dark" />
 
             <TextView
                 android:id="@+id/confirmPasswordText"
@@ -139,20 +138,19 @@
                 android:layout_height="60dp"
                 android:autofillHints=""
                 android:drawableStart="@android:drawable/ic_lock_lock"
-                android:drawableEnd="@drawable/visability_off_icon"
                 android:drawablePadding="10dp"
                 android:hint="@string/re_enter_password"
                 android:inputType="textPassword"
                 android:paddingTop="20dp"
-                android:textColorHint="@android:color/holo_orange_light"
-                app:drawableTint="@android:color/holo_orange_light" />
+                android:textColorHint="@android:color/holo_orange_dark"
+                app:drawableTint="@android:color/holo_orange_dark" />
 
         <Button
             android:id="@+id/signUpBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:backgroundTint="@android:color/holo_orange_light"
+            android:backgroundTint="@android:color/holo_orange_dark"
             android:text="@string/sign_up"
             android:textAllCaps="false"
             android:textColor="@color/black"
@@ -178,7 +176,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="@string/signInNow"
-                android:textColor="@android:color/holo_orange_light"
+                android:textColor="@android:color/holo_orange_dark"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>

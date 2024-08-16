@@ -3,6 +3,7 @@ package com.example.mealapp.utils.data_source_manager;
 import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
 import com.example.mealapp.utils.network.MealRemoteDataSource;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
+import com.example.mealapp.utils.network.SearchNetworkDelegate;
 
 public class MealRepositoryImpl implements MealRepository{
 
@@ -33,13 +34,13 @@ public class MealRepositoryImpl implements MealRepository{
     }
 
     @Override
-    public void getAllCategories(HomeNetworkDelegate homeNetworkDelegate) {
-        remoteSource.getAllCategoriesCall(homeNetworkDelegate);
+    public void getAllCategories(SearchNetworkDelegate searchNetworkDelegate) {
+        remoteSource.getAllCategoriesCall(searchNetworkDelegate);
     }
 
     @Override
-    public void getAllCountries(HomeNetworkDelegate homeNetworkDelegate) {
-        remoteSource.getAllCountriesCall(homeNetworkDelegate);
+    public void getAllCountries(SearchNetworkDelegate searchNetworkDelegate) {
+        remoteSource.getAllCountriesCall(searchNetworkDelegate);
 
     }
 
@@ -50,12 +51,12 @@ public class MealRepositoryImpl implements MealRepository{
     }
 
     @Override
-    public void getMealsByCategory(HomeNetworkDelegate homeNetworkDelegate, String category) {
-        remoteSource.getAllMealsByCategoryCall(homeNetworkDelegate, category);
+    public void getMealsByCategory(SearchNetworkDelegate searchNetworkDelegate, String category) {
+        remoteSource.getAllMealsByCategoryCall(searchNetworkDelegate, category);
     }
 
     @Override
-    public void getMealsByCountry(HomeNetworkDelegate homeNetworkDelegate, String country) {
-        remoteSource.getAllMealsByCountryCall(homeNetworkDelegate, country);
+    public void getMealsByCountry(SearchNetworkDelegate searchNetworkDelegate, String country) {
+        remoteSource.getAllMealsByCountryCall(searchNetworkDelegate, country);
     }
 }

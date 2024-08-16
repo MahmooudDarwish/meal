@@ -3,13 +3,13 @@ package com.example.mealapp.utils.network;
 public interface MealRemoteDataSource {
      void getRandomMealCall(HomeNetworkDelegate homeNetworkDelegate);
 
-     void getAllCategoriesCall(HomeNetworkDelegate homeNetworkDelegate);
+     void getAllCategoriesCall(SearchNetworkDelegate searchNetworkDelegate);
 
-     void getAllCountriesCall(HomeNetworkDelegate homeNetworkDelegate);
+     void getAllCountriesCall(SearchNetworkDelegate searchNetworkDelegate);
      void getMealDetailsCall(MealDetailsNetworkDelegate mealDetailsNetworkDelegate, String mealId);
 
-    void getAllMealsByCountryCall(HomeNetworkDelegate homeNetworkDelegate, String countryName);
+    void getAllMealsByCountryCall(SearchNetworkDelegate searchNetworkDelegate, String countryName);
 
-    void getAllMealsByCategoryCall(HomeNetworkDelegate homeNetworkDelegate, String categoryName);
+    void getAllMealsByCategoryCall(SearchNetworkDelegate searchNetworkDelegate, String categoryName);
 
 }

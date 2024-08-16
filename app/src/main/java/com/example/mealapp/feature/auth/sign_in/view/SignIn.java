@@ -1,6 +1,7 @@
 package com.example.mealapp.feature.auth.sign_in.view;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.util.Objects;
+
 public class SignIn extends BottomSheetDialogFragment implements ISignIn {
 
     private EditText emailField, passwordField;
@@ -39,7 +42,6 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
     private ISignInPresenter presenter;
     private ProgressDialog progressDialog;
     private CheckBox staySignedIn;
-
     private static final int REQ_ONE_TAP = 2;
     private GoogleSignInClient googleSignInClient;
     private static final String TAG = "SignIn";
@@ -56,7 +58,7 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
                 .requestIdToken(getString(R.string.client_id))
                 .requestEmail()
                 .build();
-        googleSignInClient = GoogleSignIn.getClient(this.getContext(), gso);
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
 
         presenter = new SignInPresenter(this);
         initUI(view);
@@ -68,7 +70,7 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
         signUpTextBtn.setOnClickListener(v -> {
             dismiss();
             SignUp signUpFragment = new SignUp();
-            signUpFragment.show(this.getActivity().getSupportFragmentManager(), "signUpFragment");
+            signUpFragment.show(requireActivity().getSupportFragmentManager(), "signUpFragment");
         });
 
         signInBtn.setOnClickListener(v -> {
@@ -127,7 +129,7 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
     private void addUserToSharedPreferences(User user) {
         Log.i(TAG, "addUserToSharedPreferences: " + user.getName());
         Log.i(TAG, "addUserToSharedPreferences: " + user.getEmail());
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_data", getActivity().MODE_PRIVATE); // Use getActivity().MODE_PRIVATE
+        SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences("user_data", Context.MODE_PRIVATE); // Use getActivity().MODE_PRIVATE
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("user_name", user.getName());
         editor.putString("user_email", user.getEmail());

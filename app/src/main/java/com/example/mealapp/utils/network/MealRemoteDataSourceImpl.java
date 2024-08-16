@@ -69,16 +69,16 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
     }
 
     @Override
-    public void getAllCategoriesCall(HomeNetworkDelegate homeNetworkDelegate) {
+    public void getAllCategoriesCall(SearchNetworkDelegate searchNetworkDelegate) {
         Call<CategoryResponse> call = mealService.getCategories();
         call.enqueue(new Callback<CategoryResponse>() {
             @Override
             public void onResponse(@NonNull Call<CategoryResponse> call, @NonNull Response<CategoryResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    homeNetworkDelegate.onGetAllCategoriesSuccessResult(response.body().getCategories());
+                    searchNetworkDelegate.onGetAllCategoriesSuccessResult(response.body().getCategories());
                 } else {
                     String errorMessage = "Failed to fetch categories. Response unsuccessful or data is null.";
-                    homeNetworkDelegate.onFailureResult(errorMessage);
+                    searchNetworkDelegate.onFailureResult(errorMessage);
                     Log.e(TAG, errorMessage);
                 }
             }
@@ -86,13 +86,13 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
             @Override
             public void onFailure(@NonNull Call<CategoryResponse> call, @NonNull Throwable throwable) {
                 String errorMessage = getErrorMessage(throwable) ;
-                homeNetworkDelegate.onFailureResult(errorMessage);
+                searchNetworkDelegate.onFailureResult(errorMessage);
                 Log.e(TAG, "onFailure: " + throwable.getMessage(), throwable);
             }
         });
     }
     @Override
-    public void getAllCountriesCall(HomeNetworkDelegate homeNetworkDelegate) {
+    public void getAllCountriesCall(SearchNetworkDelegate searchNetworkDelegate) {
         Log.i(TAG, "getAllCountriesCall initiated");
         Call<CountryResponse> call = mealService.getCountries();
         call.enqueue(new Callback<CountryResponse>() {
@@ -100,10 +100,10 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
             public void onResponse(@NonNull Call<CountryResponse> call, @NonNull Response<CountryResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.i(TAG, "Countries fetched successfully: " + response.body().getCountries());
-                    homeNetworkDelegate.onGetAllCountriesSuccessResult(response.body().getCountries());
+                    searchNetworkDelegate.onGetAllCountriesSuccessResult(response.body().getCountries());
                 } else {
                     String errorMessage = "Failed to fetch countries. Response unsuccessful or data is null.";
-                    homeNetworkDelegate.onFailureResult(errorMessage);
+                    searchNetworkDelegate.onFailureResult(errorMessage);
                     Log.e(TAG, errorMessage);
                 }
             }
@@ -111,7 +111,7 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
             @Override
             public void onFailure(@NonNull Call<CountryResponse> call, @NonNull Throwable throwable) {
                 String errorMessage = getErrorMessage(throwable) ;
-                homeNetworkDelegate.onFailureResult(errorMessage);
+                searchNetworkDelegate.onFailureResult(errorMessage);
                 Log.e(TAG, errorMessage, throwable);
             }
         });
@@ -143,23 +143,23 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
     }
 
     @Override
-    public void getAllMealsByCountryCall(HomeNetworkDelegate homeNetworkDelegate, String countryName) {
+    public void getAllMealsByCountryCall(SearchNetworkDelegate searchNetworkDelegate, String countryName) {
          Call<PreviewMealResponse> call = mealService.getMealsByCountry(countryName);
         call.enqueue(new Callback<PreviewMealResponse>() {
             @Override
             public void onResponse(@NonNull Call<PreviewMealResponse> call, @NonNull Response<PreviewMealResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.i(TAG, "onResponse: " + response.body().getMeals());
-                    homeNetworkDelegate.onGetAllMealsByCountrySuccessResult(response.body().getMeals());
+                    searchNetworkDelegate.onGetAllMealsByCountrySuccessResult(response.body().getMeals());
                 } else {
-                    homeNetworkDelegate.onFailureResult("Response unsuccessful");
+                    searchNetworkDelegate.onFailureResult("Response unsuccessful");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<PreviewMealResponse> call, @NonNull Throwable throwable) {
                 String errorMessage = getErrorMessage(throwable) ;
-                homeNetworkDelegate.onFailureResult(errorMessage);
+                searchNetworkDelegate.onFailureResult(errorMessage);
                 Log.e(TAG, "onFailure: " + throwable.getMessage());
             }
         });
@@ -167,23 +167,23 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
     }
 
     @Override
-    public void getAllMealsByCategoryCall(HomeNetworkDelegate homeNetworkDelegate, String categoryName) {
+    public void getAllMealsByCategoryCall(SearchNetworkDelegate searchNetworkDelegate, String categoryName) {
         Call<PreviewMealResponse> call = mealService.getMealsByCategory(categoryName);
         call.enqueue(new Callback<PreviewMealResponse>() {
             @Override
             public void onResponse(@NonNull Call<PreviewMealResponse> call, @NonNull Response<PreviewMealResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.i(TAG, "onResponse: " + response.body().getMeals());
-                    homeNetworkDelegate.onGetAllMealsByCategorySuccessResult(response.body().getMeals());
+                    searchNetworkDelegate.onGetAllMealsByCategorySuccessResult(response.body().getMeals());
                 } else {
-                    homeNetworkDelegate.onFailureResult("Response unsuccessful");
+                    searchNetworkDelegate.onFailureResult("Response unsuccessful");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<PreviewMealResponse> call, @NonNull Throwable throwable) {
                 String errorMessage = getErrorMessage(throwable) ;
-                homeNetworkDelegate.onFailureResult(errorMessage);
+                searchNetworkDelegate.onFailureResult(errorMessage);
                 Log.e(TAG, "onFailure: " + throwable.getMessage());
             }
         });

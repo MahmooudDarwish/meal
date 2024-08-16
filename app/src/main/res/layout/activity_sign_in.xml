@@ -50,6 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/sign_in"
+                        android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="26sp" />
 
@@ -57,10 +58,9 @@
                         android:id="@+id/signInSubtitleText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-black"
                         android:text="@string/sign_in_subtitle"
-                        android:textColor="@android:color/holo_orange_light"
-                        android:textSize="20sp" />
+                        android:textColor="@android:color/holo_orange_dark"
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/emailText"
@@ -77,11 +77,11 @@
                         android:layout_height="60dp"
                         android:drawableStart="@android:drawable/sym_action_email"
                         android:drawablePadding="10dp"
-                        android:drawableTint="@android:color/holo_orange_light"
+                        android:drawableTint="@android:color/holo_orange_dark"
                         android:hint="@string/enter_email"
                         android:inputType="textEmailAddress"
                         android:paddingTop="20dp"
-                        android:textColorHint="@android:color/holo_orange_light" />
+                        android:textColorHint="@android:color/holo_orange_dark" />
 
                     <TextView
                         android:id="@+id/passwordText"
@@ -92,24 +92,25 @@
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
+
+
                     <EditText
                         android:id="@+id/passwordField"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:drawableStart="@android:drawable/ic_lock_lock"
-                        android:drawableEnd="@drawable/visability_off_icon"
                         android:drawablePadding="10dp"
-                        android:drawableTint="@android:color/holo_orange_light"
+                        android:drawableTint="@android:color/holo_orange_dark"
                         android:hint="@string/enter_password"
                         android:inputType="textPassword"
                         android:paddingTop="20dp"
-                        android:textColorHint="@android:color/holo_orange_light" />
+                        android:textColorHint="@android:color/holo_orange_dark" />
 
                     <CheckBox
                         android:id="@+id/staySignedIn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@android:color/holo_orange_light"
+                        android:buttonTint="@android:color/holo_orange_dark"
                         android:text="@string/stay_logged_in"
                         android:textColor="@color/black" />
 
@@ -118,7 +119,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
-                        android:backgroundTint="@android:color/holo_orange_light"
+                        android:backgroundTint="@android:color/holo_orange_dark"
                         android:text="@string/sign_in"
                         android:textAllCaps="false"
                         android:textColor="@color/black"
@@ -145,7 +146,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:text="@string/sign_up"
-                            android:textColor="@android:color/holo_orange_light"
+                            android:textColor="@android:color/holo_orange_dark"
                             android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>

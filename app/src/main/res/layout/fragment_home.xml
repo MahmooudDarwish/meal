@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Welcome Text -->
         <TextView
             android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
@@ -19,12 +18,11 @@
             android:layout_marginStart="21dp"
             android:layout_marginTop="35dp"
             android:text="@string/welcome"
-            android:textColor="#FFBB33"
+            android:textColor="@android:color/holo_orange_dark"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- User Name -->
         <TextView
             android:id="@+id/userName"
             android:layout_width="wrap_content"
@@ -35,7 +33,6 @@
             app:layout_constraintStart_toEndOf="@+id/welcomeText"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Sign Out Icon -->
         <ImageView
             android:id="@+id/signOutIcon"
             android:layout_width="wrap_content"
@@ -46,7 +43,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Meal of the Day Text -->
         <TextView
             android:id="@+id/mealOfTheDayText"
             android:layout_width="wrap_content"
@@ -58,7 +54,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
 
-        <!-- Meal of the Day Card -->
         <androidx.cardview.widget.CardView
             android:id="@+id/mealOfTheDayCard"
             android:layout_width="369dp"
@@ -96,52 +91,6 @@
                 android:textSize="20sp" />
 
         </androidx.cardview.widget.CardView>
-
-        <!-- Categories Text -->
-        <TextView
-            android:id="@+id/mealsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/categories"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mealOfTheDayCard" />
-
-        <!-- Categories RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/categoriesRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mealsText" />
-
-        <!-- Countries Text -->
-        <TextView
-            android:id="@+id/countriesText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/countries"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/categoriesRecycler" />
-
-        <!-- Countries RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/countriesRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:paddingBottom="20dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/countriesText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

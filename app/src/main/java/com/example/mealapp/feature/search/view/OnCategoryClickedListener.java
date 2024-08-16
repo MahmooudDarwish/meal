@@ -1,4 +1,4 @@
-package com.example.mealapp.feature.home.view;
+package com.example.mealapp.feature.search.view;
 
 
 public interface OnCategoryClickedListener {

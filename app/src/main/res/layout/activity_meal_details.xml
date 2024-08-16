@@ -78,6 +78,7 @@
             android:layout_marginEnd="28dp"
             android:clickable="true"
             android:focusable="true"
+            app:backgroundTint="@android:color/holo_orange_dark"
             app:borderWidth="20dp"
             app:layout_constraintEnd_toEndOf="@+id/mealCard"
             app:layout_constraintTop_toTopOf="@+id/mealCard"

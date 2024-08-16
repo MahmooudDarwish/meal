@@ -1,4 +1,4 @@
-package com.example.mealapp.feature.home.view;
+package com.example.mealapp.feature.search.view;
 
 import android.view.LayoutInflater;
 import android.view.View;
