@@ -19,6 +19,8 @@ public class SearchPresenter implements ISearchPresenter, SearchNetworkDelegate 
     private final ISearch _view;
     private final MealRepository _repo;
     private final List<Ingredient> allIngredients = new ArrayList<>();
+    private List<Country> allCountries = new ArrayList<>();
+    private  List<Category> allCategories = new ArrayList<>();
     private int currentIndex = 0;
     private boolean isLoading = false;
 
@@ -50,14 +52,45 @@ public class SearchPresenter implements ISearchPresenter, SearchNetworkDelegate 
     }
 
     @Override
+    public void search(String newText) {
+        List<Ingredient> filteredIngredients = new ArrayList<>();
+        for (Ingredient ingredient : allIngredients) {
+            if (ingredient.getStrIngredient().toLowerCase().contains(newText.toLowerCase())) {
+                filteredIngredients.add(ingredient);
+            }
+        }
+
+        List<Country> filteredCountries = new ArrayList<>();
+        for (Country country : allCountries) {
+            if (country.getStrArea().toLowerCase().contains(newText.toLowerCase())) {
+                filteredCountries.add(country);
+            }
+        }
+
+        List<Category> filteredCategories = new ArrayList<>();
+        for (Category category : allCategories) {
+            if (category.getStrCategory().toLowerCase().contains(newText.toLowerCase())) {
+                filteredCategories.add(category);
+            }
+        }
+
+        if (!filteredIngredients.isEmpty() && !filteredCountries.isEmpty() && !filteredCategories.isEmpty()) {
+            _view.showFilteredIngredients(filteredIngredients, filteredCountries, filteredCategories);
+        }
+    }
+
+
+    @Override
     public void onGetAllCategoriesSuccessResult(List<Category> categories) {
         Log.d(TAG, categories.toString());
+        allCategories = categories;
         _view.showCategories(categories);
     }
 
     @Override
     public void onGetAllCountriesSuccessResult(List<Country> countries) {
         Log.d(TAG, countries.toString());
+        allCountries = countries;
         _view.showCountries(countries);
     }
 
@@ -95,6 +128,7 @@ public class SearchPresenter implements ISearchPresenter, SearchNetworkDelegate 
     }
 
     private void loadNextPage() {
+
         if (currentIndex < allIngredients.size()) {
             int PAGE_LIMIT = 10;
             int nextIndex = Math.min(currentIndex + PAGE_LIMIT, allIngredients.size());

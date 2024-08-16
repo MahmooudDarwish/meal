@@ -18,13 +18,18 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder> {
 
-    private final List<Category> categoryList;
+    private  List<Category> categoryList;
 
     private final OnCategoryClickedListener listener;
 
     public CategoriesAdapter(List<Category> categoryList, OnCategoryClickedListener listener) {
         this.categoryList = categoryList;
         this.listener = listener;
+    }
+
+    public void setCategories(List<Category> filteredCategories) {
+        this.categoryList = filteredCategories;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -49,6 +54,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     public int getItemCount() {
         return categoryList.size();
     }
+
+
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
 

@@ -14,4 +14,5 @@ public interface ISearchPresenter {
     void getMealsByCountry(String country);
 
 
+    void search(String newText);
 }

@@ -4,8 +4,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,11 +18,10 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> implements Filterable {
+public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>   {
 
     private final List<Ingredient> ingredients = new ArrayList<>();
     private final List<Ingredient> filteredIngredients = new ArrayList<>();
-    private final IngredientFilter ingredientFilter = new IngredientFilter();
     private final LoadMoreListener loadMoreListener;
     private boolean isLoading = false;
 
@@ -32,6 +29,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         this.loadMoreListener = loadMoreListener;
     }
 
+    public void setIngredients(List<Ingredient> newIngredients){
+        ingredients.clear();
+        filteredIngredients.clear();
+        ingredients.addAll(newIngredients);
+        filteredIngredients.addAll(newIngredients);
+        notifyDataSetChanged();
+    }
     public synchronized void addIngredients(List<Ingredient> newIngredients) {
         Log.d("IngredientAdapter", "Adding ingredients: " + newIngredients.size());
         ingredients.addAll(newIngredients);
@@ -69,41 +73,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         return filteredIngredients.size();
     }
 
-    @Override
-    public Filter getFilter() {
-        return ingredientFilter;
-    }
 
-    private class IngredientFilter extends Filter {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults results = new FilterResults();
-            List<Ingredient> filteredList = new ArrayList<>();
 
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(ingredients);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-                for (Ingredient item : ingredients) {
-                    if (item.getStrIngredient().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
-            }
-
-            Log.d("IngredientFilter", "Filtered count: " + filteredList.size());
-            results.values = filteredList;
-            results.count = filteredList.size();
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            filteredIngredients.clear();
-            filteredIngredients.addAll((List<Ingredient>) results.values);
-            notifyDataSetChanged();
-        }
-    }
 
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {
         private final CircleImageView ingredientImage;

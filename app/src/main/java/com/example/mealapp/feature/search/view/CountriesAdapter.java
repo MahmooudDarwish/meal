@@ -15,13 +15,19 @@ import android.view.LayoutInflater;
 import java.util.List;
 
 public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.AreaViewHolder> {
-    private final List<Country> countryList;
+    private  List<Country> countryList;
 
     private final OnCountryClickedListener listener;
     private static final String TAG = "CountriesAdapter";
     public CountriesAdapter(List<Country> countryList, OnCountryClickedListener listener) {
         this.countryList = countryList;
         this.listener = listener;
+    }
+
+    public void setCountries(List<Country> filteredCountries) {
+        this.countryList = filteredCountries;
+
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -43,6 +49,8 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Area
     public int getItemCount() {
         return countryList.size();
     }
+
+
 
     public static class AreaViewHolder extends RecyclerView.ViewHolder {
         TextView countryName;

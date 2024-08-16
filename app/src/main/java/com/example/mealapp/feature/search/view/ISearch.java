@@ -11,6 +11,7 @@ import java.util.List;
 public interface ISearch {
 
     void showCategories(List<Category> categories);
+
     void showCountries(List<Country> countries);
 
     void addMoreIngredients(List<Ingredient> ingredients);
@@ -19,7 +20,12 @@ public interface ISearch {
 
     void categoryClicked(List<PreviewMeal> meals);
 
-     void onFailureResult(String errorMsg);
+    void onFailureResult(String errorMsg);
 
+
+    void showFilteredIngredients(
+            List<Ingredient> filteredIngredients,
+            List<Country> filteredCountries,
+            List<Category> filteredCategories);
 
 }

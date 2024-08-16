@@ -5,20 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mealapp.R;
@@ -48,7 +46,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
 
     BroadcastReceiver networkReceiver;
 
-    EditText searchEditText;
+    SearchView searchView;
 
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -61,8 +59,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
 
@@ -75,7 +72,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
         initUI(view);
         setUpListeners();
 
-         networkReceiver = new BroadcastReceiver() {
+        networkReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (NetworkUtil.isConnected(requireContext())) {
@@ -95,29 +92,19 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
         refreshUI();
     }
 
-    private void filterData(String query) {
 
+    private void setUpListeners() {
 
-
-
-        if (ingredientsAdapter != null) {
-            ingredientsAdapter.getFilter().filter(query);
-        }
-    }
-
-            private void setUpListeners() {
-        searchEditText.addTextChangedListener(new TextWatcher() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public boolean onQueryTextSubmit(String query) {
+                return false;
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterData(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+            public boolean onQueryTextChange(String newText) {
+                presenter.search(newText);
+                return true;
             }
         });
 
@@ -144,12 +131,13 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
 
     private void initUI(View v) {
 
-        searchEditText = v.findViewById(R.id.searchEditText);
+        searchView = v.findViewById(R.id.searchView);
+        searchView.clearFocus();
         categoriesRecycler = v.findViewById(R.id.categoriesRecycler);
         categoriesRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         ingredientsRecycler = v.findViewById(R.id.ingeridentsRecycler);
-        ingredientsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false));
+        ingredientsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         ingredientsAdapter = new IngredientAdapter(this);
         ingredientsRecycler.setAdapter(ingredientsAdapter);
 
@@ -159,7 +147,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
 
     @Override
     public void showCategories(List<Category> categories) {
-         categoriesAdapter = new CategoriesAdapter(categories, this);
+        categoriesAdapter = new CategoriesAdapter(categories, this);
         categoriesRecycler.setAdapter(categoriesAdapter);
     }
 
@@ -171,9 +159,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
 
     @Override
     public void addMoreIngredients(List<Ingredient> ingredients) {
-        Log.i("Search", "addMoreIngredients" + ingredients.get(0).getStrIngredient());
-        if (!ingredientsRecycler.isComputingLayout())
-        {
+        if (!ingredientsRecycler.isComputingLayout()) {
             ingredientsAdapter.addIngredients(ingredients);
         }
     }
@@ -206,9 +192,27 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
     }
 
     @Override
+    public void showFilteredIngredients(
+            List<Ingredient> filteredIngredients,
+            List<Country> filteredCountries,
+            List<Category> filteredCategories) {
+        if (!filteredIngredients.isEmpty()) {
+            ingredientsAdapter.setIngredients(filteredIngredients);
+        }
+        if (!filteredCountries.isEmpty()) {
+            countriesAdapter.setCountries(filteredCountries);
+        }
+        if (!filteredCategories.isEmpty()) {
+            categoriesAdapter.setCategories(filteredCategories);
+        }
+    }
+
+
+    @Override
     public void onLoadMore() {
         presenter.loadMoreIngredients();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
