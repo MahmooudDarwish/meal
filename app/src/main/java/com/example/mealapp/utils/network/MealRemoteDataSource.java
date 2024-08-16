@@ -12,4 +12,7 @@ public interface MealRemoteDataSource {
 
     void getAllMealsByCategoryCall(SearchNetworkDelegate searchNetworkDelegate, String categoryName);
 
+    void getAllCIngredientsCall(SearchNetworkDelegate searchNetworkDelegate);
+
+
 }

@@ -34,9 +34,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     @Override
     public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
         Ingredient ingredient = ingredients.get(position);
-        String ingredientTitle = ingredient.getQuantity() + ingredient.getName();
+        String ingredientTitle = ingredient.getQuantity() +" "+ ingredient.getStrIngredient();
         holder.ingredientName.setText(ingredientTitle);
-        String imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredient.getName()+ "-Small" + ".png";
+        String imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredient.getStrIngredient()+ "-Small" + ".png";
         Glide.with(holder.ingredientImage.getContext())
                 .load(imageUrl)
                 .into(holder.ingredientImage);

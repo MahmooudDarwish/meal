@@ -8,10 +8,13 @@ import androidx.annotation.NonNull;
 import com.example.mealapp.utils.common_layer.models.CategoryResponse;
 import com.example.mealapp.utils.common_layer.models.CountryResponse;
 import com.example.mealapp.utils.common_layer.models.DetailedMealResponse;
+import com.example.mealapp.utils.common_layer.models.Ingredient;
+import com.example.mealapp.utils.common_layer.models.IngredientResponse;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.common_layer.models.PreviewMealResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -182,6 +185,31 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
 
             @Override
             public void onFailure(@NonNull Call<PreviewMealResponse> call, @NonNull Throwable throwable) {
+                String errorMessage = getErrorMessage(throwable) ;
+                searchNetworkDelegate.onFailureResult(errorMessage);
+                Log.e(TAG, "onFailure: " + throwable.getMessage());
+            }
+        });
+
+    }
+
+    @Override
+    public void getAllCIngredientsCall(SearchNetworkDelegate searchNetworkDelegate) {
+        Call<IngredientResponse> call = mealService.getIngredients();
+        call.enqueue(new Callback<IngredientResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<IngredientResponse> call, @NonNull Response<IngredientResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Ingredient> ingredients = response.body().getMeals();
+                    Log.i("Ingredients", "onResponse: " + ingredients.get(0).getStrIngredient());
+                    searchNetworkDelegate.onGetAllIngredientsSuccessResult(ingredients);
+                   }else {
+                    searchNetworkDelegate.onFailureResult("Response unsuccessful");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<IngredientResponse> call, @NonNull Throwable throwable) {
                 String errorMessage = getErrorMessage(throwable) ;
                 searchNetworkDelegate.onFailureResult(errorMessage);
                 Log.e(TAG, "onFailure: " + throwable.getMessage());

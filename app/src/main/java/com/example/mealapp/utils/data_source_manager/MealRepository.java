@@ -13,6 +13,8 @@ public interface MealRepository {
 
      void getAllCountries(SearchNetworkDelegate searchNetworkDelegate);
 
+     void getAllIngredients(SearchNetworkDelegate searchNetworkDelegate);
+
      void getMealDetails(MealDetailsNetworkDelegate mealDetailsNetworkDelegate, String mealId);
 
      void getMealsByCategory(SearchNetworkDelegate searchNetworkDelegate, String category);

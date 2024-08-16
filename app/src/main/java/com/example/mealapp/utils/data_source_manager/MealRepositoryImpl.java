@@ -45,6 +45,11 @@ public class MealRepositoryImpl implements MealRepository{
     }
 
     @Override
+    public void getAllIngredients(SearchNetworkDelegate searchNetworkDelegate) {
+        remoteSource.getAllCIngredientsCall(searchNetworkDelegate);
+    }
+
+    @Override
     public void getMealDetails(MealDetailsNetworkDelegate mealDetailsNetworkDelegate, String mealId) {
         remoteSource.getMealDetailsCall(mealDetailsNetworkDelegate, mealId);
 
