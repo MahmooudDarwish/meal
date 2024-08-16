@@ -18,13 +18,18 @@ import java.util.List;
 
 public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHolder> {
 
-    private final List<PreviewMeal> meals;
+    private List<PreviewMeal> meals;
 
     OnMealItemClicked listener;
 
     public MealsAdapter(List<PreviewMeal> meals , OnMealItemClicked listener) {
         this.meals = meals;
         this.listener = listener;
+    }
+
+    public void updateMeals(List<PreviewMeal> newMeals) {
+        this.meals = newMeals;
+        notifyDataSetChanged();
     }
 
     @NonNull

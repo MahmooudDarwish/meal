@@ -79,6 +79,11 @@ public class SearchPresenter implements ISearchPresenter, SearchNetworkDelegate 
         }
     }
 
+    @Override
+    public void getMealsByIngredient(String ingredient) {
+        _repo.getMealsByIngredient(this, ingredient);
+    }
+
 
     @Override
     public void onGetAllCategoriesSuccessResult(List<Category> categories) {
@@ -104,6 +109,13 @@ public class SearchPresenter implements ISearchPresenter, SearchNetworkDelegate 
     public void onGetAllMealsByCountrySuccessResult(List<PreviewMeal> meals) {
         MealsViewModel.getInstance().setMeals(meals);
         _view.countryClicked(meals);
+    }
+
+    @Override
+    public void onGetAllMealsByIngredientSuccessResult(List<PreviewMeal> meals) {
+        MealsViewModel.getInstance().setMeals(meals);
+        _view.ingredientClicked(meals);
+
     }
 
     @Override

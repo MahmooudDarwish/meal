@@ -16,6 +16,9 @@ public interface SearchNetworkDelegate {
     void onGetAllMealsByCategorySuccessResult(List<PreviewMeal> meals);
 
     void onGetAllMealsByCountrySuccessResult(List<PreviewMeal> meals);
+
+    void onGetAllMealsByIngredientSuccessResult(List<PreviewMeal> meals);
+
     void onGetAllIngredientsSuccessResult(List<Ingredient> meals);
 
 

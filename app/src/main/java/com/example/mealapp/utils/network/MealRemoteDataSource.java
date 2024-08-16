@@ -15,4 +15,5 @@ public interface MealRemoteDataSource {
     void getAllCIngredientsCall(SearchNetworkDelegate searchNetworkDelegate);
 
 
+    void getAllMealsByIngredientCall(SearchNetworkDelegate searchNetworkDelegate, String ingredient);
 }

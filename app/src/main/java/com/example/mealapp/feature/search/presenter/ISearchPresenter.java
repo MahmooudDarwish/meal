@@ -15,4 +15,6 @@ public interface ISearchPresenter {
 
 
     void search(String newText);
+
+    void getMealsByIngredient(String ingredient);
 }

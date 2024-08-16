@@ -218,6 +218,29 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
 
     }
 
+    @Override
+    public void getAllMealsByIngredientCall(SearchNetworkDelegate searchNetworkDelegate, String ingredient) {
+        Call<PreviewMealResponse> call = mealService.getMealsByIngredient(ingredient);
+        call.enqueue(new Callback<PreviewMealResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<PreviewMealResponse> call, @NonNull Response<PreviewMealResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.i(TAG, "onResponse: " + response.body().getMeals());
+                    searchNetworkDelegate.onGetAllMealsByIngredientSuccessResult(response.body().getMeals());
+                } else {
+                    searchNetworkDelegate.onFailureResult("Response unsuccessful");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<PreviewMealResponse> call, @NonNull Throwable throwable) {
+                String errorMessage = getErrorMessage(throwable) ;
+                searchNetworkDelegate.onFailureResult(errorMessage);
+                Log.e(TAG, "onFailure: " + throwable.getMessage());
+            }
+        });
+    }
+
     private String getErrorMessage(Throwable throwable) {
         if (throwable instanceof IOException) {
             return "Network error: Please check your internet connection and try again.";

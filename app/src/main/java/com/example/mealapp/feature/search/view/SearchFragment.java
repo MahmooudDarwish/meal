@@ -34,7 +34,7 @@ import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
 import java.util.List;
 import java.util.Objects;
 
-public class SearchFragment extends Fragment implements ISearch, OnCategoryClickedListener, OnCountryClickedListener, LoadMoreListener {
+public class SearchFragment extends Fragment implements ISearch, OnCategoryClickedListener, OnCountryClickedListener, LoadMoreListener, OnIngredientClickedListener {
 
     RecyclerView categoriesRecycler;
     RecyclerView countriesRecycler;
@@ -138,7 +138,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
 
         ingredientsRecycler = v.findViewById(R.id.ingeridentsRecycler);
         ingredientsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        ingredientsAdapter = new IngredientAdapter(this);
+        ingredientsAdapter = new IngredientAdapter(this, this);
         ingredientsRecycler.setAdapter(ingredientsAdapter);
 
         countriesRecycler = v.findViewById(R.id.countriesRecycler);
@@ -207,6 +207,13 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
         }
     }
 
+    @Override
+    public void ingredientClicked(List<PreviewMeal> meals) {
+        Intent intent = new Intent(getContext(), MealsViewer.class);
+        startActivity(intent);
+
+    }
+
 
     @Override
     public void onLoadMore() {
@@ -219,4 +226,8 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
         Objects.requireNonNull(requireActivity()).unregisterReceiver(networkReceiver);
     }
 
+    @Override
+    public void onIngredientClicked(String ingredient) {
+        presenter.getMealsByIngredient(ingredient);
+    }
 }

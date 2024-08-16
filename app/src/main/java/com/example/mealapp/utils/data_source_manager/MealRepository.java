@@ -20,4 +20,5 @@ public interface MealRepository {
      void getMealsByCategory(SearchNetworkDelegate searchNetworkDelegate, String category);
      void getMealsByCountry(SearchNetworkDelegate searchNetworkDelegate, String country);
 
+    void getMealsByIngredient(SearchNetworkDelegate searchPresenter, String ingredient);
 }

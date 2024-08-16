@@ -23,10 +23,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     private final List<Ingredient> ingredients = new ArrayList<>();
     private final List<Ingredient> filteredIngredients = new ArrayList<>();
     private final LoadMoreListener loadMoreListener;
+
+    private final OnIngredientClickedListener listener;
     private boolean isLoading = false;
 
-    public IngredientAdapter(LoadMoreListener loadMoreListener) {
+    public IngredientAdapter(LoadMoreListener loadMoreListener, OnIngredientClickedListener listener) {
         this.loadMoreListener = loadMoreListener;
+        this.listener = listener;
     }
 
     public void setIngredients(List<Ingredient> newIngredients){
@@ -62,6 +65,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 .load(imageUrl)
                 .into(holder.ingredientImage);
 
+        holder.itemView.setOnClickListener(
+                v -> listener.onIngredientClicked(ingredientTitle)
+        );
         if (position == getItemCount() - 1 && !isLoading) {
             isLoading = true;
             loadMoreListener.onLoadMore();

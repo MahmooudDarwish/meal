@@ -28,4 +28,5 @@ public interface ISearch {
             List<Country> filteredCountries,
             List<Category> filteredCategories);
 
+    void ingredientClicked(List<PreviewMeal> meals);
 }

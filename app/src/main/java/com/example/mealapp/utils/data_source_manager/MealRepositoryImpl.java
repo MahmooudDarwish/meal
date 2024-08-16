@@ -64,4 +64,9 @@ public class MealRepositoryImpl implements MealRepository{
     public void getMealsByCountry(SearchNetworkDelegate searchNetworkDelegate, String country) {
         remoteSource.getAllMealsByCountryCall(searchNetworkDelegate, country);
     }
+
+    @Override
+    public void getMealsByIngredient(SearchNetworkDelegate searchNetworkDelegate, String ingredient) {
+        remoteSource.getAllMealsByIngredientCall(searchNetworkDelegate, ingredient);
+    }
 }
