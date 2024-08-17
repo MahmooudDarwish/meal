@@ -23,7 +23,7 @@ public interface ISearch {
     void onFailureResult(String errorMsg);
 
 
-    void showFilteredIngredients(
+    void showFilteredContents(
             List<Ingredient> filteredIngredients,
             List<Country> filteredCountries,
             List<Category> filteredCategories);

@@ -122,8 +122,11 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
         hideLoading();
         Toast.makeText(getActivity(), "Welcome!", Toast.LENGTH_LONG).show();
         dismiss();
+        requireActivity().finish();
         Intent intent = new Intent(getActivity(), Home.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        requireActivity().finish();
     }
 
     private void addUserToSharedPreferences(User user) {

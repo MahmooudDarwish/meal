@@ -24,12 +24,22 @@ public class MealsViewerPresenter implements IMealsViewerPresenter {
             return;
         }
 
-        List<PreviewMeal> filteredMeals = new ArrayList<>();
+        String searchLower = query.toLowerCase();
+        List<PreviewMeal> exactMatchMeals = new ArrayList<>();
+        List<PreviewMeal> partialMatchMeals = new ArrayList<>();
+
         for (PreviewMeal meal : viewModel.getMeals()) {
-            if (meal.getStrMeal().toLowerCase().contains(query.toLowerCase())) {
-                filteredMeals.add(meal);
+            String mealNameLower = meal.getStrMeal().toLowerCase();
+
+            if (mealNameLower.startsWith(searchLower)) {
+                exactMatchMeals.add(meal);
+            } else if (mealNameLower.contains(searchLower)) {
+                partialMatchMeals.add(meal);
             }
         }
+
+        List<PreviewMeal> filteredMeals = new ArrayList<>(exactMatchMeals);
+        filteredMeals.addAll(partialMatchMeals);
 
         if (!filteredMeals.isEmpty()) {
             view.displayMeals(filteredMeals);

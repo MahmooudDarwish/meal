@@ -192,7 +192,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
     }
 
     @Override
-    public void showFilteredIngredients(
+    public void showFilteredContents(
             List<Ingredient> filteredIngredients,
             List<Country> filteredCountries,
             List<Category> filteredCategories) {

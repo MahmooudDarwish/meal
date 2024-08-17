@@ -145,7 +145,9 @@ public class HomeFragment extends Fragment implements IHome {
             sharedPreferences.edit().clear().apply();
             presenter.signOut();
             Intent intent = new Intent(getActivity(), Home.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
+            requireActivity().finish();
         });
     }
 

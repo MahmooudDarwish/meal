@@ -1,6 +1,5 @@
 package com.example.mealapp.feature.search.view;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,21 +30,28 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         this.loadMoreListener = loadMoreListener;
         this.listener = listener;
     }
-
+    //using for search
     public void setIngredients(List<Ingredient> newIngredients){
         ingredients.clear();
         filteredIngredients.clear();
         ingredients.addAll(newIngredients);
         filteredIngredients.addAll(newIngredients);
         notifyDataSetChanged();
+        isLoading = false;
     }
+
+    //using for pagination
     public synchronized void addIngredients(List<Ingredient> newIngredients) {
-        Log.d("IngredientAdapter", "Adding ingredients: " + newIngredients.size());
-        ingredients.addAll(newIngredients);
-        filteredIngredients.addAll(newIngredients);
+        for (Ingredient ingredient : newIngredients) {
+            if (!ingredients.contains(ingredient)) {
+                ingredients.add(ingredient);
+                filteredIngredients.add(ingredient);
+            }
+        }
         notifyDataSetChanged();
         isLoading = false;
     }
+
 
     @NonNull
     @Override
@@ -64,7 +70,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         Glide.with(holder.ingredientImage.getContext())
                 .load(imageUrl)
                 .into(holder.ingredientImage);
-
         holder.itemView.setOnClickListener(
                 v -> listener.onIngredientClicked(ingredientTitle)
         );

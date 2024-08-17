@@ -53,29 +53,49 @@ public class SearchPresenter implements ISearchPresenter, SearchNetworkDelegate 
 
     @Override
     public void search(String newText) {
-        List<Ingredient> filteredIngredients = new ArrayList<>();
+        String searchLower = newText.toLowerCase();
+
+        List<Ingredient> exactMatchIngredients = new ArrayList<>();
+        List<Ingredient> partialMatchIngredients = new ArrayList<>();
         for (Ingredient ingredient : allIngredients) {
-            if (ingredient.getStrIngredient().toLowerCase().contains(newText.toLowerCase())) {
-                filteredIngredients.add(ingredient);
+            String ingredientLower = ingredient.getStrIngredient().toLowerCase();
+            if (ingredientLower.startsWith(searchLower)) {
+                exactMatchIngredients.add(ingredient);
+            } else if (ingredientLower.contains(searchLower)) {
+                partialMatchIngredients.add(ingredient);
             }
         }
+        List<Ingredient> filteredIngredients = new ArrayList<>(exactMatchIngredients);
+        filteredIngredients.addAll(partialMatchIngredients);
 
-        List<Country> filteredCountries = new ArrayList<>();
+        List<Country> exactMatchCountries = new ArrayList<>();
+        List<Country> partialMatchCountries = new ArrayList<>();
         for (Country country : allCountries) {
-            if (country.getStrArea().toLowerCase().contains(newText.toLowerCase())) {
-                filteredCountries.add(country);
+            String countryLower = country.getStrArea().toLowerCase();
+            if (countryLower.startsWith(searchLower)) {
+                exactMatchCountries.add(country);
+            } else if (countryLower.contains(searchLower)) {
+                partialMatchCountries.add(country);
             }
         }
+        List<Country> filteredCountries = new ArrayList<>(exactMatchCountries);
+        filteredCountries.addAll(partialMatchCountries);
 
-        List<Category> filteredCategories = new ArrayList<>();
+        List<Category> exactMatchCategories = new ArrayList<>();
+        List<Category> partialMatchCategories = new ArrayList<>();
         for (Category category : allCategories) {
-            if (category.getStrCategory().toLowerCase().contains(newText.toLowerCase())) {
-                filteredCategories.add(category);
+            String categoryLower = category.getStrCategory().toLowerCase();
+            if (categoryLower.startsWith(searchLower)) {
+                exactMatchCategories.add(category);
+            } else if (categoryLower.contains(searchLower)) {
+                partialMatchCategories.add(category);
             }
         }
+        List<Category> filteredCategories = new ArrayList<>(exactMatchCategories);
+        filteredCategories.addAll(partialMatchCategories);
 
-        if (!filteredIngredients.isEmpty() && !filteredCountries.isEmpty() && !filteredCategories.isEmpty()) {
-            _view.showFilteredIngredients(filteredIngredients, filteredCountries, filteredCategories);
+        if (!filteredIngredients.isEmpty() || !filteredCountries.isEmpty() || !filteredCategories.isEmpty()) {
+            _view.showFilteredContents(filteredIngredients, filteredCountries, filteredCategories);
         }
     }
 
@@ -120,7 +140,8 @@ public class SearchPresenter implements ISearchPresenter, SearchNetworkDelegate 
 
     @Override
     public void onGetAllIngredientsSuccessResult(List<Ingredient> ingredients) {
-        allIngredients.clear();
+        Log.d(TAG, "ingredients" + ingredients.toString() + "size" + ingredients.size());
+        //allIngredients.clear();
         allIngredients.addAll(ingredients);
         currentIndex = 0;
         loadNextPage();
@@ -140,6 +161,7 @@ public class SearchPresenter implements ISearchPresenter, SearchNetworkDelegate 
     }
 
     private void loadNextPage() {
+
 
         if (currentIndex < allIngredients.size()) {
             int PAGE_LIMIT = 10;
