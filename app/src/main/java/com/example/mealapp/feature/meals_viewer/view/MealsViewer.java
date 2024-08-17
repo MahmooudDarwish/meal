@@ -1,17 +1,23 @@
 package com.example.mealapp.feature.meals_viewer.view;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.RelativeLayout;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
 import com.example.mealapp.R;
 import com.example.mealapp.feature.meal_details.view.MealDetails;
 import com.example.mealapp.feature.meals_viewer.presenter.MealsViewerPresenter;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
-
+import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import java.util.List;
 
 public class MealsViewer extends AppCompatActivity implements IMealsViewer, OnMealItemClicked {
@@ -20,6 +26,8 @@ public class MealsViewer extends AppCompatActivity implements IMealsViewer, OnMe
     private MealsAdapter mealsAdapter;
     private MealsViewerPresenter presenter;
     private SearchView searchView;
+    private RelativeLayout bannerNoInternet;
+    private BroadcastReceiver networkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +38,7 @@ public class MealsViewer extends AppCompatActivity implements IMealsViewer, OnMe
         initUI();
 
         presenter = new MealsViewerPresenter(this);
-        presenter.loadMeals();
+        checkInternetConnection();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -44,12 +52,41 @@ public class MealsViewer extends AppCompatActivity implements IMealsViewer, OnMe
                 return true;
             }
         });
+
+        networkReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                checkInternetConnection();
+            }
+        };
     }
 
     private void initUI() {
         mealsRecycler = findViewById(R.id.mealsRecycler);
         mealsRecycler.setLayoutManager(new LinearLayoutManager(this));
         searchView = findViewById(R.id.searchView);
+        bannerNoInternet = findViewById(R.id.bannerNoInternet);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(networkReceiver);
+    }
+
+    private void checkInternetConnection() {
+        if (NetworkUtil.isConnected(this)) {
+            bannerNoInternet.setVisibility(View.GONE);
+            presenter.loadMeals();
+        } else {
+            bannerNoInternet.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

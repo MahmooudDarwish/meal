@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".feature.meals_viewer.view.MealsViewer">
 
+    <include
+        android:id="@+id/bannerNoInternet"
+        layout="@layout/banner_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginTop="30dp" />
+
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
@@ -18,7 +29,7 @@
         app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/bannerNoInternet"  />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mealsRecycler"

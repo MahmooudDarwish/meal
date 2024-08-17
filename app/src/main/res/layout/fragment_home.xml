@@ -92,6 +92,27 @@
 
         </androidx.cardview.widget.CardView>
 
+        <TextView
+            android:id="@+id/mealsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/meals"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mealOfTheDayCard" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mealsRecycler"
+            android:layout_width="370dp"
+            android:layout_height="400dp"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="21dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mealsText" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
