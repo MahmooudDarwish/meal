@@ -140,8 +140,7 @@ public class SearchPresenter implements ISearchPresenter, SearchNetworkDelegate 
 
     @Override
     public void onGetAllIngredientsSuccessResult(List<Ingredient> ingredients) {
-        Log.d(TAG, "ingredients" + ingredients.toString() + "size" + ingredients.size());
-        //allIngredients.clear();
+        allIngredients.clear();
         allIngredients.addAll(ingredients);
         currentIndex = 0;
         loadNextPage();
@@ -161,7 +160,6 @@ public class SearchPresenter implements ISearchPresenter, SearchNetworkDelegate 
     }
 
     private void loadNextPage() {
-
 
         if (currentIndex < allIngredients.size()) {
             int PAGE_LIMIT = 10;

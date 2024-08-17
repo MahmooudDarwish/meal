@@ -9,6 +9,8 @@ import com.example.mealapp.utils.network.SearchNetworkDelegate;
 public interface MealRepository {
 
      void getRandomMeal(HomeNetworkDelegate homeNetworkDelegate);
+
+     void getRandomMeals(HomeNetworkDelegate homeNetworkDelegate);
      void getAllCategories(SearchNetworkDelegate searchNetworkDelegate);
 
      void getAllCountries(SearchNetworkDelegate searchNetworkDelegate);

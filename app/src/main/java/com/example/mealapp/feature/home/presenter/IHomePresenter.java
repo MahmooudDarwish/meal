@@ -4,6 +4,8 @@ public interface IHomePresenter {
 
      void getRandomMeal();
 
+     void getRandomMeals();
+
      void getCurrentUser();
 
      void signOut();

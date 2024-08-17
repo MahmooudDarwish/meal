@@ -99,6 +99,7 @@
             android:layout_marginStart="21dp"
             android:layout_marginTop="20dp"
             android:text="@string/meals"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mealOfTheDayCard" />
 

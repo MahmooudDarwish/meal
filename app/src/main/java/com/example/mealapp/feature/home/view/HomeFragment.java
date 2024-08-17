@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
@@ -33,14 +35,18 @@ import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
 
+import java.util.List;
 import java.util.Objects;
 
-public class HomeFragment extends Fragment implements IHome {
+public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
 
     ImageView mealOfDayImage, signOutIcon;
     TextView mealOfDayTitle, userName;
     CardView mealOfDayCard;
+    RecyclerView mealsRecycler;
     SwipeRefreshLayout swipeRefreshLayout;
+
+    MealsAdapter mealsAdapter;
 
     private BroadcastReceiver networkReceiver;
 
@@ -92,14 +98,15 @@ public class HomeFragment extends Fragment implements IHome {
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         Objects.requireNonNull(requireActivity()).registerReceiver(networkReceiver, filter);
 
-        refreshUI();
     }
 
 
 
     private void refreshUI() {
         if (NetworkUtil.isConnected(requireActivity())) {
+            mealsAdapter.clearMeals();
             presenter.getRandomMeal();
+            presenter.getRandomMeals();
         } else {
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -112,6 +119,11 @@ public class HomeFragment extends Fragment implements IHome {
         mealOfDayImage = v.findViewById(R.id.mealImage);
         mealOfDayTitle = v.findViewById(R.id.mealName);
         swipeRefreshLayout = v.findViewById(R.id.swipeRefreshLayout);
+        mealsRecycler = v.findViewById(R.id.mealsRecycler);
+        mealsRecycler.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        mealsAdapter = new MealsAdapter(this);
+        mealsRecycler.setAdapter(mealsAdapter);
+
 
         if (UserSessionHolder.isGuest()) {
             signOutIcon.setVisibility(View.GONE);
@@ -177,10 +189,25 @@ public class HomeFragment extends Fragment implements IHome {
     }
 
     @Override
+    public void showRandomMeals(PreviewMeal meal) {
+        mealsAdapter.updateMeals(meal);
+        swipeRefreshLayout.setRefreshing(false);
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (networkReceiver != null) {
             Objects.requireNonNull(requireActivity()).unregisterReceiver(networkReceiver);
         }
+    }
+
+    @Override
+    public void onMealItemClicked(String mealId) {
+        Intent intent = new Intent(requireActivity(), MealDetails.class);
+        intent.putExtra("MEAL_ID", mealId);
+        startActivity(intent);
+
     }
 }

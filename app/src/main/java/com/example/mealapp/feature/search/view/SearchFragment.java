@@ -88,8 +88,6 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         Objects.requireNonNull(requireActivity()).registerReceiver(networkReceiver, filter);
-
-        refreshUI();
     }
 
 

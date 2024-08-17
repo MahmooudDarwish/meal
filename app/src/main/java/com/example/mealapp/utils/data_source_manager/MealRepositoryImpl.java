@@ -34,6 +34,12 @@ public class MealRepositoryImpl implements MealRepository{
     }
 
     @Override
+    public void getRandomMeals(HomeNetworkDelegate homeNetworkDelegate) {
+        remoteSource.getRandomMealsCall(homeNetworkDelegate);
+
+    }
+
+    @Override
     public void getAllCategories(SearchNetworkDelegate searchNetworkDelegate) {
         remoteSource.getAllCategoriesCall(searchNetworkDelegate);
     }

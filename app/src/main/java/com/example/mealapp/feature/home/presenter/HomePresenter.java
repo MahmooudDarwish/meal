@@ -10,11 +10,18 @@ import com.example.mealapp.utils.firebase.FirebaseManager;
 import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
 
     private final IHome _view;
     private final MealRepository _repo;
+
+    private List<PreviewMeal> meals = new ArrayList<>();
+
+    private final int MAX_MEALS = 20;
 
     private static final String TAG = "HomePresenter";
 
@@ -25,6 +32,13 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
     @Override
     public void getRandomMeal() {
         _repo.getRandomMeal(this);
+    }
+
+    @Override
+    public void getRandomMeals() {
+        for(int i = 0; i < MAX_MEALS; i++) {
+          _repo.getRandomMeals(this);
+        }
     }
 
 
@@ -55,6 +69,12 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
     public void onGetRandomMealSuccessResult(PreviewMeal previewMeal) {
         _view.showRandomMeal(previewMeal);
     }
+
+    @Override
+    public void onGetRandomMealsSuccessResult(PreviewMeal meal) {
+            _view.showRandomMeals(meal);
+    }
+
     @Override
     public void onFailureResult(String errorMsg) {
         _view.onFailureResult(errorMsg);

@@ -72,6 +72,33 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
     }
 
     @Override
+    public void getRandomMealsCall(HomeNetworkDelegate homeNetworkDelegate) {
+        Call<PreviewMealResponse> call = mealService.getRandomMeals();
+        call.enqueue(new Callback<PreviewMealResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<PreviewMealResponse> call, @NonNull Response<PreviewMealResponse> response) {
+                if(response.isSuccessful() && response.body() != null && !response.body().getMeals().isEmpty()){
+                    PreviewMeal meal = response.body().getMeals().get(0);
+                    homeNetworkDelegate.onGetRandomMealsSuccessResult(meal);
+                }
+                else {
+                    String errorMessage = "Failed to fetch Meal of the day. Response unsuccessful or data is null.";
+
+                    homeNetworkDelegate.onFailureResult(errorMessage);
+                    Log.e(TAG, "onResponse: " + errorMessage);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<PreviewMealResponse> call, @NonNull Throwable throwable) {
+                String errorMessage = getErrorMessage(throwable) ;
+                homeNetworkDelegate.onFailureResult(errorMessage);
+                Log.e(TAG, "onFailure: " + throwable.getMessage(), throwable);
+            }
+        });
+    }
+
+    @Override
     public void getAllCategoriesCall(SearchNetworkDelegate searchNetworkDelegate) {
         Call<CategoryResponse> call = mealService.getCategories();
         call.enqueue(new Callback<CategoryResponse>() {
