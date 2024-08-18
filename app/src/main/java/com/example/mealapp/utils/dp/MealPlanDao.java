@@ -21,7 +21,7 @@ public interface MealPlanDao {
     void deleteFoodPlan(MealPlan foodPlan);
 
     @Query("SELECT * FROM food_plans WHERE idUser = :userId AND idMeal = :mealId")
-    MealPlan getFoodPlan(String userId, String mealId);
+    LiveData<MealPlan> getFoodPlan(String userId, String mealId);
 
     @Query("SELECT * FROM food_plans WHERE idUser = :userId")
     LiveData<List<MealPlan>> getAllMealPlansForUser(String userId);

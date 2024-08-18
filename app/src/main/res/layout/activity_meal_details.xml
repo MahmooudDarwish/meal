@@ -82,7 +82,7 @@
             app:borderWidth="20dp"
             app:layout_constraintEnd_toEndOf="@+id/mealCard"
             app:layout_constraintTop_toTopOf="@+id/mealCard"
-            app:srcCompat="@drawable/add_favorite" />
+            app:srcCompat="@drawable/empty_heart" />
 
         <TextView
             android:id="@+id/ingredientsText"

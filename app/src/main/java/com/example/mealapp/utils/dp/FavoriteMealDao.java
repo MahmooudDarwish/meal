@@ -21,13 +21,13 @@ public interface FavoriteMealDao {
     void deleteFavoriteMeal(FavoriteMeal favoriteMeal);
 
     @Query("SELECT * FROM favorite_meals WHERE idUser = :userId AND idMeal = :mealId")
-    FavoriteMeal getFavoriteMeal(String userId, String mealId);
+    LiveData<FavoriteMeal> getFavoriteMeal(String userId, String mealId);
 
     @Query("SELECT * FROM favorite_meals WHERE idUser = :userId")
     LiveData<List<FavoriteMeal>> getAllFavoriteMealsForUser(String userId);
 
     // 1 for ture and 0 for false
-    @Query("SELECT COUNT(*) FROM favorite_meals WHERE idUser = :userId AND idMeal = :mealId")
-    int isMealFavorite(String userId, String mealId);
+    @Query("SELECT COUNT(*) > 0 FROM favorite_meals WHERE idMeal = :mealId AND idUser = :userId")
+    boolean isFavoriteMeal(String mealId, String userId);
 }
 

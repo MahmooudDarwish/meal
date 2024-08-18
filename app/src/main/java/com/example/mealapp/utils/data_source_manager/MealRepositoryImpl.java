@@ -1,10 +1,13 @@
 package com.example.mealapp.utils.data_source_manager;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMealIngredient;
 import com.example.mealapp.utils.common_layer.local_models.MealPlan;
+import com.example.mealapp.utils.dp.IsFavoriteMealCallback;
 import com.example.mealapp.utils.dp.MealLocalDataSource;
 import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
 import com.example.mealapp.utils.network.MealRemoteDataSource;
@@ -78,8 +81,8 @@ public class MealRepositoryImpl implements MealRepository {
     }
 
     // Local Data Source Methods
-
     public void saveFavoriteMeal(FavoriteMeal favoriteMeal) {
+        Log.i("MealRepositoryImpl", "saveFavoriteMeal: "+ favoriteMeal.getIdMeal());
         localSource.saveFavoriteMeal(favoriteMeal);
     }
 
@@ -87,7 +90,7 @@ public class MealRepositoryImpl implements MealRepository {
         localSource.deleteFavoriteMeal(favoriteMeal);
     }
 
-    public FavoriteMeal getFavoriteMeal(String userId, String mealId) {
+    public LiveData<FavoriteMeal> getFavoriteMeal(String userId, String mealId) {
         return localSource.getFavoriteMeal(userId, mealId);
     }
 
@@ -95,8 +98,8 @@ public class MealRepositoryImpl implements MealRepository {
         return localSource.getAllFavoriteMealsForUser(userId);
     }
 
-    public boolean isMealFavorite(String userId, String mealId) {
-        return localSource.isMealFavorite(userId, mealId);
+    public void isMealFavorite(String userId, String mealId, IsFavoriteMealCallback callback) {
+         localSource.isMealFavorite(userId, mealId, callback);
     }
 
     public void saveMealPlan(MealPlan mealPlan) {
@@ -107,7 +110,7 @@ public class MealRepositoryImpl implements MealRepository {
         localSource.deleteMealPlan(mealPlan);
     }
 
-    public MealPlan getMealPlan(String userId, String mealId) {
+    public LiveData<MealPlan> getMealPlan(String userId, String mealId) {
         return localSource.getMealPlan(userId, mealId);
     }
 

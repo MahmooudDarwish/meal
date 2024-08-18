@@ -1,5 +1,9 @@
 package com.example.mealapp.feature.meal_details.presenter;
 
+import com.example.mealapp.utils.common_layer.models.DetailedMeal;
+
 public interface IMealDetailsPresenter {
     void getMealDetails(String mealId);
-}
+     void toggleFavoriteStatus(DetailedMeal meal);
+
+    }

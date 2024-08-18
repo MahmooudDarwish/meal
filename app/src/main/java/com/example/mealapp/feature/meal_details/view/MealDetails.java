@@ -34,20 +34,21 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
-public class MealDetails extends AppCompatActivity implements IMealDetails{
+public class MealDetails extends AppCompatActivity implements IMealDetails {
 
     private RecyclerView ingredientRecyclerView;
-
     private FloatingActionButton favoriteBtn;
     private ImageView mealImage;
     private TextView mealName;
     private TextView mealCountry;
-    YouTubePlayerView youtubePlayerView;
+    private YouTubePlayerView youtubePlayerView;
     private RelativeLayout bannerNoInternet;
-
     private TextView mealInstructions;
     private BroadcastReceiver networkReceiver;
 
+
+    private DetailedMeal meal;
+    private IMealDetailsPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class MealDetails extends AppCompatActivity implements IMealDetails{
         initUI();
         setUpListeners();
 
-        IMealDetailsPresenter presenter = new MealDetailsPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(this)));
+        presenter = new MealDetailsPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(this)));
 
         if (getIntent() != null && getIntent().hasExtra("MEAL_ID")) {
             String mealId = getIntent().getStringExtra("MEAL_ID");
@@ -66,7 +67,6 @@ public class MealDetails extends AppCompatActivity implements IMealDetails{
         }
 
         bannerNoInternet = findViewById(R.id.bannerNoInternet);
-
         checkInternetConnection();
         networkReceiver = new BroadcastReceiver() {
             @Override
@@ -74,7 +74,6 @@ public class MealDetails extends AppCompatActivity implements IMealDetails{
                 checkInternetConnection();
             }
         };
-
     }
 
     @Override
@@ -99,15 +98,19 @@ public class MealDetails extends AppCompatActivity implements IMealDetails{
 
     private void setUpListeners() {
         favoriteBtn.setOnClickListener(v -> {
-            if(UserSessionHolder.isGuest()){
+            if (UserSessionHolder.isGuest()) {
                 SignIn signInFragment = new SignIn();
                 signInFragment.show(getSupportFragmentManager(), "signInFragment");
+            } else if (meal != null) {
 
-            }else{
-                Toast.makeText(this, "Favorite", Toast.LENGTH_SHORT).show();
+                    presenter.toggleFavoriteStatus(meal);
+
             }
         });
     }
+
+
+
 
     private void initUI() {
         mealImage = findViewById(R.id.mealImage);
@@ -116,33 +119,49 @@ public class MealDetails extends AppCompatActivity implements IMealDetails{
         ingredientRecyclerView = findViewById(R.id.ingredientRecycler);
         mealInstructions = findViewById(R.id.mealInstructions);
         favoriteBtn = findViewById(R.id.favoriteBtn);
+        youtubePlayerView = findViewById(R.id.mealVideo);
 
         ingredientRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this,
                         LinearLayoutManager.HORIZONTAL, false));
-        youtubePlayerView = findViewById(R.id.mealVideo);
     }
 
     @Override
-    public void setUpMealDetails(DetailedMeal meal) {
-        Glide.with(this).load(meal.getStrMealThumb()).into(mealImage);
-        mealName.setText(meal.getStrMeal());
-        mealCountry.setText(meal.getStrArea());
-        IngredientAdapter ingredientAdapter = new IngredientAdapter(meal.getIngredients());
-        ingredientRecyclerView.setAdapter(ingredientAdapter);
-        mealInstructions.setText(meal.getStrInstructions());
+    public void setUpMealDetails(DetailedMeal meal, boolean isFavorite) {
+        runOnUiThread(() -> {
+            this.meal = meal;
+            updateFavoriteIcon(isFavorite);
+            Glide.with(this).load(meal.getStrMealThumb()).into(mealImage);
+            mealName.setText(meal.getStrMeal());
+            mealCountry.setText(meal.getStrArea());
+            IngredientAdapter ingredientAdapter = new IngredientAdapter(meal.getIngredients());
+            ingredientRecyclerView.setAdapter(ingredientAdapter);
+            mealInstructions.setText(meal.getStrInstructions());
 
-        youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-            @Override
-            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                String videoId = meal.getStrYoutube().split("=")[1];
-                youTubePlayer.cueVideo(videoId , 0);
-            }
+            youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                @Override
+                public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                    String videoId = meal.getStrYoutube().split("=")[1];
+                    youTubePlayer.cueVideo(videoId, 0);
+                }
+            });
         });
+
     }
 
     @Override
     public void onFailureResult(String errorMsg) {
         Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onToggleFavouriteMeal(String msg) {
+        runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
+    }
+
+
+    @Override
+    public void updateFavoriteIcon(boolean isFavorite) {
+        favoriteBtn.setImageResource(isFavorite ? R.drawable.filled_heart : R.drawable.empty_heart);
     }
 }

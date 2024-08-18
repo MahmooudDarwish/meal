@@ -26,7 +26,7 @@ public class FavoriteMealIngredient {
 
     // Convenience constructor
     public FavoriteMealIngredient(String mealId, Ingredient ingredient) {
-        this( mealId, ingredient.getStrIngredient(),
+        this(mealId, ingredient.getStrIngredient(),
                 "https://www.themealdb.com/images/ingredients/" + ingredient.getStrIngredient() + "-Small" + ".png",
                 ingredient.getQuantity());
     }

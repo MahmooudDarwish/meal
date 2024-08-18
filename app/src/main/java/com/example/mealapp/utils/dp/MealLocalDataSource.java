@@ -11,14 +11,14 @@ import java.util.List;
 public interface MealLocalDataSource {
     void saveFavoriteMeal(FavoriteMeal favoriteMeal);
     void deleteFavoriteMeal(FavoriteMeal favoriteMeal);
-    FavoriteMeal getFavoriteMeal(String userId, String mealId);
+    LiveData<FavoriteMeal> getFavoriteMeal(String userId, String mealId);
     LiveData<List<FavoriteMeal>> getAllFavoriteMealsForUser(String userId);
-    boolean isMealFavorite(String userId, String mealId);
+    void isMealFavorite(String userId, String mealId, IsFavoriteMealCallback callback);
 
 
     void saveMealPlan(MealPlan mealPlan);
     void deleteMealPlan(MealPlan mealPlan);
-    MealPlan getMealPlan(String userId, String mealId);
+    LiveData<MealPlan> getMealPlan(String userId, String mealId);
     LiveData<List<MealPlan>> getAllMealPlansForUser(String userId);
 
     void saveFavoriteMealIngredient(FavoriteMealIngredient ingredient);
