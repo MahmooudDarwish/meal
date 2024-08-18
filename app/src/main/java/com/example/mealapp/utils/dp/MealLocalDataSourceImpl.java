@@ -1,24 +1,42 @@
 package com.example.mealapp.utils.dp;
 
-import com.example.mealapp.utils.common_layer.models.FavoriteMeal;
-import com.example.mealapp.utils.common_layer.models.FavoriteMealIngredient;
-import com.example.mealapp.utils.common_layer.models.MealPlan;
+import android.content.Context;
+
+import androidx.lifecycle.LiveData;
+
+import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
+import com.example.mealapp.utils.common_layer.local_models.FavoriteMealIngredient;
+import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MealLocalDataSourceImpl implements MealLocalDataSource {
 
+    private  static MealLocalDataSourceImpl mealLocalDataSource = null;
+    private Context context;
     private final FavoriteMealDao favoriteMealDao;
     private final MealPlanDao mealPlanDao;
     private final FavoriteMealIngredientDao favoriteMealIngredientDao;
+    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    public MealLocalDataSourceImpl(FavoriteMealDao favoriteMealDao,
-                                   MealPlanDao mealPlanDao,
-                                   FavoriteMealIngredientDao favoriteMealIngredientDao) {
-        this.favoriteMealDao = favoriteMealDao;
-        this.mealPlanDao = mealPlanDao;
-        this.favoriteMealIngredientDao = favoriteMealIngredientDao;
+
+    private MealLocalDataSourceImpl(Context _context) {
+        this.context = _context;
+        AppDataBase db = AppDataBase.getInstance(context.getApplicationContext());
+        favoriteMealDao = db.favoriteMealDao();
+        mealPlanDao = db.mealPlanDao();
+        favoriteMealIngredientDao = db.favoriteMealIngredientDao();
     }
+
+    public static MealLocalDataSourceImpl getInstance(Context _context) {
+        if (mealLocalDataSource == null) {
+            mealLocalDataSource = new MealLocalDataSourceImpl(_context);
+        }
+        return mealLocalDataSource;
+    }
+
 
     @Override
     public void saveFavoriteMeal(FavoriteMeal favoriteMeal) {
@@ -36,7 +54,7 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public List<FavoriteMeal> getAllFavoriteMealsForUser(String userId) {
+    public LiveData<List<FavoriteMeal>> getAllFavoriteMealsForUser(String userId) {
         return favoriteMealDao.getAllFavoriteMealsForUser(userId);
     }
 
@@ -63,7 +81,7 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
 
 
     @Override
-    public List<MealPlan> getAllMealPlansForUser(String userId) {
+    public LiveData<List<MealPlan>> getAllMealPlansForUser(String userId) {
         return mealPlanDao.getAllMealPlansForUser(userId);
     }
 
@@ -78,7 +96,7 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public List<FavoriteMealIngredient> getIngredientsForMeal(String mealId) {
+    public LiveData<List<FavoriteMealIngredient>> getIngredientsForMeal(String mealId) {
         return favoriteMealIngredientDao.getIngredientsForMeal(mealId);
     }
 }

@@ -1,14 +1,16 @@
-package com.example.mealapp.utils.common_layer.models;
+package com.example.mealapp.utils.common_layer.local_models;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.List;
+import com.example.mealapp.utils.common_layer.models.DetailedMeal;
+import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 
-@Entity(tableName = "favorite_meals",
-        primaryKeys = {"idUser", "idMeal"})
-public class FavoriteMeal {
+@Entity(tableName = "food_plans", primaryKeys = {"idUser", "idMeal"})
+
+public class MealPlan {
+
     @PrimaryKey
     @NonNull
     private final String idMeal;
@@ -20,8 +22,16 @@ public class FavoriteMeal {
     private final String strInstructions;
     private final String strMealThumb;
     private final String strYoutube;
+    private final String mealType;
 
-    public FavoriteMeal(DetailedMeal meal) {
+    private final String date;
+
+
+
+
+    public MealPlan(DetailedMeal meal, String date, String mealType) {
+        this.date = date;
+        this.mealType = mealType;
         this.idMeal = meal.getIdMeal();
         this.strMeal = meal.getStrMeal();
         this.strCategory = meal.getStrCategory();;
@@ -30,6 +40,14 @@ public class FavoriteMeal {
         this.strMealThumb = meal.getStrMealThumb();
         this.strYoutube = meal.getStrYoutube();
         this.idUser = UserSessionHolder.getInstance().getUser().getUid();
+    }
+
+    public String getMealType() {
+        return mealType;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     @NonNull
@@ -63,5 +81,4 @@ public class FavoriteMeal {
     public String getStrYoutube() {
         return strYoutube;
     }
-
 }

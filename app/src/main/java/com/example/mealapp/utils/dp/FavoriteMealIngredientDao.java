@@ -1,12 +1,13 @@
 package com.example.mealapp.utils.dp;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.mealapp.utils.common_layer.models.FavoriteMealIngredient;
+import com.example.mealapp.utils.common_layer.local_models.FavoriteMealIngredient;
 
 import java.util.List;
 
@@ -19,8 +20,8 @@ public interface FavoriteMealIngredientDao {
     @Delete
     void deleteFavoriteMealIngredient(FavoriteMealIngredient ingredient);
 
-    @Query("SELECT * FROM ingredients WHERE meal_id = :mealId")
-    List<FavoriteMealIngredient> getIngredientsForMeal(String mealId);
+    @Query("SELECT * FROM ingredients WHERE mealId = :mealId")
+    LiveData<List<FavoriteMealIngredient>> getIngredientsForMeal(String mealId);
 
 }
 

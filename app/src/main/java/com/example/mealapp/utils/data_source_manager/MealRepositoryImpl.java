@@ -1,33 +1,37 @@
 package com.example.mealapp.utils.data_source_manager;
 
+import androidx.lifecycle.LiveData;
+
+import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
+import com.example.mealapp.utils.common_layer.local_models.FavoriteMealIngredient;
+import com.example.mealapp.utils.common_layer.local_models.MealPlan;
+import com.example.mealapp.utils.dp.MealLocalDataSource;
 import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
 import com.example.mealapp.utils.network.MealRemoteDataSource;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
 import com.example.mealapp.utils.network.SearchNetworkDelegate;
 
-public class MealRepositoryImpl implements MealRepository{
+import java.util.List;
 
-    MealRemoteDataSource remoteSource;
-    //MealLocalDataSource localSource;
+public class MealRepositoryImpl implements MealRepository {
+
+    private final MealRemoteDataSource remoteSource;
+    private final MealLocalDataSource localSource;
     private static MealRepositoryImpl repo = null;
 
-    public  MealRepositoryImpl(MealRemoteDataSource remoteDataSource ){
-        //MealLocalDataSource localDataSource
-        remoteSource=  remoteDataSource;
-       // localSource = localDataSource;
+    public MealRepositoryImpl(MealRemoteDataSource remoteDataSource, MealLocalDataSource localDataSource) {
+        this.remoteSource = remoteDataSource;
+        this.localSource = localDataSource;
     }
 
-    public static MealRepositoryImpl getInstance(MealRemoteDataSource remoteDataSource ){
-        //MealLocalDataSource localDataSource
-        if(repo == null){
-            //localDataSource
-            repo = new MealRepositoryImpl(remoteDataSource );
+    public static MealRepositoryImpl getInstance(MealRemoteDataSource remoteDataSource, MealLocalDataSource localDataSource) {
+        if (repo == null) {
+            repo = new MealRepositoryImpl(remoteDataSource, localDataSource);
         }
         return repo;
-
     }
 
-
+    // Remote Data Source Methods
     @Override
     public void getRandomMeal(HomeNetworkDelegate homeNetworkDelegate) {
         remoteSource.getRandomMealCall(homeNetworkDelegate);
@@ -36,7 +40,6 @@ public class MealRepositoryImpl implements MealRepository{
     @Override
     public void getRandomMeals(HomeNetworkDelegate homeNetworkDelegate) {
         remoteSource.getRandomMealsCall(homeNetworkDelegate);
-
     }
 
     @Override
@@ -47,7 +50,6 @@ public class MealRepositoryImpl implements MealRepository{
     @Override
     public void getAllCountries(SearchNetworkDelegate searchNetworkDelegate) {
         remoteSource.getAllCountriesCall(searchNetworkDelegate);
-
     }
 
     @Override
@@ -58,7 +60,6 @@ public class MealRepositoryImpl implements MealRepository{
     @Override
     public void getMealDetails(MealDetailsNetworkDelegate mealDetailsNetworkDelegate, String mealId) {
         remoteSource.getMealDetailsCall(mealDetailsNetworkDelegate, mealId);
-
     }
 
     @Override
@@ -74,5 +75,55 @@ public class MealRepositoryImpl implements MealRepository{
     @Override
     public void getMealsByIngredient(SearchNetworkDelegate searchNetworkDelegate, String ingredient) {
         remoteSource.getAllMealsByIngredientCall(searchNetworkDelegate, ingredient);
+    }
+
+    // Local Data Source Methods
+
+    public void saveFavoriteMeal(FavoriteMeal favoriteMeal) {
+        localSource.saveFavoriteMeal(favoriteMeal);
+    }
+
+    public void deleteFavoriteMeal(FavoriteMeal favoriteMeal) {
+        localSource.deleteFavoriteMeal(favoriteMeal);
+    }
+
+    public FavoriteMeal getFavoriteMeal(String userId, String mealId) {
+        return localSource.getFavoriteMeal(userId, mealId);
+    }
+
+    public LiveData<List<FavoriteMeal>> getAllFavoriteMealsForUser(String userId) {
+        return localSource.getAllFavoriteMealsForUser(userId);
+    }
+
+    public boolean isMealFavorite(String userId, String mealId) {
+        return localSource.isMealFavorite(userId, mealId);
+    }
+
+    public void saveMealPlan(MealPlan mealPlan) {
+        localSource.saveMealPlan(mealPlan);
+    }
+
+    public void deleteMealPlan(MealPlan mealPlan) {
+        localSource.deleteMealPlan(mealPlan);
+    }
+
+    public MealPlan getMealPlan(String userId, String mealId) {
+        return localSource.getMealPlan(userId, mealId);
+    }
+
+    public LiveData<List<MealPlan>> getAllMealPlansForUser(String userId) {
+        return localSource.getAllMealPlansForUser(userId);
+    }
+
+    public void saveFavoriteMealIngredient(FavoriteMealIngredient ingredient) {
+        localSource.saveFavoriteMealIngredient(ingredient);
+    }
+
+    public void deleteFavoriteMealIngredient(FavoriteMealIngredient ingredient) {
+        localSource.deleteFavoriteMealIngredient(ingredient);
+    }
+
+    public LiveData<List<FavoriteMealIngredient>> getIngredientsForMeal(String mealId) {
+        return localSource.getIngredientsForMeal(mealId);
     }
 }
