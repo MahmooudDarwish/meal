@@ -33,6 +33,7 @@ import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
+import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
 
 import java.util.Objects;
@@ -56,7 +57,7 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new HomePresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance()));
+        presenter = new HomePresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity())));
     }
 
     @Override

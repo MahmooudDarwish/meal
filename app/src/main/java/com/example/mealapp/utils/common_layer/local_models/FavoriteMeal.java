@@ -2,22 +2,17 @@ package com.example.mealapp.utils.common_layer.local_models;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.example.mealapp.utils.common_layer.models.DetailedMeal;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 
-import java.util.List;
-
 @Entity(tableName = "favorite_meals",
         primaryKeys = {"idUser", "idMeal"})
 public class FavoriteMeal {
-    @PrimaryKey
     @NonNull
     private final String idMeal;
-    @PrimaryKey
     @NonNull
-    private final String idUser;
+    private  String idUser;
     private final String strMeal;
     private final String strCategory;
     private final String strArea;
@@ -25,15 +20,25 @@ public class FavoriteMeal {
     private final String strMealThumb;
     private final String strYoutube;
 
-    public FavoriteMeal(DetailedMeal meal) {
-        this.idMeal = meal.getIdMeal();
-        this.strMeal = meal.getStrMeal();
-        this.strCategory = meal.getStrCategory();;
-        this.strArea = meal.getStrArea();
-        this.strInstructions = meal.getStrInstructions();
-        this.strMealThumb = meal.getStrMealThumb();
-        this.strYoutube = meal.getStrYoutube();
+    // Constructor for Room (matching fields)
+    public FavoriteMeal(@NonNull String idMeal, @NonNull String idUser, String strMeal,
+                        String strCategory, String strArea, String strInstructions,
+                        String strMealThumb, String strYoutube) {
+        this.idMeal = idMeal;
+        this.idUser = idUser;
+        this.strMeal = strMeal;
+        this.strCategory = strCategory;
+        this.strArea = strArea;
+        this.strInstructions = strInstructions;
+        this.strMealThumb = strMealThumb;
+        this.strYoutube = strYoutube;
         this.idUser = UserSessionHolder.getInstance().getUser().getUid();
+    }
+
+    public FavoriteMeal(DetailedMeal meal) {
+        this(meal.getIdMeal(), UserSessionHolder.getInstance().getUser().getUid() , meal.getStrMeal(),
+                meal.getStrCategory(), meal.getStrArea(), meal.getStrInstructions(),
+                meal.getStrMealThumb(), meal.getStrYoutube());
     }
 
     @NonNull
@@ -67,5 +72,4 @@ public class FavoriteMeal {
     public String getStrYoutube() {
         return strYoutube;
     }
-
 }

@@ -2,16 +2,13 @@ package com.example.mealapp.utils.common_layer.local_models;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.example.mealapp.utils.common_layer.models.DetailedMeal;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 
 @Entity(tableName = "food_plans", primaryKeys = {"idUser", "idMeal"})
-
 public class MealPlan {
 
-    @PrimaryKey
     @NonNull
     private final String idMeal;
     @NonNull
@@ -23,35 +20,36 @@ public class MealPlan {
     private final String strMealThumb;
     private final String strYoutube;
     private final String mealType;
-
     private final String date;
 
-
-
-
-    public MealPlan(DetailedMeal meal, String date, String mealType) {
-        this.date = date;
+    // Room requires this constructor with all the fields
+    public MealPlan(@NonNull String idMeal, @NonNull String idUser, String strMeal,
+                    String strCategory, String strArea, String strInstructions,
+                    String strMealThumb, String strYoutube, String mealType, String date) {
+        this.idMeal = idMeal;
+        this.idUser = idUser;
+        this.strMeal = strMeal;
+        this.strCategory = strCategory;
+        this.strArea = strArea;
+        this.strInstructions = strInstructions;
+        this.strMealThumb = strMealThumb;
+        this.strYoutube = strYoutube;
         this.mealType = mealType;
-        this.idMeal = meal.getIdMeal();
-        this.strMeal = meal.getStrMeal();
-        this.strCategory = meal.getStrCategory();;
-        this.strArea = meal.getStrArea();
-        this.strInstructions = meal.getStrInstructions();
-        this.strMealThumb = meal.getStrMealThumb();
-        this.strYoutube = meal.getStrYoutube();
-        this.idUser = UserSessionHolder.getInstance().getUser().getUid();
+        this.date = date;
     }
 
-    public String getMealType() {
-        return mealType;
-    }
-
-    public String getDate() {
-        return date;
+    // This constructor can be used for convenience in your code
+    public MealPlan(DetailedMeal meal, String date, String mealType) {
+        this(meal.getIdMeal(), UserSessionHolder.getInstance().getUser().getUid(),
+                meal.getStrMeal(), meal.getStrCategory(), meal.getStrArea(),
+                meal.getStrInstructions(), meal.getStrMealThumb(), meal.getStrYoutube(),
+                mealType, date);
     }
 
     @NonNull
-    public String getIdMeal() { return idMeal; }
+    public String getIdMeal() {
+        return idMeal;
+    }
 
     @NonNull
     public String getIdUser() {
@@ -80,5 +78,13 @@ public class MealPlan {
 
     public String getStrYoutube() {
         return strYoutube;
+    }
+
+    public String getMealType() {
+        return mealType;
+    }
+
+    public String getDate() {
+        return date;
     }
 }
