@@ -4,6 +4,8 @@ import com.example.mealapp.utils.common_layer.models.DetailedMeal;
 
 public interface IMealDetailsPresenter {
     void getMealDetails(String mealId);
-     void toggleFavoriteStatus(DetailedMeal meal);
+
+    void getFavoriteMeal(String mealId);
+    void toggleFavoriteStatus(DetailedMeal meal);
 
     }

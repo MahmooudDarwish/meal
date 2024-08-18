@@ -1,6 +1,5 @@
 package com.example.mealapp.feature.meal_details.presenter;
 
-import android.util.Log;
 
 import com.example.mealapp.feature.meal_details.view.IMealDetails;
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
@@ -17,6 +16,7 @@ import java.util.List;
 public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsNetworkDelegate {
     private final IMealDetails _view;
     private final MealRepository _repo;
+    private boolean isProcessingFavoriteToggle = false;
 
     public MealDetailsPresenter(IMealDetails view, MealRepository repo) {
         this._view = view;
@@ -29,13 +29,25 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
     }
 
     @Override
+    public void getFavoriteMeal(String mealId) {
+        String userId = UserSessionHolder.getInstance().getUser().getUid();
+
+        _repo.getFavoriteMeal(userId, mealId).observeForever(favoriteMeal -> {
+            if (favoriteMeal != null) {
+                _repo.getIngredientsForMeal(mealId).observeForever(favoriteMealIngredients -> {
+                    DetailedMeal detailedMeal = new DetailedMeal(favoriteMeal, favoriteMealIngredients);
+                    _view.setUpMealDetails(detailedMeal, true);
+                });
+            }
+        });
+    }
+
+    @Override
     public void onGetMealDetailsSuccessResult(DetailedMeal meal) {
         boolean isGuest = UserSessionHolder.isGuest();
         if (isGuest) {
-            //no need to check for favorites for the guest
             _view.setUpMealDetails(meal, false);
         } else {
-            Log.i("MealDetailsPresenter", UserSessionHolder.getInstance().getUser().getUid());
             String userId = UserSessionHolder.getInstance().getUser().getUid();
             _repo.isMealFavorite(meal.getIdMeal(), userId, isFavorite -> _view.setUpMealDetails(meal, isFavorite));
         }
@@ -46,8 +58,6 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
         _view.onFailureResult(errorMsg);
     }
 
-    private boolean isProcessingFavoriteToggle = false;
-
     @Override
     public void toggleFavoriteStatus(DetailedMeal meal) {
         if (isProcessingFavoriteToggle) return; // Prevent further clicks
@@ -55,7 +65,6 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
 
         String userId = UserSessionHolder.getInstance().getUser().getUid();
         _repo.isMealFavorite(meal.getIdMeal(), userId, isFavorite -> {
-            Log.i("MealDetailsPresenter", "toggleFavoriteStatus: " + isFavorite);
             if (isFavorite) {
                 _repo.deleteFavoriteMeal(new FavoriteMeal(meal));
                 _view.onToggleFavouriteMeal("Meal removed from favorites");
@@ -73,7 +82,6 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
         });
     }
 
-
     private List<FavoriteMealIngredient> createFavoriteMealIngredients(DetailedMeal detailedMeal) {
         List<Ingredient> ingredientList = detailedMeal.getIngredients();
         List<FavoriteMealIngredient> favoriteMealIngredients = new ArrayList<>();
@@ -87,6 +95,4 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
 
         return favoriteMealIngredients;
     }
-
-
 }

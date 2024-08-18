@@ -6,9 +6,11 @@ import androidx.room.Entity;
 import com.example.mealapp.utils.common_layer.models.DetailedMeal;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 
+import java.io.Serializable;
+
 @Entity(tableName = "favorite_meals",
         primaryKeys = {"idUser", "idMeal"})
-public class FavoriteMeal {
+public class FavoriteMeal implements Serializable {
     @NonNull
     private final String idMeal;
     @NonNull

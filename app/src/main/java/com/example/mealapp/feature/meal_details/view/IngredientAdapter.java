@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealapp.R;
 import com.example.mealapp.utils.common_layer.models.Ingredient;
 
@@ -38,7 +39,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         holder.ingredientName.setText(ingredientTitle);
         String imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredient.getStrIngredient()+ "-Small" + ".png";
         Glide.with(holder.ingredientImage.getContext())
-                .load(imageUrl)
+                .load(imageUrl).diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.ingredientImage);
 
     }

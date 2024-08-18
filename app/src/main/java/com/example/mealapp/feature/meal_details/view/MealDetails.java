@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealapp.R;
 import com.example.mealapp.feature.auth.sign_in.view.SignIn;
 import com.example.mealapp.feature.meal_details.presenter.IMealDetailsPresenter;
@@ -64,6 +67,9 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         if (getIntent() != null && getIntent().hasExtra("MEAL_ID")) {
             String mealId = getIntent().getStringExtra("MEAL_ID");
             presenter.getMealDetails(mealId);
+        } else if (getIntent() != null && getIntent().hasExtra("FAVORITE_MEAL_ID")) {
+            String mealId = getIntent().getStringExtra("FAVORITE_MEAL_ID");
+            presenter.getFavoriteMeal(mealId);
         }
 
         bannerNoInternet = findViewById(R.id.bannerNoInternet);
@@ -109,9 +115,6 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         });
     }
 
-
-
-
     private void initUI() {
         mealImage = findViewById(R.id.mealImage);
         mealName = findViewById(R.id.mealName);
@@ -129,24 +132,57 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
     @Override
     public void setUpMealDetails(DetailedMeal meal, boolean isFavorite) {
         runOnUiThread(() -> {
+            if (isFinishing() || isDestroyed()) {
+                return;
+            }
+
             this.meal = meal;
             updateFavoriteIcon(isFavorite);
-            Glide.with(this).load(meal.getStrMealThumb()).into(mealImage);
+
+            if (!isFinishing() && !isDestroyed()) {
+                Glide.with(this)
+                        .load(meal.getStrMealThumb())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(mealImage);
+            }
+
             mealName.setText(meal.getStrMeal());
             mealCountry.setText(meal.getStrArea());
             IngredientAdapter ingredientAdapter = new IngredientAdapter(meal.getIngredients());
             ingredientRecyclerView.setAdapter(ingredientAdapter);
             mealInstructions.setText(meal.getStrInstructions());
 
-            youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-                @Override
-                public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                    String videoId = meal.getStrYoutube().split("=")[1];
-                    youTubePlayer.cueVideo(videoId, 0);
-                }
-            });
+            if (!isFinishing() && !isDestroyed()) {
+                youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                        String youtubeUrl = meal.getStrYoutube();
+                        Log.i("MealDetails", "youtubeUrl: " + youtubeUrl);
+                        if (youtubeUrl != null) {
+                            String videoId = extractVideoId(youtubeUrl);
+                            Log.i("MealDetails", "urlId: " + videoId);
+                            if (videoId != null) {
+                                youTubePlayer.cueVideo(videoId, 0);
+                            } else {
+                                Log.e("MealDetails", "Invalid YouTube URL: " + youtubeUrl);
+                            }
+                        } else {
+                            Log.e("MealDetails", "YouTube URL is null");
+                        }
+                    }
+                });
+            }
         });
+    }
 
+    private String extractVideoId(String url) {
+        Uri uri = Uri.parse(url);
+        String videoId = null;
+
+        if (uri.getQueryParameter("v") != null) {
+            videoId = uri.getQueryParameter("v");
+        }
+        return videoId;
     }
 
     @Override

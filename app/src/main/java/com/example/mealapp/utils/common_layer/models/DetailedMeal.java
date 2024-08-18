@@ -1,5 +1,7 @@
 package com.example.mealapp.utils.common_layer.models;
 
+import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
+import com.example.mealapp.utils.common_layer.local_models.FavoriteMealIngredient;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -35,124 +37,124 @@ public class DetailedMeal {
     final private String strYoutube;
 
     @SerializedName("strIngredient1")
-    final private String strIngredient1;
+     private String strIngredient1;
 
     @SerializedName("strIngredient2")
-    final private String strIngredient2;
+     private String strIngredient2;
 
     @SerializedName("strIngredient3")
-    final private String strIngredient3;
+     private String strIngredient3;
 
     @SerializedName("strIngredient4")
-    final private String strIngredient4;
+     private String strIngredient4;
 
     @SerializedName("strIngredient5")
-    final private String strIngredient5;
+     private String strIngredient5;
 
     @SerializedName("strIngredient6")
-    final private String strIngredient6;
+     private String strIngredient6;
 
     @SerializedName("strIngredient7")
-    final private String strIngredient7;
+     private String strIngredient7;
 
     @SerializedName("strIngredient8")
-    final private String strIngredient8;
+     private String strIngredient8;
 
     @SerializedName("strIngredient9")
-    final  private String strIngredient9;
+      private String strIngredient9;
 
     @SerializedName("strIngredient10")
-    final private String strIngredient10;
+     private String strIngredient10;
 
     @SerializedName("strIngredient11")
-    final private String strIngredient11;
+     private String strIngredient11;
 
     @SerializedName("strIngredient12")
-    final private String strIngredient12;
+     private String strIngredient12;
 
     @SerializedName("strIngredient13")
-    final private String strIngredient13;
+     private String strIngredient13;
 
     @SerializedName("strIngredient14")
-    final private String strIngredient14;
+     private String strIngredient14;
 
     @SerializedName("strIngredient15")
-    final private String strIngredient15;
+     private String strIngredient15;
 
     @SerializedName("strIngredient16")
-    final private String strIngredient16;
+     private String strIngredient16;
 
     @SerializedName("strIngredient17")
-    final private String strIngredient17;
+     private String strIngredient17;
 
     @SerializedName("strIngredient18")
-    final private String strIngredient18;
+     private String strIngredient18;
 
     @SerializedName("strIngredient19")
-    final private String strIngredient19;
+     private String strIngredient19;
 
     @SerializedName("strIngredient20")
-    final private String strIngredient20;
+     private String strIngredient20;
 
     @SerializedName("strMeasure1")
-    final private String strMeasure1;
+     private String strMeasure1;
 
     @SerializedName("strMeasure2")
-    final private String strMeasure2;
+     private String strMeasure2;
 
     @SerializedName("strMeasure3")
-    final private String strMeasure3;
+     private String strMeasure3;
 
     @SerializedName("strMeasure4")
-    final private String strMeasure4;
+     private String strMeasure4;
 
     @SerializedName("strMeasure5")
-    final private String strMeasure5;
+     private String strMeasure5;
 
     @SerializedName("strMeasure6")
-    final private String strMeasure6;
+     private String strMeasure6;
 
     @SerializedName("strMeasure7")
-    final private String strMeasure7;
+     private String strMeasure7;
 
     @SerializedName("strMeasure8")
-    final private String strMeasure8;
+     private String strMeasure8;
 
     @SerializedName("strMeasure9")
-    final private String strMeasure9;
+     private String strMeasure9;
 
     @SerializedName("strMeasure10")
-    final private String strMeasure10;
+     private String strMeasure10;
 
     @SerializedName("strMeasure11")
-    final private String strMeasure11;
+     private String strMeasure11;
 
     @SerializedName("strMeasure12")
-    final private String strMeasure12;
+     private String strMeasure12;
 
     @SerializedName("strMeasure13")
-    final private String strMeasure13;
+     private String strMeasure13;
 
     @SerializedName("strMeasure14")
-    final private String strMeasure14;
+     private String strMeasure14;
 
     @SerializedName("strMeasure15")
-    final private String strMeasure15;
+     private String strMeasure15;
 
     @SerializedName("strMeasure16")
-    final private String strMeasure16;
+     private String strMeasure16;
 
     @SerializedName("strMeasure17")
-    final private String strMeasure17;
+     private String strMeasure17;
 
     @SerializedName("strMeasure18")
-    final private String strMeasure18;
+     private String strMeasure18;
 
     @SerializedName("strMeasure19")
-    final private String strMeasure19;
+     private String strMeasure19;
 
     @SerializedName("strMeasure20")
-    final private String strMeasure20;
+     private String strMeasure20;
 
     @SerializedName("strSource")
     final private String strSource;
@@ -165,6 +167,36 @@ public class DetailedMeal {
 
     @SerializedName("dateModified")
     final private String dateModified;
+
+    public DetailedMeal(FavoriteMeal favoriteMeal, List<FavoriteMealIngredient> ingredients) {
+        this.idMeal = favoriteMeal.getIdMeal();
+        this.strMeal = favoriteMeal.getStrMeal();
+        this.strDrinkAlternate = null;
+        this.strCategory = favoriteMeal.getStrCategory();
+        this.strArea = favoriteMeal.getStrArea();
+        this.strInstructions = favoriteMeal.getStrInstructions();
+        this.strMealThumb = favoriteMeal.getStrMealThumb();
+        this.strTags = null;
+        this.strYoutube = favoriteMeal.getStrYoutube();
+        this.strSource = null;
+        this.strImageSource = null;
+        this.strCreativeCommonsConfirmed = null;
+        this.dateModified = null;
+
+        // Populate ingredients
+        for (int i = 0; i < ingredients.size(); i++) {
+            FavoriteMealIngredient ingredient = ingredients.get(i);
+            try {
+                String ingredientField = "strIngredient" + (i + 1);
+                String measureField = "strMeasure" + (i + 1);
+
+                this.getClass().getDeclaredField(ingredientField).set(this, ingredient.getIngredientName());
+                this.getClass().getDeclaredField(measureField).set(this, ingredient.getMeasure());
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
     public DetailedMeal(String idMeal, String strMeal, String strDrinkAlternate, String strCategory, String strArea, String strInstructions, String strMealThumb, String strTags, String strYoutube, String strIngredient1, String strIngredient2, String strIngredient3, String strIngredient4, String strIngredient5, String strIngredient6, String strIngredient7, String strIngredient8, String strIngredient9, String strIngredient10, String strIngredient11, String strIngredient12, String strIngredient13, String strIngredient14, String strIngredient15, String strIngredient16, String strIngredient17, String strIngredient18, String strIngredient19, String strIngredient20, String strMeasure1, String strMeasure2, String strMeasure3, String strMeasure4, String strMeasure5, String strMeasure6, String strMeasure7, String strMeasure8, String strMeasure9, String strMeasure10, String strMeasure11, String strMeasure12, String strMeasure13, String strMeasure14, String strMeasure15, String strMeasure16, String strMeasure17, String strMeasure18, String strMeasure19, String strMeasure20, String strSource, String strImageSource, String strCreativeCommonsConfirmed, String dateModified) {
