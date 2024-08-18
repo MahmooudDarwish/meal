@@ -22,22 +22,18 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
         android:layout_marginTop="35dp"
-        android:layout_marginEnd="16dp"
         app:defaultQueryHint="@string/search"
         app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bannerNoInternet"  />
+        app:layout_constraintTop_toBottomOf="@+id/bannerNoInternet" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mealsRecycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
