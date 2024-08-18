@@ -35,7 +35,6 @@ import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
 
-import java.util.List;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
@@ -71,11 +70,12 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
 
         getActivity();
         SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences("user_data", Context.MODE_PRIVATE);
+        boolean stayLoggedIn = sharedPreferences.getBoolean("stay_logged_in", false);
         String userNameStr = sharedPreferences.getString("user_name", "");
         String userEmail = sharedPreferences.getString("user_email", "");
-        UserSessionHolder.getInstance().setUser(new User(userEmail, userNameStr));
 
-        if (UserSessionHolder.isGuest()) {
+        if (stayLoggedIn) {
+            UserSessionHolder.getInstance().setUser(new User(userEmail, userNameStr));
             presenter.getCurrentUser();
         }
 
@@ -173,13 +173,10 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
 
     @Override
     public void getCurrentUserSuccessfully(User user) {
-        UserSessionHolder.getInstance().setUser(user);
+        UserSessionHolder.getInstance().getUser().setUid(user.getUid());
 
-        if (!UserSessionHolder.isGuest()) {
-            String userNameStr = UserSessionHolder.getInstance().getUser().getName();
-            userName.setText(userNameStr);
-            signOutIcon.setVisibility(View.VISIBLE);
-        }
+        Log.i(TAG, "getCurrentUserSuccessfully: " + UserSessionHolder.getInstance().getUser().getUid());
+
     }
 
 

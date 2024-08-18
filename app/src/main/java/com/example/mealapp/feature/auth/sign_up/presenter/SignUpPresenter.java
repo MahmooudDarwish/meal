@@ -8,9 +8,7 @@ import com.example.mealapp.utils.validation_helpers.EmailValidator;
 import com.example.mealapp.feature.auth.sign_up.view.ISignUp;
 import com.example.mealapp.utils.validation_helpers.PasswordConfirmValidator;
 import com.example.mealapp.utils.validation_helpers.PasswordValidator;
-import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.firebase.FirebaseManager;
-import com.google.firebase.auth.FirebaseUser;
 
 public class SignUpPresenter implements ISignUpPresenter {
 
@@ -33,7 +31,7 @@ public class SignUpPresenter implements ISignUpPresenter {
         boolean isConfirmPasswordValid = confirmPasswordValidation.isValid();
 
         if (isEmailValid && !TextUtils.isEmpty(name) && isPasswordValid && isConfirmPasswordValid) {
-            signUp(new User(email, name), password);
+            signUp(email, name, password);
         } else {
             view.showError("You should fix the above errors");
         }
@@ -54,8 +52,8 @@ public class SignUpPresenter implements ISignUpPresenter {
         return PasswordConfirmValidator.isPasswordMatching(password, confirmPassword);
     }
 
-    private void signUp(User user, String password) {
-        FirebaseManager.getInstance().signUp(user.getEmail(), password, user.getName(), task -> {
+    private void signUp(String email ,String name, String password) {
+        FirebaseManager.getInstance().signUp(email, password, name, task -> {
             if (task.isSuccessful()) {
                 view.signUpSuccess();
             } else {

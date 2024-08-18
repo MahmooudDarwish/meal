@@ -70,7 +70,7 @@ public class FirebaseManager {
                             if (document.exists()) {
                                 String name = document.getString("name");
                                 String email = document.getString("email");
-                                User user = new User(email, name);
+                                User user = new User(email, name, userId);
                                 listener.onUserDataRetrieved(user);
                             } else {
                                 listener.onError(new Exception("No user data found"));
@@ -114,7 +114,7 @@ public class FirebaseManager {
                             if (document.exists()) {
                                 String name = document.getString("name");
                                 String email = document.getString("email");
-                                User user = new User(email, name);
+                                User user = new User(email, name , userId);
                                 listener.onUserDataRetrieved(user);
                             } else {
                                 listener.onError(new Exception("No user data found"));

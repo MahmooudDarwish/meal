@@ -24,6 +24,7 @@ import com.example.mealapp.feature.auth.sign_in.presenter.SignInPresenter;
 import com.example.mealapp.feature.auth.sign_up.view.SignUp;
 import com.example.mealapp.feature.home.view.Home;
 import com.example.mealapp.utils.common_layer.models.User;
+import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -120,6 +121,7 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
             addUserToSharedPreferences(user);
         }
         hideLoading();
+        UserSessionHolder.getInstance().setUser(user);
         Toast.makeText(getActivity(), "Welcome!", Toast.LENGTH_LONG).show();
         dismiss();
         requireActivity().finish();
@@ -136,6 +138,8 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("user_name", user.getName());
         editor.putString("user_email", user.getEmail());
+        editor.putBoolean("stay_logged_in", true);
+
         editor.apply();
     }
 

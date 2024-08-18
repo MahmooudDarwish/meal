@@ -6,12 +6,9 @@ public class UserSessionHolder {
 
     private static User user = null;
 
-    private static UserSessionHolder instance = new UserSessionHolder();
+    private static final UserSessionHolder instance = new UserSessionHolder();
 
     public static UserSessionHolder getInstance() {
-        if (instance == null) {
-            instance = new UserSessionHolder();
-        }
         return instance;
     }
     private UserSessionHolder() {
@@ -25,8 +22,9 @@ public class UserSessionHolder {
         return user;
     }
 
-    public static boolean isGuest(){
-        return Objects.equals(user.getName(), "") && Objects.equals(user.getEmail(), "");
+    public static boolean isGuest() {
+        return user == null ||
+                (Objects.equals(user.getName(), "") && Objects.equals(user.getEmail(), ""));
     }
 
 }
