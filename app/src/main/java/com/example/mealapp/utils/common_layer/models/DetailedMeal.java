@@ -1,7 +1,8 @@
 package com.example.mealapp.utils.common_layer.models;
 
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
-import com.example.mealapp.utils.common_layer.local_models.FavoriteMealIngredient;
+import com.example.mealapp.utils.common_layer.local_models.MealIngredient;
+import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -168,7 +169,11 @@ public class DetailedMeal {
     @SerializedName("dateModified")
     final private String dateModified;
 
-    public DetailedMeal(FavoriteMeal favoriteMeal, List<FavoriteMealIngredient> ingredients) {
+
+    private String mealType;
+    private String mealDate;
+
+    public DetailedMeal(FavoriteMeal favoriteMeal, List<MealIngredient> ingredients) {
         this.idMeal = favoriteMeal.getIdMeal();
         this.strMeal = favoriteMeal.getStrMeal();
         this.strDrinkAlternate = null;
@@ -185,7 +190,7 @@ public class DetailedMeal {
 
         // Populate ingredients
         for (int i = 0; i < ingredients.size(); i++) {
-            FavoriteMealIngredient ingredient = ingredients.get(i);
+            MealIngredient ingredient = ingredients.get(i);
             try {
                 String ingredientField = "strIngredient" + (i + 1);
                 String measureField = "strMeasure" + (i + 1);
@@ -196,6 +201,38 @@ public class DetailedMeal {
                 e.printStackTrace();
             }
         }
+    }
+
+    public DetailedMeal(MealPlan mealPlan,  List<MealIngredient> ingredients){
+        this.idMeal = mealPlan.getIdMeal();
+        this.strMeal = mealPlan.getStrMeal();
+        this.strDrinkAlternate = null;
+        this.strCategory = mealPlan.getStrCategory();
+        this.strArea = mealPlan.getStrArea();
+        this.strInstructions = mealPlan.getStrInstructions();
+        this.strMealThumb = mealPlan.getStrMealThumb();
+        this.strTags = null;
+        this.strYoutube = mealPlan.getStrYoutube();
+        this.strSource = null;
+        this.strImageSource = null;
+        this.strCreativeCommonsConfirmed = null;
+        this.dateModified = null;
+        this.mealType = mealPlan.getMealType();
+        this.mealDate = mealPlan.getDate();
+
+        for (int i = 0; i < ingredients.size(); i++) {
+            MealIngredient ingredient = ingredients.get(i);
+            try {
+                String ingredientField = "strIngredient" + (i + 1);
+                String measureField = "strMeasure" + (i + 1);
+
+                this.getClass().getDeclaredField(ingredientField).set(this, ingredient.getIngredientName());
+                this.getClass().getDeclaredField(measureField).set(this, ingredient.getMeasure());
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 
@@ -355,5 +392,29 @@ public class DetailedMeal {
 
     public String getDateModified() {
         return dateModified;
+    }
+
+    public String getStrIngredient1() {
+        return strIngredient1;
+    }
+
+    public void setStrIngredient1(String strIngredient1) {
+        this.strIngredient1 = strIngredient1;
+    }
+
+    public String getMealType() {
+        return mealType;
+    }
+
+    public void setMealType(String mealType) {
+        this.mealType = mealType;
+    }
+
+    public String getMealDate() {
+        return mealDate;
+    }
+
+    public void setMealDate(String mealDate) {
+        this.mealDate = mealDate;
     }
 }

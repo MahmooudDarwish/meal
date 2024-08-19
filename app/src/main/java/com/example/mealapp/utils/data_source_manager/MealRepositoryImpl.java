@@ -5,9 +5,10 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
-import com.example.mealapp.utils.common_layer.local_models.FavoriteMealIngredient;
+import com.example.mealapp.utils.common_layer.local_models.MealIngredient;
 import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 import com.example.mealapp.utils.dp.IsFavoriteMealCallback;
+import com.example.mealapp.utils.dp.IsPlanMealCallback;
 import com.example.mealapp.utils.dp.MealLocalDataSource;
 import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
 import com.example.mealapp.utils.network.MealRemoteDataSource;
@@ -110,6 +111,11 @@ public class MealRepositoryImpl implements MealRepository {
         localSource.deleteMealPlan(mealPlan);
     }
 
+    @Override
+    public void isMealPlan(String userId, String mealId, IsPlanMealCallback callback) {
+        localSource.isMealPlan(userId, mealId, callback);
+    }
+
     public LiveData<MealPlan> getMealPlan(String userId, String mealId) {
         return localSource.getMealPlan(userId, mealId);
     }
@@ -118,15 +124,15 @@ public class MealRepositoryImpl implements MealRepository {
         return localSource.getAllMealPlansForUser(userId);
     }
 
-    public void saveFavoriteMealIngredient(FavoriteMealIngredient ingredient) {
-        localSource.saveFavoriteMealIngredient(ingredient);
+    public void saveFavoriteMealIngredient(MealIngredient ingredient) {
+        localSource.saveMealIngredient(ingredient);
     }
 
-    public void deleteFavoriteMealIngredient(FavoriteMealIngredient ingredient) {
-        localSource.deleteFavoriteMealIngredient(ingredient);
+    public void deleteMealIngredient(String mealId) {
+        localSource.deleteMealIngredient(mealId);
     }
 
-    public LiveData<List<FavoriteMealIngredient>> getIngredientsForMeal(String mealId) {
+    public LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId) {
         return localSource.getIngredientsForMeal(mealId);
     }
 }

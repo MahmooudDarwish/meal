@@ -9,13 +9,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,10 +42,15 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class MealDetails extends AppCompatActivity implements IMealDetails {
 
     private RecyclerView ingredientRecyclerView;
     private FloatingActionButton favoriteBtn;
+    private Button addToPlanBtn;
     private ImageView mealImage;
     private TextView mealName;
     private TextView mealCountry;
@@ -113,6 +123,8 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
 
             }
         });
+
+        addToPlanBtn.setOnClickListener(v -> showAddToPlannerDialog());
     }
 
     private void initUI() {
@@ -123,6 +135,7 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         mealInstructions = findViewById(R.id.mealInstructions);
         favoriteBtn = findViewById(R.id.favoriteBtn);
         youtubePlayerView = findViewById(R.id.mealVideo);
+        addToPlanBtn = findViewById(R.id.addToPlanBtn);
 
         ingredientRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this,
@@ -130,7 +143,7 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
     }
 
     @Override
-    public void setUpMealDetails(DetailedMeal meal, boolean isFavorite) {
+    public void setUpMealDetails(DetailedMeal meal, boolean isFavorite, boolean isPlan) {
         runOnUiThread(() -> {
             if (isFinishing() || isDestroyed()) {
                 return;
@@ -138,6 +151,7 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
 
             this.meal = meal;
             updateFavoriteIcon(isFavorite);
+            updateAddPlanBtnText(isPlan);
 
             if (!isFinishing() && !isDestroyed()) {
                 Glide.with(this)
@@ -191,13 +205,66 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
     }
 
     @Override
-    public void onToggleFavouriteMeal(String msg) {
-        runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
-    }
+    public void updateFavoriteIcon(boolean isFavorite) {
 
+        if (isFavorite) {
+            favoriteBtn.setImageResource(R.drawable.filled_heart);
+
+        } else {
+            favoriteBtn.setImageResource(R.drawable.empty_heart);
+        }
+    }
 
     @Override
-    public void updateFavoriteIcon(boolean isFavorite) {
-        favoriteBtn.setImageResource(isFavorite ? R.drawable.filled_heart : R.drawable.empty_heart);
+    public void updateAddPlanBtnText(boolean isPlan) {
+        if (isPlan) {
+            addToPlanBtn.setText(R.string.remove_from_plan);
+        } else {
+            addToPlanBtn.setText(R.string.add_to_plan);
+        }
     }
+    @Override
+    public void showToast(String msg){
+      runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
+    }
+
+    private void showAddToPlannerDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.popup_food_planner, null);
+        builder.setView(dialogView);
+
+        DatePicker datePicker = dialogView.findViewById(R.id.datePicker);
+        RadioGroup mealTypeGroup = dialogView.findViewById(R.id.mealTypeGroup);
+        Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+        AlertDialog dialog = builder.create();
+
+        btnConfirm.setOnClickListener(v -> {
+            int selectedMealTypeId = mealTypeGroup.getCheckedRadioButtonId();
+            RadioButton selectedMealType = dialogView.findViewById(selectedMealTypeId);
+
+            int day = datePicker.getDayOfMonth();
+            int month = datePicker.getMonth();
+            int year = datePicker.getYear();
+
+            String formattedDate = formatDate(day, month, year);
+            String mealType = selectedMealType.getText().toString();
+
+            addMealToPlanner(formattedDate, mealType);
+            dialog.dismiss();
+        });
+        dialog.show();
+    }
+
+    private String formatDate(int day, int month, int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE, d MMMM", Locale.getDefault());
+        return simpleDateFormat.format(calendar.getTime());
+    }
+
+    private void addMealToPlanner(String date, String mealType) {
+        presenter.toggleMealPlan(meal, date, mealType);
+    }
+
 }

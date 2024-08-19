@@ -3,9 +3,10 @@ package com.example.mealapp.utils.data_source_manager;
 import androidx.lifecycle.LiveData;
 
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
-import com.example.mealapp.utils.common_layer.local_models.FavoriteMealIngredient;
+import com.example.mealapp.utils.common_layer.local_models.MealIngredient;
 import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 import com.example.mealapp.utils.dp.IsFavoriteMealCallback;
+import com.example.mealapp.utils.dp.IsPlanMealCallback;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
 import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
 import com.example.mealapp.utils.network.SearchNetworkDelegate;
@@ -48,13 +49,16 @@ public interface MealRepository {
 
      void deleteMealPlan(MealPlan mealPlan);
 
+     void isMealPlan(String userId, String mealId, IsPlanMealCallback callback);
+
+
      LiveData<MealPlan> getMealPlan(String userId, String mealId);
 
      LiveData<List<MealPlan>> getAllMealPlansForUser(String userId);
 
-     void saveFavoriteMealIngredient(FavoriteMealIngredient ingredient);
+     void saveFavoriteMealIngredient(MealIngredient ingredient);
 
-     void deleteFavoriteMealIngredient(FavoriteMealIngredient ingredient);
+     void deleteMealIngredient(String mealId);
 
-     LiveData<List<FavoriteMealIngredient>> getIngredientsForMeal(String mealId);
+     LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId);
 }

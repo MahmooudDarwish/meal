@@ -25,5 +25,8 @@ public interface MealPlanDao {
 
     @Query("SELECT * FROM food_plans WHERE idUser = :userId")
     LiveData<List<MealPlan>> getAllMealPlansForUser(String userId);
+
+    @Query("SELECT COUNT(*) > 0 FROM food_plans WHERE idMeal = :mealId AND idUser = :userId")
+    boolean isMealPlanExists(String mealId, String userId);
 }
 

@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
-import com.example.mealapp.utils.common_layer.local_models.FavoriteMealIngredient;
+import com.example.mealapp.utils.common_layer.local_models.MealIngredient;
 import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 
 import java.util.List;
@@ -18,14 +18,14 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     private static MealLocalDataSourceImpl mealLocalDataSource = null;
     private final FavoriteMealDao favoriteMealDao;
     private final MealPlanDao mealPlanDao;
-    private final FavoriteMealIngredientDao favoriteMealIngredientDao;
+    private final MealIngredientDao mealIngredientDao;
     private final Executor executor = Executors.newSingleThreadExecutor();
 
     private MealLocalDataSourceImpl(Context _context) {
         AppDataBase db = AppDataBase.getInstance(_context.getApplicationContext());
         favoriteMealDao = db.favoriteMealDao();
         mealPlanDao = db.mealPlanDao();
-        favoriteMealIngredientDao = db.favoriteMealIngredientDao();
+        mealIngredientDao = db.favoriteMealIngredientDao();
     }
 
     public static MealLocalDataSourceImpl getInstance(Context _context) {
@@ -92,17 +92,27 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public void saveFavoriteMealIngredient(FavoriteMealIngredient ingredient) {
-        executor.execute(() -> favoriteMealIngredientDao.insertFavoriteMealIngredient(ingredient));
+    public void isMealPlan(String userId, String mealId, IsPlanMealCallback callback) {
+        executor.execute(() -> {
+            boolean isPlan = mealPlanDao.isMealPlanExists(userId, mealId);
+            Log.i("MealRepository", "Meal is plan: " + isPlan);
+
+            callback.onPlanStatusResult(isPlan);
+        });
     }
 
     @Override
-    public void deleteFavoriteMealIngredient(FavoriteMealIngredient ingredient) {
-        executor.execute(() -> favoriteMealIngredientDao.deleteFavoriteMealIngredient(ingredient));
+    public void saveMealIngredient(MealIngredient ingredient) {
+        executor.execute(() -> mealIngredientDao.insertMealIngredient(ingredient));
     }
 
     @Override
-    public LiveData<List<FavoriteMealIngredient>> getIngredientsForMeal(String mealId) {
-        return favoriteMealIngredientDao.getIngredientsForMeal(mealId);
+    public void deleteMealIngredient(String mealId) {
+        executor.execute(() -> mealIngredientDao.deleteMealIngredient(mealId));
+    }
+
+    @Override
+    public LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId) {
+        return mealIngredientDao.getIngredientsForMeal(mealId);
     }
 }

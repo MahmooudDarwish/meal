@@ -3,7 +3,7 @@ package com.example.mealapp.utils.dp;
 import androidx.lifecycle.LiveData;
 
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
-import com.example.mealapp.utils.common_layer.local_models.FavoriteMealIngredient;
+import com.example.mealapp.utils.common_layer.local_models.MealIngredient;
 import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 
 import java.util.List;
@@ -20,9 +20,12 @@ public interface MealLocalDataSource {
     void deleteMealPlan(MealPlan mealPlan);
     LiveData<MealPlan> getMealPlan(String userId, String mealId);
     LiveData<List<MealPlan>> getAllMealPlansForUser(String userId);
+    void isMealPlan(String userId, String mealId, IsPlanMealCallback callback);
 
-    void saveFavoriteMealIngredient(FavoriteMealIngredient ingredient);
-    void deleteFavoriteMealIngredient(FavoriteMealIngredient ingredient);
-    LiveData<List<FavoriteMealIngredient>> getIngredientsForMeal(String mealId);
+
+
+    void saveMealIngredient(MealIngredient ingredient);
+     void deleteMealIngredient(String mealId);
+    LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId);
 }
 

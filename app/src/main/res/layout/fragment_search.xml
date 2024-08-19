@@ -17,6 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:textColor="@android:color/holo_orange_dark"
+
             app:defaultQueryHint="@string/search"
             app:iconifiedByDefault="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -48,6 +50,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:textColor="@android:color/holo_orange_dark"
+
                     android:text="@string/categories"
                     android:textSize="20sp" />
 
@@ -63,6 +67,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:textColor="@android:color/holo_orange_dark"
+
                     android:text="@string/ingrediants"
                     android:textSize="20sp" />
 
@@ -78,6 +84,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:textColor="@android:color/holo_orange_dark"
+
                     android:text="@string/countries"
                     android:textSize="20sp" />
 

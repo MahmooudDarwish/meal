@@ -60,15 +60,27 @@
 
         </androidx.cardview.widget.CardView>
 
+        <Button
+            android:id="@+id/addToPlanBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@android:color/holo_orange_dark"
+            android:text="@string/add_to_plan"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/favoriteBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mealCard" />
+
         <TextView
             android:id="@+id/mealCountry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/countryText"
-            app:layout_constraintTop_toBottomOf="@+id/mealCard" />
+            app:layout_constraintTop_toBottomOf="@+id/addToPlanBtn" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/favoriteBtn"
@@ -89,6 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:textColor="@android:color/holo_orange_dark"
             android:text="@string/ingrediants"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -120,11 +133,13 @@
             android:id="@+id/countryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:text="@string/country"
+            android:textColor="@android:color/holo_orange_dark"
+
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mealCard" />
+            app:layout_constraintTop_toBottomOf="@+id/addToPlanBtn" />
 
         <TextView
             android:id="@+id/instructionsText"
@@ -132,6 +147,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="@string/instructions"
+            android:textColor="@android:color/holo_orange_dark"
+
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ingredientRecycler" />

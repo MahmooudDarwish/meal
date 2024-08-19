@@ -39,4 +39,10 @@
     <string name="guest">Guest</string>
     <string name="you_dont_have_favorites_yet">"You don't have any Favorites yet "</string>
     <string name="you_need_to_sign_in_first">You need to Sign in first to use this feature</string>
+    <string name="add_to_plan">Add to Your Plan</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+    <string name="add_to_planner">Add to Planner</string>
+    <string name="remove_from_plan">Remove from Plan</string>
 </resources>

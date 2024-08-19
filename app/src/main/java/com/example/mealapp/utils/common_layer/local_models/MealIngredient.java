@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 import com.example.mealapp.utils.common_layer.models.Ingredient;
 
 @Entity(tableName = "ingredients")
-public class FavoriteMealIngredient {
+public class MealIngredient {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -17,7 +17,7 @@ public class FavoriteMealIngredient {
     private final String measure;
 
     // Constructor that Room will use
-    public FavoriteMealIngredient( String mealId, String ingredientName, String ingredientImage, String measure) {
+    public MealIngredient(String mealId, String ingredientName, String ingredientImage, String measure) {
         this.mealId = mealId;
         this.ingredientName = ingredientName;
         this.ingredientImage = ingredientImage;
@@ -25,7 +25,7 @@ public class FavoriteMealIngredient {
     }
 
     // Convenience constructor
-    public FavoriteMealIngredient(String mealId, Ingredient ingredient) {
+    public MealIngredient(String mealId, Ingredient ingredient) {
         this(mealId, ingredient.getStrIngredient(),
                 "https://www.themealdb.com/images/ingredients/" + ingredient.getStrIngredient() + "-Small" + ".png",
                 ingredient.getQuantity());
