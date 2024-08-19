@@ -1,6 +1,5 @@
 package com.example.mealapp.utils.common_layer.models;
 
-import java.util.Objects;
 
 public class UserSessionHolder {
 
@@ -23,8 +22,7 @@ public class UserSessionHolder {
     }
 
     public static boolean isGuest() {
-        return user == null ||
-                (Objects.equals(user.getName(), "") && Objects.equals(user.getEmail(), ""));
+        return user == null;
     }
 
 }
