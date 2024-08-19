@@ -89,6 +89,8 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        Objects.requireNonNull(requireActivity()).registerReceiver(networkReceiver, filter);
+
     }
 
 
@@ -220,9 +222,11 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Objects.requireNonNull(requireActivity()).unregisterReceiver(networkReceiver);
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (networkReceiver != null) {
+            Objects.requireNonNull(requireActivity()).unregisterReceiver(networkReceiver);
+        }
     }
 
     @Override

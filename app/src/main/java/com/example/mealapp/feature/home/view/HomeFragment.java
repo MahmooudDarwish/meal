@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -96,10 +97,12 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
         };
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         Objects.requireNonNull(requireActivity()).registerReceiver(networkReceiver, filter);
 
     }
+
+
 
 
 
