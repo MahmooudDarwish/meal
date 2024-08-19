@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mealCard"
+        android:layout_width="369dp"
+        android:layout_height="195dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="8dp"
+        android:radius="12dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/mealImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:drawable/screen_background_dark_transparent"
+            />
+
+        <TextView
+            android:id="@+id/mealName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:maxLines="1"
+            android:paddingStart="21dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="21dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/mealPlanDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:maxLines="1"
+            android:paddingStart="21dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="21dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/mealType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:maxLines="1"
+            android:paddingStart="21dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="21dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

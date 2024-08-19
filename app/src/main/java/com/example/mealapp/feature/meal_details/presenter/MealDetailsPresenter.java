@@ -65,9 +65,7 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
         } else {
             String userId = UserSessionHolder.getInstance().getUser().getUid();
 
-            _repo.isMealFavorite(meal.getIdMeal(), userId, isFavorite -> _repo.isMealPlan(meal.getIdMeal(), userId, isInPlan -> {
-                _view.setUpMealDetails(meal, isFavorite, isInPlan);
-            }));
+            _repo.isMealFavorite(meal.getIdMeal(), userId, isFavorite -> _repo.isMealPlan(meal.getIdMeal(), userId, isInPlan -> _view.setUpMealDetails(meal, isFavorite, isInPlan)));
         }
     }
 
@@ -86,7 +84,7 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
             if (isFavorite) {
                 _repo.deleteFavoriteMeal(new FavoriteMeal(meal));
                 _repo.isMealPlan(userId, meal.getIdMeal(), isInPlan -> {
-                    if (!isInPlan) {
+                    if (isInPlan) {
                         _repo.deleteMealIngredient(meal.getIdMeal());
                     }
                 });
@@ -106,23 +104,23 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
     }
 
     @Override
-    public void toggleMealPlan(DetailedMeal meal, String date, String mealType) {
+    public void toggleMealPlan(DetailedMeal meal) {
         if (isProcessingFavoriteToggle) return;
         isProcessingFavoriteToggle = true;
 
         String userId = UserSessionHolder.getInstance().getUser().getUid();
         _repo.isMealPlan(meal.getIdMeal(), userId, isPlan -> {
             if (isPlan) {
-                _repo.deleteMealPlan(new MealPlan(meal, date, mealType));
+                _repo.deleteMealPlan(new MealPlan(meal, meal.getMealDate(), meal.getMealType()));
                 _repo.isMealFavorite(userId, meal.getIdMeal(), isFavorite -> {
-                    if (!isFavorite) {
+                    if (isFavorite) {
                         _repo.deleteMealIngredient(meal.getIdMeal());
                     }
                 });
                 _view.updateAddPlanBtnText(false);
                 _view.showToast("Meal removed from your plan");
             } else {
-                _repo.saveMealPlan(new MealPlan(meal, date, mealType));
+                _repo.saveMealPlan(new MealPlan(meal, meal.getMealDate(), meal.getMealType()));
                 List<MealIngredient> ingredients = createFavoriteMealIngredients(meal);
                 for (MealIngredient ingredient : ingredients) {
                     _repo.saveFavoriteMealIngredient(ingredient);

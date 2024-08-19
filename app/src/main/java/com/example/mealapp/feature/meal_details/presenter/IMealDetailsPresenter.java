@@ -9,6 +9,6 @@ public interface IMealDetailsPresenter {
 
     void toggleFavoriteStatus(DetailedMeal meal);
 
-    void toggleMealPlan(DetailedMeal meal, String date, String mealType);
+    void toggleMealPlan(DetailedMeal meal);
 
     }

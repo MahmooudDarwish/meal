@@ -59,9 +59,7 @@ public class Favorites extends Fragment implements IFavorites, OnFavoriteMealCli
         presenter = new FavoritesPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity())));
         initUi(view);
 
-        presenter.getFavorites(this);
         favouritesAdapter = new FavoriteMealsAdapter(new ArrayList<>(), this);
-
         favouritesRecyclerView.setAdapter(favouritesAdapter);
 
 

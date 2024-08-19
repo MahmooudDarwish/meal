@@ -80,6 +80,9 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         } else if (getIntent() != null && getIntent().hasExtra("FAVORITE_MEAL_ID")) {
             String mealId = getIntent().getStringExtra("FAVORITE_MEAL_ID");
             presenter.getFavoriteMeal(mealId);
+        }else if(getIntent() != null && getIntent().hasExtra("PLAN_MEAL_ID")){
+            String mealId = getIntent().getStringExtra("PLAN_MEAL_ID");
+            presenter.getMealPlan(mealId);
         }
 
         bannerNoInternet = findViewById(R.id.bannerNoInternet);
@@ -118,13 +121,17 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
                 SignIn signInFragment = new SignIn();
                 signInFragment.show(getSupportFragmentManager(), "signInFragment");
             } else if (meal != null) {
-
                     presenter.toggleFavoriteStatus(meal);
-
             }
         });
 
-        addToPlanBtn.setOnClickListener(v -> showAddToPlannerDialog());
+        addToPlanBtn.setOnClickListener(v -> {
+                        if(addToPlanBtn.getText() == getString(R.string.add_to_plan)){
+                             showAddToPlannerDialog();
+                        }else{
+                            presenter.toggleMealPlan(meal);
+                        }
+        });
     }
 
     private void initUI() {
@@ -264,7 +271,9 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
     }
 
     private void addMealToPlanner(String date, String mealType) {
-        presenter.toggleMealPlan(meal, date, mealType);
+        meal.setMealType(mealType);
+        meal.setMealDate(date);
+        presenter.toggleMealPlan(meal);
     }
 
 }
