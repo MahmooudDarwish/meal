@@ -135,4 +135,9 @@ public class MealRepositoryImpl implements MealRepository {
     public LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId) {
         return localSource.getIngredientsForMeal(mealId);
     }
+
+    @Override
+    public LiveData<List<MealIngredient>> getIngredientsForUser(String userId) {
+        return localSource.getIngredientsForUserId(userId);
+    }
 }

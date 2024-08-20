@@ -115,4 +115,9 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     public LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId) {
         return mealIngredientDao.getIngredientsForMeal(mealId);
     }
+
+    @Override
+    public LiveData<List<MealIngredient>> getIngredientsForUserId(String userId) {
+        return mealIngredientDao.getMealIngredientsByUserId(userId);
+    }
 }

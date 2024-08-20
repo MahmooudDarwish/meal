@@ -22,10 +22,10 @@ public interface MealLocalDataSource {
     LiveData<List<MealPlan>> getAllMealPlansForUser(String userId);
     void isMealPlan(String userId, String mealId, IsPlanMealCallback callback);
 
-
-
     void saveMealIngredient(MealIngredient ingredient);
      void deleteMealIngredient(String mealId);
     LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId);
+
+    LiveData<List<MealIngredient>> getIngredientsForUserId(String userId);
 }
 

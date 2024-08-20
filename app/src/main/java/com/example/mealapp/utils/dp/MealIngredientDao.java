@@ -22,5 +22,7 @@ public interface MealIngredientDao {
     @Query("SELECT * FROM ingredients WHERE mealId = :mealId")
     LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId);
 
+    @Query("SELECT * FROM ingredients WHERE userId =:userId")
+    LiveData<List<MealIngredient>> getMealIngredientsByUserId(String userId);
 }
 

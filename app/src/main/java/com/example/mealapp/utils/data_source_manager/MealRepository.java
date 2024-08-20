@@ -61,4 +61,6 @@ public interface MealRepository {
      void deleteMealIngredient(String mealId);
 
      LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId);
+     LiveData<List<MealIngredient>> getIngredientsForUser(String userId);
+
 }

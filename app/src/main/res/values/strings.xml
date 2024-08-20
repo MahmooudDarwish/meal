@@ -46,4 +46,6 @@
     <string name="add_to_planner">Add to Planner</string>
     <string name="remove_from_plan">Remove from Plan</string>
     <string name="you_dont_have_any_plans_yet">You don\'t have any Plans yet</string>
+    <string name="backup">Backup</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
