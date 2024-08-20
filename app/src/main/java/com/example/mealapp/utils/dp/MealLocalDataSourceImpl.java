@@ -45,6 +45,11 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
         });
     }
 
+    @Override
+    public void addFavoriteMeals(List<FavoriteMeal> favoriteMeals) {
+        executor.execute(() -> favoriteMealDao.insertFavoriteMeals(favoriteMeals));
+    }
+
 
     @Override
     public void deleteFavoriteMeal(FavoriteMeal favoriteMeal) {
@@ -77,6 +82,12 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
+    public void addMealPlans(List<MealPlan> mealPlans) {
+        executor.execute(() -> mealPlanDao.insertFoodPlans(mealPlans));
+
+    }
+
+    @Override
     public void deleteMealPlan(MealPlan mealPlan) {
         executor.execute(() -> mealPlanDao.deleteFoodPlan(mealPlan));
     }
@@ -104,6 +115,12 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     @Override
     public void saveMealIngredient(MealIngredient ingredient) {
         executor.execute(() -> mealIngredientDao.insertMealIngredient(ingredient));
+    }
+
+    @Override
+    public void addMealIngredients(List<MealIngredient> ingredients) {
+        executor.execute(() -> mealIngredientDao.insertMealIngredients(ingredients));
+
     }
 
     @Override

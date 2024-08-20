@@ -24,10 +24,11 @@ public class SettingsPresenter implements ISettingsPresenter{
     public void uploadDataToFirebase(LifecycleOwner owner) {
         String userId = UserSessionHolder.getInstance().getUser().getUid();
 
-        view.showLoading();
 
         repo.getAllFavoriteMealsForUser(userId).observe(owner, favoriteMeals -> {
             if (favoriteMeals != null && !favoriteMeals.isEmpty()) {
+                view.showLoading();
+
                 FirebaseManager.getInstance().setFavoriteMeals(favoriteMeals, task -> {
                     if (task.isSuccessful()) {
                         view.showMessage("Favorite meals uploaded successfully.");
@@ -35,6 +36,8 @@ public class SettingsPresenter implements ISettingsPresenter{
                         view.showMessage("Failed to upload favorite meals.");
                     }
                 });
+            }else{
+                view.showMessage("No favorite meals found.");
             }
         });
 
@@ -48,6 +51,8 @@ public class SettingsPresenter implements ISettingsPresenter{
                         view.showMessage("Failed to upload meal plans.");
                     }
                 });
+            }else{
+                view.showMessage("No meal plans found.");
             }
         });
 

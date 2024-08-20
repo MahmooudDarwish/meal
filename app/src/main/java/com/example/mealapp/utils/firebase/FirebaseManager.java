@@ -19,11 +19,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.Objects;
 
 public class FirebaseManager {
 
@@ -139,7 +139,7 @@ public class FirebaseManager {
 
         List<Task<Void>> tasks = new ArrayList<>();
 
-        if (currentUser != null) {
+        if (currentUser != null ) {
             for (FavoriteMeal meal : meals) {
                 DocumentReference docRef = firestore.collection("favorite_meals")
                         .document(meal.getIdMeal() + meal.getIdUser() + "favorite");
@@ -205,4 +205,80 @@ public class FirebaseManager {
             onCompleteListener.onComplete(Tasks.forException(new Exception("No current user")));
         }
     }
+
+    public void getFavoriteMeals(String userId, @NonNull OnCompleteListener<List<FavoriteMeal>> onCompleteListener) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            firestore.collection("favorite_meals")
+                    .whereEqualTo("idUser", userId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<FavoriteMeal> favoriteMeals = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                FavoriteMeal meal = FavoriteMeal.fromMap(document.getData());
+                                favoriteMeals.add(meal);
+                            }
+                            onCompleteListener.onComplete(Tasks.forResult(favoriteMeals));
+                        } else {
+                            onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
+                        }
+                    });
+        } else {
+            onCompleteListener.onComplete(Tasks.forException(new Exception("No current user")));
+        }
+    }
+
+    public void getMealPlans(String userId, @NonNull OnCompleteListener<List<MealPlan>> onCompleteListener) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            firestore.collection("plan_meals")
+                    .whereEqualTo("idUser", userId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<MealPlan> mealPlans = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                MealPlan plan = MealPlan.fromMap(document.getData());
+                                mealPlans.add(plan);
+                            }
+                            onCompleteListener.onComplete(Tasks.forResult(mealPlans));
+                        } else {
+                            onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
+                        }
+                    });
+        } else {
+            onCompleteListener.onComplete(Tasks.forException(new Exception("No current user")));
+        }
+    }
+
+
+    public void getMealIngredients(String userId, @NonNull OnCompleteListener<List<MealIngredient>> onCompleteListener) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            firestore.collection("ingredients")
+                    .whereEqualTo("userId", userId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<MealIngredient> mealIngredients = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                MealIngredient ingredient = MealIngredient.fromMap(document.getData());
+                                mealIngredients.add(ingredient);
+                            }
+                            onCompleteListener.onComplete(Tasks.forResult(mealIngredients));
+                        } else {
+                            onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
+                        }
+                    });
+        } else {
+            onCompleteListener.onComplete(Tasks.forException(new Exception("No current user")));
+        }
+    }
+
+
+
 }

@@ -1,4 +1,4 @@
-package com.example.mealapp.feature.home.view;
+package com.example.mealapp.feature.main.view;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,7 +19,7 @@ import com.example.mealapp.R;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Home extends AppCompatActivity {
+public class MainScreen extends AppCompatActivity {
 
     private RelativeLayout bannerNoInternet;
     private BroadcastReceiver networkReceiver;
@@ -28,7 +28,8 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
+
 
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -38,8 +39,6 @@ public class Home extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
         bannerNoInternet = findViewById(R.id.bannerNoInternet);
-
-        checkInternetConnection();
         networkReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -47,6 +46,8 @@ public class Home extends AppCompatActivity {
             }
         };
     }
+
+
 
     @Override
     protected void onResume() {

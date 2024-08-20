@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface MealLocalDataSource {
     void saveFavoriteMeal(FavoriteMeal favoriteMeal);
+    void addFavoriteMeals(List<FavoriteMeal> favoriteMeals);
     void deleteFavoriteMeal(FavoriteMeal favoriteMeal);
     LiveData<FavoriteMeal> getFavoriteMeal(String userId, String mealId);
     LiveData<List<FavoriteMeal>> getAllFavoriteMealsForUser(String userId);
@@ -17,12 +18,14 @@ public interface MealLocalDataSource {
 
 
     void saveMealPlan(MealPlan mealPlan);
+    void addMealPlans(List<MealPlan> mealPlans);
     void deleteMealPlan(MealPlan mealPlan);
     LiveData<MealPlan> getMealPlan(String userId, String mealId);
     LiveData<List<MealPlan>> getAllMealPlansForUser(String userId);
     void isMealPlan(String userId, String mealId, IsPlanMealCallback callback);
 
     void saveMealIngredient(MealIngredient ingredient);
+    void addMealIngredients(List<MealIngredient> ingredients);
      void deleteMealIngredient(String mealId);
     LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId);
 

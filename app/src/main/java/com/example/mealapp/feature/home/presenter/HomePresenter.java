@@ -2,16 +2,21 @@ package com.example.mealapp.feature.home.presenter;
 
 import android.util.Log;
 
+
 import com.example.mealapp.feature.home.view.IHome;
+import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
+import com.example.mealapp.utils.common_layer.local_models.MealIngredient;
+import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.common_layer.models.User;
+import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
 import com.example.mealapp.utils.firebase.FirebaseManager;
 import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
@@ -19,16 +24,57 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
     private final IHome _view;
     private final MealRepository _repo;
 
-    private List<PreviewMeal> meals = new ArrayList<>();
-
-    private final int MAX_MEALS = 20;
-
     private static final String TAG = "HomePresenter";
 
     public HomePresenter(IHome view, MealRepository repo) {
         _view = view;
         _repo = repo;
     }
+
+    @Override
+    public void getDataFromFirebase() {
+            String userId = UserSessionHolder.getInstance().getUser().getUid(); // Replace with the actual user ID
+            // Fetch Favorite Meals
+            FirebaseManager.getInstance().getFavoriteMeals(userId, task -> {
+                if (task.isSuccessful()) {
+                    List<FavoriteMeal> favoriteMeals = task.getResult();
+                    Log.i("firebase", favoriteMeals.size()+"Favorite" );
+                    Log.i("firebase", favoriteMeals.get(0).toString());
+                    _repo.addFavoriteMeals(favoriteMeals);
+                } else {
+                    Log.e("error", Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage()));
+                }
+            });
+
+            // Fetch Meal Plans
+            FirebaseManager.getInstance().getMealPlans(userId, task -> {
+                if (task.isSuccessful()) {
+                    List<MealPlan> mealPlans = task.getResult();
+                    Log.i("firebase", mealPlans.size()+"plan" );
+                    Log.i("firebase", mealPlans.get(0).toString());
+
+                    _repo.addMealPlans(mealPlans);
+                } else {
+                    Log.e("error", Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage()));
+                }
+            });
+
+            // Fetch Meal Ingredients
+            FirebaseManager.getInstance().getMealIngredients(userId, task -> {
+                if (task.isSuccessful()) {
+                    List<MealIngredient> ingredients = task.getResult();
+                    Log.i("firebase", ingredients.size()+"ingredient" );
+                    Log.i("firebase", ingredients.get(0).toString());
+
+                    _repo.addMealIngredients(ingredients);
+                } else {
+                    Log.e("error", Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage()));
+                }
+            });
+        }
+
+
+
     @Override
     public void getRandomMeal() {
         _repo.getRandomMeal(this);
@@ -36,6 +82,7 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
 
     @Override
     public void getRandomMeals() {
+        int MAX_MEALS = 20;
         for(int i = 0; i < MAX_MEALS; i++) {
           _repo.getRandomMeals(this);
         }

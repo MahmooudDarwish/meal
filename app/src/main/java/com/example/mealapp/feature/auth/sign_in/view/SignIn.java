@@ -22,7 +22,7 @@ import com.example.mealapp.R;
 import com.example.mealapp.feature.auth.sign_in.presenter.ISignInPresenter;
 import com.example.mealapp.feature.auth.sign_in.presenter.SignInPresenter;
 import com.example.mealapp.feature.auth.sign_up.view.SignUp;
-import com.example.mealapp.feature.home.view.Home;
+import com.example.mealapp.feature.main.view.MainScreen;
 import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -125,7 +125,7 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
         Toast.makeText(getActivity(), "Welcome!", Toast.LENGTH_LONG).show();
         dismiss();
         requireActivity().finish();
-        Intent intent = new Intent(getActivity(), Home.class);
+        Intent intent = new Intent(getActivity(), MainScreen.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         requireActivity().finish();

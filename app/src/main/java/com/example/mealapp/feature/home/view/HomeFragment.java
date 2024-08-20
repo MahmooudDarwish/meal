@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.example.mealapp.R;
 import com.example.mealapp.feature.home.presenter.HomePresenter;
 import com.example.mealapp.feature.home.presenter.IHomePresenter;
+import com.example.mealapp.feature.main.view.MainScreen;
 import com.example.mealapp.feature.meal_details.view.MealDetails;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.common_layer.models.User;
@@ -58,18 +59,8 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "onCreate: sssss");
         presenter = new HomePresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity())));
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         getActivity();
         SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences("user_data", Context.MODE_PRIVATE);
         boolean stayLoggedIn = sharedPreferences.getBoolean("stay_logged_in", false);
@@ -81,6 +72,21 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
             presenter.getCurrentUser();
         }
 
+        if (!UserSessionHolder.isGuest()) {
+            presenter.getDataFromFirebase();
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Log.i(TAG, "onViewCreated: sssss");
         initUI(view);
 
         networkReceiver = new BroadcastReceiver() {
@@ -95,11 +101,9 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
                 }
             }
         };
-
         IntentFilter filter = new IntentFilter();
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         Objects.requireNonNull(requireActivity()).registerReceiver(networkReceiver, filter);
-
     }
 
 
@@ -160,7 +164,7 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
             SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences("user_data", Context.MODE_PRIVATE);
             sharedPreferences.edit().clear().apply();
             presenter.signOut();
-            Intent intent = new Intent(getActivity(), Home.class);
+            Intent intent = new Intent(getActivity(), MainScreen.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             requireActivity().finish();

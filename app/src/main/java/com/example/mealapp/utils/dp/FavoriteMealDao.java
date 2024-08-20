@@ -16,7 +16,8 @@ public interface FavoriteMealDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertFavoriteMeal(FavoriteMeal favoriteMeal);
-
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertFavoriteMeals(List<FavoriteMeal> favoriteMeals);
     @Delete
     void deleteFavoriteMeal(FavoriteMeal favoriteMeal);
 

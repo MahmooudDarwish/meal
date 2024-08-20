@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.example.mealapp.R;
 import com.example.mealapp.feature.auth.sign_in.view.SignIn;
-import com.example.mealapp.feature.home.view.Home;
+import com.example.mealapp.feature.main.view.MainScreen;
 import com.example.mealapp.feature.settings.presenter.ISettingsPresenter;
 import com.example.mealapp.feature.settings.presenter.SettingsPresenter;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
@@ -71,7 +71,7 @@ public class SettingsFragment extends Fragment implements ISettings {
                 SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences("user_data", Context.MODE_PRIVATE);
                 sharedPreferences.edit().clear().apply();
                 presenter.signOut();
-                Intent intent = new Intent(getActivity(), Home.class);
+                Intent intent = new Intent(getActivity(), MainScreen.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 requireActivity().finish();

@@ -16,6 +16,10 @@ public interface MealIngredientDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMealIngredient(MealIngredient ingredient);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertMealIngredients(List<MealIngredient> ingredients);
+
+
     @Query("DELETE FROM ingredients WHERE mealId = :mealId")
     void deleteMealIngredient(String mealId);
 

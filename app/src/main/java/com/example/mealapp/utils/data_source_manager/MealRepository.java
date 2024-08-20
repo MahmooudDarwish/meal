@@ -36,6 +36,7 @@ public interface MealRepository {
 
      // Local Data Source Methods
      void saveFavoriteMeal(FavoriteMeal favoriteMeal);
+     void addFavoriteMeals(List<FavoriteMeal> favoriteMeals);
 
      void deleteFavoriteMeal(FavoriteMeal favoriteMeal);
 
@@ -47,6 +48,8 @@ public interface MealRepository {
 
      void saveMealPlan(MealPlan mealPlan);
 
+     void addMealPlans(List<MealPlan> mealPlans);
+
      void deleteMealPlan(MealPlan mealPlan);
 
      void isMealPlan(String userId, String mealId, IsPlanMealCallback callback);
@@ -57,6 +60,8 @@ public interface MealRepository {
      LiveData<List<MealPlan>> getAllMealPlansForUser(String userId);
 
      void saveFavoriteMealIngredient(MealIngredient ingredient);
+
+     void addMealIngredients(List<MealIngredient> ingredients);
 
      void deleteMealIngredient(String mealId);
 

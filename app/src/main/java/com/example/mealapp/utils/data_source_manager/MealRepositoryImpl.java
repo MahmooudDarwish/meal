@@ -82,31 +82,46 @@ public class MealRepositoryImpl implements MealRepository {
     }
 
     // Local Data Source Methods
+    @Override
     public void saveFavoriteMeal(FavoriteMeal favoriteMeal) {
         Log.i("MealRepositoryImpl", "saveFavoriteMeal: "+ favoriteMeal.getIdMeal());
         localSource.saveFavoriteMeal(favoriteMeal);
     }
 
+    @Override
+    public void addFavoriteMeals(List<FavoriteMeal> favoriteMeals) {
+        localSource.addFavoriteMeals(favoriteMeals);
+    }
+
+    @Override
     public void deleteFavoriteMeal(FavoriteMeal favoriteMeal) {
         localSource.deleteFavoriteMeal(favoriteMeal);
     }
-
+    @Override
     public LiveData<FavoriteMeal> getFavoriteMeal(String userId, String mealId) {
         return localSource.getFavoriteMeal(userId, mealId);
     }
 
+    @Override
     public LiveData<List<FavoriteMeal>> getAllFavoriteMealsForUser(String userId) {
         return localSource.getAllFavoriteMealsForUser(userId);
     }
-
+    @Override
     public void isMealFavorite(String userId, String mealId, IsFavoriteMealCallback callback) {
          localSource.isMealFavorite(userId, mealId, callback);
     }
 
+    @Override
     public void saveMealPlan(MealPlan mealPlan) {
         localSource.saveMealPlan(mealPlan);
     }
 
+    @Override
+    public void addMealPlans(List<MealPlan> mealPlans) {
+            localSource.addMealPlans(mealPlans);
+    }
+
+    @Override
     public void deleteMealPlan(MealPlan mealPlan) {
         localSource.deleteMealPlan(mealPlan);
     }
@@ -115,23 +130,29 @@ public class MealRepositoryImpl implements MealRepository {
     public void isMealPlan(String userId, String mealId, IsPlanMealCallback callback) {
         localSource.isMealPlan(userId, mealId, callback);
     }
-
+    @Override
     public LiveData<MealPlan> getMealPlan(String userId, String mealId) {
         return localSource.getMealPlan(userId, mealId);
     }
-
+    @Override
     public LiveData<List<MealPlan>> getAllMealPlansForUser(String userId) {
         return localSource.getAllMealPlansForUser(userId);
     }
-
+    @Override
     public void saveFavoriteMealIngredient(MealIngredient ingredient) {
         localSource.saveMealIngredient(ingredient);
     }
 
+    @Override
+    public void addMealIngredients(List<MealIngredient> ingredients) {
+        localSource.addMealIngredients(ingredients);
+    }
+
+    @Override
     public void deleteMealIngredient(String mealId) {
         localSource.deleteMealIngredient(mealId);
     }
-
+    @Override
     public LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId) {
         return localSource.getIngredientsForMeal(mealId);
     }

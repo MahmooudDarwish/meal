@@ -21,19 +21,10 @@
         <activity
             android:name=".feature.meal_details.view.MealDetails"
             android:exported="false" />
-        <activity
-            android:name=".feature.welcome.view.Welcome"
+         <activity
+            android:name=".feature.main.view.MainScreen"
             android:exported="false" />
-        <activity
-            android:name=".feature.home.view.Home"
-            android:exported="false" />
-        <activity
-            android:name=".feature.auth.sign_up.view.SignUp"
-            android:exported="false" />
-        <activity
-            android:name=".feature.auth.sign_in.view.SignIn"
-            android:exported="false" />
-        <activity
+         <activity
             android:name=".feature.splash.view.Splash"
             android:exported="true">
             <intent-filter>
