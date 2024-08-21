@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mealapp.R;
-import com.example.mealapp.utils.common_layer.models.Country;
+import com.example.mealapp.feature.search.model.Country;
 import android.view.LayoutInflater;
 
 import java.util.List;

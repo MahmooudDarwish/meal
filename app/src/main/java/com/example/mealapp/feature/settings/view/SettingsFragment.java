@@ -82,7 +82,7 @@ public class SettingsFragment extends Fragment implements ISettings {
             if(NetworkUtil.isConnected()){
                 presenter.uploadDataToFirebase(this);
             }else{
-                showMessage("No Internet Connection");
+                showMessage(getString(R.string.no_internet_message));
             }
             });
     }
@@ -116,7 +116,7 @@ public class SettingsFragment extends Fragment implements ISettings {
     public void showLoading() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Backing Up...");
+            progressDialog.setMessage(getString(R.string.backing_up_message));
             progressDialog.setCancelable(false);
         }
         progressDialog.show();
@@ -128,6 +128,11 @@ public class SettingsFragment extends Fragment implements ISettings {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public String getStringFromRes(int resId) {
+        return getString(resId);
     }
 
 }

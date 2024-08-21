@@ -5,64 +5,64 @@ import androidx.room.Entity;
 
 import com.example.mealapp.utils.common_layer.models.Ingredient;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
+import com.example.mealapp.utils.constants.ConstantKeys;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@Entity(tableName = "ingredients", primaryKeys = {"userId", "ingredientName"})
+@Entity(tableName = "ingredients", primaryKeys = {"idUser", "ingredientName"})
 public class MealIngredient {
     @NonNull
-    private final String userId;
+    private final String idUser;
     @NonNull
     private final String ingredientName;
-    private final String mealId;
+    private final String idMeal;
     private final String ingredientImage;
     private final String measure;
 
-    public MealIngredient(String mealId, @NonNull String ingredientName, String ingredientImage, String measure, @NonNull String userId) {
-        this.mealId = mealId;
+    public MealIngredient(String idMeal, @NonNull String ingredientName, String ingredientImage, String measure, @NonNull String idUser) {
+        this.idMeal = idMeal;
         this.ingredientName = ingredientName;
         this.ingredientImage = ingredientImage;
         this.measure = measure;
-        this.userId = userId;
+        this.idUser = idUser;
     }
 
     // Convenience constructor
     public MealIngredient(String mealId, Ingredient ingredient) {
 
-        this(mealId, ingredient.getStrIngredient(),
-                "https://www.themealdb.com/images/ingredients/" + ingredient.getStrIngredient() + "-Small" + ".png",
+        this(mealId, ingredient.getStrIngredient(), ConstantKeys.getIngredientImageUrl(ingredient.getStrIngredient()),
                 ingredient.getQuantity(), UserSessionHolder.getInstance().getUser().getUid());
     }
 
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-        map.put("userId", userId);
-        map.put("mealId", mealId);
-        map.put("ingredientName", ingredientName);
-        map.put("ingredientImage", ingredientImage);
-        map.put("measure", measure);
+        map.put(ConstantKeys.KEY_ID_USER, idUser);
+        map.put(ConstantKeys.KEY_ID_MEAL, idMeal);
+        map.put(ConstantKeys.KEY_INGREDIENT_NAME, ingredientName);
+        map.put(ConstantKeys.KEY_INGREDIENT_IMAGE, ingredientImage);
+        map.put(ConstantKeys.KEY_MEASURE, measure);
         return map;
     }
 
     public static MealIngredient fromMap(Map<String, Object> map) {
-        String mealId = (String) map.get("mealId");
-        String ingredientName = (String) map.get("ingredientName");
-        String ingredientImage = (String) map.get("ingredientImage");
-        String measure = (String) map.get("measure");
-        String userId = (String) map.get("userId");
+        String mealId = (String) map.get(ConstantKeys.KEY_ID_MEAL);
+        String ingredientName = (String) map.get(ConstantKeys.KEY_INGREDIENT_NAME);
+        String ingredientImage = (String) map.get(ConstantKeys.KEY_INGREDIENT_IMAGE);
+        String measure = (String) map.get(ConstantKeys.KEY_MEASURE);
+        String idUser = (String) map.get(ConstantKeys.KEY_ID_USER);
 
-        return new MealIngredient(mealId, Objects.requireNonNull(ingredientName), ingredientImage, measure, userId);
+        return new MealIngredient(mealId, Objects.requireNonNull(ingredientName), ingredientImage, measure, Objects.requireNonNull(idUser));
     }
+
     @NonNull
-    public String getUserId() {
-        return userId;
+    public String getIdUser() {
+        return idUser;
     }
 
-    // Getters and Setters
-    public String getMealId() {
-        return mealId;
+    public String getIdMeal() {
+        return idMeal;
     }
 
     @NonNull

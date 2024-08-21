@@ -27,7 +27,7 @@ public class SignInPresenter implements ISignInPresenter {
     public void signIn(String email, String password) {
         FirebaseManager.getInstance().signIn(email, password, task -> {
             if (task.isSuccessful()) {
-                FirebaseManager.getInstance().getUserData(new OnUserRetrieveData() {
+                FirebaseManager.getInstance().getCurrentUser(new OnUserRetrieveData() {
                     @Override
                     public void onUserDataRetrieved(User user) {
                         if (user != null) {
@@ -55,7 +55,7 @@ public class SignInPresenter implements ISignInPresenter {
     public void signInWithGoogle(GoogleSignInAccount account) {
         FirebaseManager.getInstance().signInWithGoogle(account, task -> {
             if (task.isSuccessful()) {
-                FirebaseManager.getInstance().getUserData(new OnUserRetrieveData() {
+                FirebaseManager.getInstance().getCurrentUser(new OnUserRetrieveData() {
                     @Override
                     public void onUserDataRetrieved(User user) {
                         if (user != null) {

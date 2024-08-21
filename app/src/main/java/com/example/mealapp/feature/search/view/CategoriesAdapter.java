@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mealapp.R;
-import com.example.mealapp.utils.common_layer.models.Category;
+import com.example.mealapp.feature.search.model.Category;
 
 import java.util.List;
 

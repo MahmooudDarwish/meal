@@ -20,13 +20,13 @@ public interface MealIngredientDao {
     void insertMealIngredients(List<MealIngredient> ingredients);
 
 
-    @Query("DELETE FROM ingredients WHERE mealId = :mealId")
+    @Query("DELETE FROM ingredients WHERE idMeal = :mealId")
     void deleteMealIngredient(String mealId);
 
-    @Query("SELECT * FROM ingredients WHERE mealId = :mealId")
+    @Query("SELECT * FROM ingredients WHERE idMeal = :mealId")
     LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId);
 
-    @Query("SELECT * FROM ingredients WHERE userId =:userId")
+    @Query("SELECT * FROM ingredients WHERE idUser =:userId")
     LiveData<List<MealIngredient>> getMealIngredientsByUserId(String userId);
 }
 

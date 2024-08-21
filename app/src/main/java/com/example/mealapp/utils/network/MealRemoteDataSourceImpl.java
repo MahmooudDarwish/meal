@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.mealapp.R;
 import com.example.mealapp.utils.common_layer.models.CategoryResponse;
 import com.example.mealapp.utils.common_layer.models.CountryResponse;
 import com.example.mealapp.utils.common_layer.models.DetailedMealResponse;
@@ -12,6 +13,7 @@ import com.example.mealapp.utils.common_layer.models.Ingredient;
 import com.example.mealapp.utils.common_layer.models.IngredientResponse;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.common_layer.models.PreviewMealResponse;
+import com.example.mealapp.utils.resource_helper.ResourceHelper;
 
 import java.io.IOException;
 import java.util.List;
@@ -55,8 +57,7 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
                     homeNetworkDelegate.onGetRandomMealSuccessResult(meal);
                 }
                 else {
-                    String errorMessage = "Failed to fetch Meal of the day. Response unsuccessful or data is null.";
-
+                    String errorMessage = ResourceHelper.getString(R.string.error_fetch_meals);
                     homeNetworkDelegate.onFailureResult(errorMessage);
                     Log.e(TAG, "onResponse: " + errorMessage);
                 }
@@ -82,8 +83,7 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
                     homeNetworkDelegate.onGetRandomMealsSuccessResult(meal);
                 }
                 else {
-                    String errorMessage = "Failed to fetch Meal of the day. Response unsuccessful or data is null.";
-
+                    String errorMessage = ResourceHelper.getString(R.string.error_fetch_meals);
                     homeNetworkDelegate.onFailureResult(errorMessage);
                     Log.e(TAG, "onResponse: " + errorMessage);
                 }
@@ -107,7 +107,7 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
                 if (response.isSuccessful() && response.body() != null) {
                     searchNetworkDelegate.onGetAllCategoriesSuccessResult(response.body().getCategories());
                 } else {
-                    String errorMessage = "Failed to fetch categories. Response unsuccessful or data is null.";
+                    String errorMessage = ResourceHelper.getString(R.string.error_fetch_categories);
                     searchNetworkDelegate.onFailureResult(errorMessage);
                     Log.e(TAG, errorMessage);
                 }
@@ -132,7 +132,7 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
                     Log.i(TAG, "Countries fetched successfully: " + response.body().getCountries());
                     searchNetworkDelegate.onGetAllCountriesSuccessResult(response.body().getCountries());
                 } else {
-                    String errorMessage = "Failed to fetch countries. Response unsuccessful or data is null.";
+                    String errorMessage = ResourceHelper.getString(R.string.error_fetch_countries);
                     searchNetworkDelegate.onFailureResult(errorMessage);
                     Log.e(TAG, errorMessage);
                 }
@@ -158,7 +158,8 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
                     Log.i(TAG, "onResponse: " + response.body().getMeals());
                     mealDetailsNetworkDelegate.onGetMealDetailsSuccessResult(response.body().getMeals().get(0));
                 } else {
-                    mealDetailsNetworkDelegate.onFailureResult("Response unsuccessful");
+                    String errorMessage = ResourceHelper.getString(R.string.error_fetch_meal_details);
+                    mealDetailsNetworkDelegate.onFailureResult(errorMessage);
                 }
             }
 
@@ -182,7 +183,8 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
                     Log.i(TAG, "onResponse: " + response.body().getMeals());
                     searchNetworkDelegate.onGetAllMealsByCountrySuccessResult(response.body().getMeals());
                 } else {
-                    searchNetworkDelegate.onFailureResult("Response unsuccessful");
+                    String errorMessage = ResourceHelper.getString(R.string.error_fetch_meals);
+                    searchNetworkDelegate.onFailureResult(errorMessage);
                 }
             }
 
@@ -206,7 +208,8 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
                     Log.i(TAG, "onResponse: " + response.body().getMeals());
                     searchNetworkDelegate.onGetAllMealsByCategorySuccessResult(response.body().getMeals());
                 } else {
-                    searchNetworkDelegate.onFailureResult("Response unsuccessful");
+                    String errorMessage = ResourceHelper.getString(R.string.error_fetch_countries);
+                    searchNetworkDelegate.onFailureResult(errorMessage);
                 }
             }
 
@@ -231,7 +234,10 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
                     Log.i("Ingredients", "onResponse: " + ingredients.get(0).getStrIngredient());
                     searchNetworkDelegate.onGetAllIngredientsSuccessResult(ingredients);
                    }else {
-                    searchNetworkDelegate.onFailureResult("Response unsuccessful");
+                    String errorMessage = ResourceHelper.getString(R.string.error_fetch_ingredients);
+                    searchNetworkDelegate.onFailureResult(errorMessage);
+                    Log.e(TAG, errorMessage);
+
                 }
             }
 
@@ -255,7 +261,9 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
                     Log.i(TAG, "onResponse: " + response.body().getMeals());
                     searchNetworkDelegate.onGetAllMealsByIngredientSuccessResult(response.body().getMeals());
                 } else {
-                    searchNetworkDelegate.onFailureResult("Response unsuccessful");
+                    String errorMessage = ResourceHelper.getString(R.string.error_fetch_meal);
+                    searchNetworkDelegate.onFailureResult(errorMessage);
+                    Log.e(TAG, errorMessage);
                 }
             }
 
@@ -270,9 +278,9 @@ public class MealRemoteDataSourceImpl implements  MealRemoteDataSource {
 
     private String getErrorMessage(Throwable throwable) {
         if (throwable instanceof IOException) {
-            return "Network error: Please check your internet connection and try again.";
+            return ResourceHelper.getString(R.string.error_network);
         } else {
-            return "Unexpected error: " + throwable.getMessage();
+            return ResourceHelper.getString(R.string.error_unexpected);
         }
     }
 

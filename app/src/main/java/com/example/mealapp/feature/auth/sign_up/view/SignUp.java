@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.mealapp.R;
 import com.example.mealapp.feature.auth.sign_in.view.SignIn;
-import com.example.mealapp.utils.common_layer.models.ValidationResult;
+import com.example.mealapp.feature.auth.sign_up.model.ValidationResult;
 import com.example.mealapp.feature.auth.sign_up.presenter.ISignUpPresenter;
 import com.example.mealapp.feature.auth.sign_up.presenter.SignUpPresenter;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;

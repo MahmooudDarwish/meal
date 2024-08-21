@@ -5,6 +5,7 @@ import androidx.room.Entity;
 
 import com.example.mealapp.utils.common_layer.models.DetailedMeal;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
+import com.example.mealapp.utils.constants.ConstantKeys;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -48,27 +49,28 @@ public class FavoriteMeal implements Serializable {
 
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-        map.put("idMeal", idMeal);
-        map.put("idUser", idUser);
-        map.put("strMeal", strMeal);
-        map.put("strCategory", strCategory);
-        map.put("strArea", strArea);
-        map.put("strInstructions", strInstructions);
-        map.put("strMealThumb", strMealThumb);
-        map.put("strYoutube", strYoutube);
+        map.put(ConstantKeys.KEY_ID_MEAL, idMeal);
+        map.put(ConstantKeys.KEY_ID_USER, idUser);
+        map.put(ConstantKeys.KEY_STR_MEAL, strMeal);
+        map.put(ConstantKeys.KEY_STR_CATEGORY, strCategory);
+        map.put(ConstantKeys.KEY_STR_AREA, strArea);
+        map.put(ConstantKeys.KEY_STR_INSTRUCTIONS, strInstructions);
+        map.put(ConstantKeys.KEY_STR_MEAL_THUMB, strMealThumb);
+        map.put(ConstantKeys.KEY_STR_YOUTUBE, strYoutube);
         return map;
     }
 
+
     public static FavoriteMeal fromMap(Map<String, Object> map) {
         return new FavoriteMeal(
-                (String) Objects.requireNonNull(map.get("idMeal")),
-                (String) Objects.requireNonNull(map.get("idUser")),
-                (String) map.get("strMeal"),
-                (String) map.get("strCategory"),
-                (String) map.get("strArea"),
-                (String) map.get("strInstructions"),
-                (String) map.get("strMealThumb"),
-                (String) map.get("strYoutube")
+                (String) Objects.requireNonNull(map.get(ConstantKeys.KEY_ID_MEAL)),
+                (String) Objects.requireNonNull(map.get(ConstantKeys.KEY_ID_USER)),
+                (String) map.get(ConstantKeys.KEY_STR_MEAL),
+                (String) map.get(ConstantKeys.KEY_STR_CATEGORY),
+                (String) map.get(ConstantKeys.KEY_STR_AREA),
+                (String) map.get(ConstantKeys.KEY_STR_INSTRUCTIONS),
+                (String) map.get(ConstantKeys.KEY_STR_MEAL_THUMB),
+                (String) map.get(ConstantKeys.KEY_STR_YOUTUBE)
         );
     }
 

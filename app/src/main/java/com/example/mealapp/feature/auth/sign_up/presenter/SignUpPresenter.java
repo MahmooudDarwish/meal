@@ -6,11 +6,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.mealapp.R;
-import com.example.mealapp.utils.common_layer.models.ValidationResult;
-import com.example.mealapp.utils.validation_helpers.EmailValidator;
+import com.example.mealapp.feature.auth.sign_up.model.ValidationResult;
+import com.example.mealapp.feature.auth.sign_up.model.validation_helpers.EmailValidator;
 import com.example.mealapp.feature.auth.sign_up.view.ISignUp;
-import com.example.mealapp.utils.validation_helpers.PasswordConfirmValidator;
-import com.example.mealapp.utils.validation_helpers.PasswordValidator;
+import com.example.mealapp.feature.auth.sign_up.model.validation_helpers.PasswordConfirmValidator;
+import com.example.mealapp.feature.auth.sign_up.model.validation_helpers.PasswordValidator;
 import com.example.mealapp.utils.firebase.FirebaseManager;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;

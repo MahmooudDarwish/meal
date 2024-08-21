@@ -33,7 +33,6 @@
     <string name="ingrediants">Ingredients</string>
     <string name="country">Country:</string>
     <string name="instructions">Instructions</string>
-    <string name="no_internet_connection">No Internet Connection</string>
     <string name="planner">Planner</string>
     <string name="guest">Guest</string>
     <string name="you_dont_have_favorites_yet">"You don't have any Favorites yet "</string>
@@ -71,4 +70,27 @@
     <string name="meal_removed_from_plan">Meal removed from your plan</string>
     <string name="meal_added_to_plan">Meal added to your plan</string>
     <string name="please_select_meal_type">Please select a meal type.</string>
+    <string name="favorite_meals_uploaded_successfully">Favorite meals uploaded successfully.</string>
+    <string name="failed_to_upload_favorite_meals">Failed to upload favorite meals.</string>
+    <string name="no_favorite_meals_found">No favorite meals found.</string>
+    <string name="meal_plans_uploaded_successfully">Meal plans uploaded successfully.</string>
+    <string name="failed_to_upload_meal_plans">Failed to upload meal plans.</string>
+    <string name="no_meal_plans_found">No meal plans found.</string>
+    <string name="meal_ingredients_uploaded_successfully">Meal ingredients uploaded successfully.</string>
+    <string name="failed_to_upload_meal_ingredients">Failed to upload meal ingredients.</string>
+    <string name="backing_up_message">Backing up…</string>">
+    <string name="error_no_current_user">No current user</string>
+    <string name="error_no_ingredients">No Ingredients found</string>
+    <string name="error_no_user_data">No user data found</string>
+    <string name="error_fetch_meal">Failed to fetch Meal of the day. Response unsuccessful or data is null.</string>
+    <string name="error_fetch_meals">Failed to fetch Meals. Response unsuccessful or data is null.</string>
+    <string name="error_fetch_ingredients">Failed to fetch Ingredients. Response unsuccessful or data is null.</string>
+    <string name="error_fetch_meal_details">Failed to fetch Meal. Response unsuccessful or data is null.</string>
+    <string name="error_fetch_categories">Failed to fetch categories. Response unsuccessful or data is null.</string>
+    <string name="error_fetch_countries">Failed to fetch countries. Response unsuccessful or data is null.</string>
+    <string name="error_response_unsuccessful">Response unsuccessful</string>
+    <string name="error_network">Network error: Please check your internet connection and try again.</string>
+    <string name="error_unexpected">Unexpected error: please contact us for assistance.</string>
+
+
 </resources>

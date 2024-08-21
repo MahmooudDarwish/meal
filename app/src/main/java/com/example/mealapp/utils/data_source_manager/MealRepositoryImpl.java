@@ -1,6 +1,5 @@
 package com.example.mealapp.utils.data_source_manager;
 
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -84,7 +83,6 @@ public class MealRepositoryImpl implements MealRepository {
     // Local Data Source Methods
     @Override
     public void saveFavoriteMeal(FavoriteMeal favoriteMeal) {
-        Log.i("MealRepositoryImpl", "saveFavoriteMeal: "+ favoriteMeal.getIdMeal());
         localSource.saveFavoriteMeal(favoriteMeal);
     }
 

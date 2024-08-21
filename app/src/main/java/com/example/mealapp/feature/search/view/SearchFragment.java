@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +25,8 @@ import com.example.mealapp.R;
 import com.example.mealapp.feature.meals_viewer.view.MealsViewer;
 import com.example.mealapp.feature.search.presenter.ISearchPresenter;
 import com.example.mealapp.feature.search.presenter.SearchPresenter;
-import com.example.mealapp.utils.common_layer.models.Category;
-import com.example.mealapp.utils.common_layer.models.Country;
+import com.example.mealapp.feature.search.model.Category;
+import com.example.mealapp.feature.search.model.Country;
 import com.example.mealapp.utils.common_layer.models.Ingredient;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
@@ -82,7 +81,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
                     swipeRefreshLayout.setEnabled(true);
                     refreshUI();
                 } else {
-                    Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.no_internet_message), Toast.LENGTH_SHORT).show();
                     swipeRefreshLayout.setEnabled(false);
                 }
             }
@@ -95,7 +94,6 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
         requireActivity().registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
     }
-
 
 
     private void setUpListeners() {
@@ -126,7 +124,6 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
                     int lastVisibleItemPosition = gridLayoutManager.findLastVisibleItemPosition();
 
                     if (lastVisibleItemPosition >= totalItemCount - 1) {
-                        Log.i("SearchFragment", "get  list");
                         presenter.loadMoreIngredients();
                     }
                 }
@@ -150,7 +147,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
         categoriesRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         ingredientsRecycler = v.findViewById(R.id.ingeridentsRecycler);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2,GridLayoutManager.HORIZONTAL, false); // 2 columns
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
         ingredientsRecycler.setLayoutManager(gridLayoutManager);
 
         ingredientsAdapter = new IngredientAdapter(this, this);

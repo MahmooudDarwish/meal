@@ -5,4 +5,6 @@ public interface ISettings {
 
     void showLoading();
     void hideLoading();
+
+    String getStringFromRes(int resId);
 }

@@ -18,6 +18,8 @@ import com.example.mealapp.feature.meal_details.view.MealDetails;
 import com.example.mealapp.feature.meals_viewer.presenter.MealsViewerPresenter;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
+import com.example.mealapp.utils.constants.ConstantKeys;
+
 import java.util.List;
 
 public class MealsViewer extends AppCompatActivity implements IMealsViewer, OnMealItemClicked {
@@ -102,7 +104,7 @@ public class MealsViewer extends AppCompatActivity implements IMealsViewer, OnMe
     @Override
     public void onMealItemClick(String mealId) {
         Intent intent = new Intent(this, MealDetails.class);
-        intent.putExtra("MEAL_ID", mealId);
+        intent.putExtra(ConstantKeys.MEAL_ID, mealId);
         startActivity(intent);
     }
 }

@@ -1,8 +1,8 @@
 package com.example.mealapp.feature.search.view;
 
 
-import com.example.mealapp.utils.common_layer.models.Category;
-import com.example.mealapp.utils.common_layer.models.Country;
+import com.example.mealapp.feature.search.model.Category;
+import com.example.mealapp.feature.search.model.Country;
 import com.example.mealapp.utils.common_layer.models.Ingredient;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 

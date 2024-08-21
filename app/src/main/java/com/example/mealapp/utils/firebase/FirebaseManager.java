@@ -4,10 +4,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.mealapp.R;
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
 import com.example.mealapp.utils.common_layer.local_models.MealIngredient;
 import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 import com.example.mealapp.utils.common_layer.models.User;
+import com.example.mealapp.utils.constants.ConstantKeys;
+import com.example.mealapp.utils.resource_helper.ResourceHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,7 +34,6 @@ public class FirebaseManager {
     private static FirebaseManager instance;
     private final FirebaseAuth firebaseAuth;
     private final FirebaseFirestore firestore;
-
 
     private static final String TAG = "FirebaseManager";
 
@@ -76,26 +78,26 @@ public class FirebaseManager {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
-            firestore.collection("users")
+            firestore.collection(ConstantKeys.COLLECTION_USERS)
                     .document(userId)
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful() && task.getResult() != null) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                String name = document.getString("name");
-                                String email = document.getString("email");
+                                String name = document.getString(ConstantKeys.KEY_NAME);
+                                String email = document.getString(ConstantKeys.KEY_EMAIL);
                                 User user = new User(email, name, userId);
                                 listener.onUserDataRetrieved(user);
                             } else {
-                                listener.onError(new Exception("No user data found"));
+                                listener.onError(new Exception(ResourceHelper.getString(R.string.error_no_user_data)));
                             }
                         } else {
                             listener.onError(task.getException());
                         }
                     });
         } else {
-            listener.onError(new Exception("No current user"));
+            listener.onError(new Exception(ResourceHelper.getString(R.string.error_no_current_user)));
         }
     }
 
@@ -106,7 +108,7 @@ public class FirebaseManager {
     public void saveUserData(User user) {
         if (firebaseAuth.getCurrentUser() != null) {
             String userId = firebaseAuth.getCurrentUser().getUid();
-            firestore.collection("users")
+            firestore.collection(ConstantKeys.COLLECTION_USERS)
                     .document(userId)
                     .set(user)
                     .addOnSuccessListener(s -> Log.d(TAG, "User data saved successfully"))
@@ -114,32 +116,6 @@ public class FirebaseManager {
         }
     }
 
-    public void getUserData(@NonNull final OnUserRetrieveData listener) {
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-            firestore.collection("users")
-                    .document(userId)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                String name = document.getString("name");
-                                String email = document.getString("email");
-                                User user = new User(email, name, userId);
-                                listener.onUserDataRetrieved(user);
-                            } else {
-                                listener.onError(new Exception("No user data found"));
-                            }
-                        } else {
-                            listener.onError(task.getException());
-                        }
-                    });
-        } else {
-            listener.onError(new Exception("No current user"));
-        }
-    }
 
     //BackUp handling
 
@@ -150,7 +126,7 @@ public class FirebaseManager {
 
         if (currentUser != null) {
             for (FavoriteMeal meal : meals) {
-                DocumentReference docRef = firestore.collection("favorite_meals")
+                DocumentReference docRef = firestore.collection(ConstantKeys.COLLECTION_FAVORITE_MEALS)
                         .document(meal.getIdMeal() + meal.getIdUser() + "favorite");
 
                 Task<Void> task = docRef.set(meal.toMap())
@@ -163,7 +139,7 @@ public class FirebaseManager {
             Task<Void> allTasks = Tasks.whenAll(tasks);
             allTasks.addOnCompleteListener(onCompleteListener);
         } else {
-            onCompleteListener.onComplete(Tasks.forException(new Exception("No current user")));
+            onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.error_no_current_user))));
         }
     }
 
@@ -174,7 +150,7 @@ public class FirebaseManager {
 
         if (currentUser != null) {
             for (MealPlan meal : plans) {
-                DocumentReference docRef = firestore.collection("plan_meals")
+                DocumentReference docRef = firestore.collection(ConstantKeys.COLLECTION_PLAN_MEALS)
                         .document(meal.getIdMeal() + meal.getIdUser() + "plan");
 
                 Task<Void> task = docRef.set(meal.toMap())
@@ -187,7 +163,7 @@ public class FirebaseManager {
             Task<Void> allTasks = Tasks.whenAll(tasks);
             allTasks.addOnCompleteListener(onCompleteListener);
         } else {
-            onCompleteListener.onComplete(Tasks.forException(new Exception("No current user")));
+            onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.error_no_current_user))));
         }
     }
 
@@ -198,8 +174,8 @@ public class FirebaseManager {
 
         if (currentUser != null) {
             for (MealIngredient ingredient : ingredients) {
-                DocumentReference docRef = firestore.collection("ingredients")
-                        .document(ingredient.getIngredientName() + ingredient.getUserId() + "ingredient");
+                DocumentReference docRef = firestore.collection(ConstantKeys.COLLECTION_INGREDIENTS)
+                        .document(ingredient.getIngredientName() + ingredient.getIdUser() + "ingredient");
 
                 Task<Void> task = docRef.set(ingredient.toMap())
                         .addOnSuccessListener(suc -> Log.d(TAG, "Ingredient saved successfully: " + ingredient.getIngredientName()))
@@ -211,7 +187,7 @@ public class FirebaseManager {
             Task<Void> allTasks = Tasks.whenAll(tasks);
             allTasks.addOnCompleteListener(onCompleteListener);
         } else {
-            onCompleteListener.onComplete(Tasks.forException(new Exception("No current user")));
+            onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.error_no_current_user))));
         }
     }
 
@@ -219,8 +195,8 @@ public class FirebaseManager {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         if (currentUser != null) {
-            firestore.collection("favorite_meals")
-                    .whereEqualTo("idUser", userId)
+            firestore.collection(ConstantKeys.COLLECTION_FAVORITE_MEALS)
+                    .whereEqualTo(ConstantKeys.KEY_ID_USER, userId)
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -233,14 +209,14 @@ public class FirebaseManager {
                                 onCompleteListener.onComplete(Tasks.forResult(favoriteMeals));
 
                             }else{
-                               onCompleteListener.onComplete(Tasks.forException(new Exception("No favorite meals found")));
+                               onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.no_favorite_meals_found))));
                             }
                         } else {
                             onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
                         }
                     });
         } else {
-            onCompleteListener.onComplete(Tasks.forException(new Exception("No current user")));
+            onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.error_no_current_user))));
         }
     }
 
@@ -248,8 +224,8 @@ public class FirebaseManager {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         if (currentUser != null) {
-            firestore.collection("plan_meals")
-                    .whereEqualTo("idUser", userId)
+            firestore.collection(ConstantKeys.COLLECTION_PLAN_MEALS)
+                    .whereEqualTo(ConstantKeys.KEY_ID_USER, userId)
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -261,14 +237,14 @@ public class FirebaseManager {
                             if(!mealPlans.isEmpty()) {
                                 onCompleteListener.onComplete(Tasks.forResult(mealPlans));
                             }else{
-                                onCompleteListener.onComplete(Tasks.forException(new Exception("No plan meals found")));
+                                onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.no_meal_plans_found))));
                             }
                         } else {
                             onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
                         }
                     });
         } else {
-            onCompleteListener.onComplete(Tasks.forException(new Exception("No current user")));
+            onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.error_no_current_user))));
         }
     }
 
@@ -277,8 +253,8 @@ public class FirebaseManager {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         if (currentUser != null) {
-            firestore.collection("ingredients")
-                    .whereEqualTo("userId", userId)
+            firestore.collection(ConstantKeys.COLLECTION_INGREDIENTS)
+                    .whereEqualTo(ConstantKeys.KEY_ID_USER, userId)
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful() && task.getResult() != null) {
@@ -291,16 +267,48 @@ public class FirebaseManager {
                             if (!mealIngredients.isEmpty()) {
                                 onCompleteListener.onComplete(Tasks.forResult(mealIngredients));
                             } else {
-                                onCompleteListener.onComplete(Tasks.forException(new Exception("No Ingredients found")));
+                                onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.error_no_ingredients))));
                             }
                         } else {
                             onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
                         }
                     });
         } else {
-            onCompleteListener.onComplete(Tasks.forException(new Exception("No current user")));
+            onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.error_no_current_user))));
         }
     }
 
 
 }
+
+
+
+/*
+    public void getUserData(@NonNull final OnUserRetrieveData listener) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            firestore.collection(ConstantKeys.COLLECTION_USERS)
+                    .document(userId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                String name = document.getString(ConstantKeys.KEY_NAME);
+                                String email = document.getString(ConstantKeys.KEY_EMAIL);
+                                User user = new User(email, name, userId);
+                                listener.onUserDataRetrieved(user);
+                            } else {
+                                listener.onError(new Exception("No user data found"));
+                            }
+                        } else {
+                            listener.onError(task.getException());
+                        }
+                    });
+        } else {
+            listener.onError(new Exception("No current user"));
+        }
+    }
+
+ */

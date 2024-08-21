@@ -5,6 +5,7 @@ import androidx.room.Entity;
 
 import com.example.mealapp.utils.common_layer.models.DetailedMeal;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
+import com.example.mealapp.utils.constants.ConstantKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,30 +53,30 @@ public class MealPlan {
 
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-        map.put("idMeal", idMeal);
-        map.put("idUser", idUser);
-        map.put("strMeal", strMeal);
-        map.put("strCategory", strCategory);
-        map.put("strArea", strArea);
-        map.put("strInstructions", strInstructions);
-        map.put("strMealThumb", strMealThumb);
-        map.put("strYoutube", strYoutube);
-        map.put("mealType", mealType);
-        map.put("date", date);
+        map.put(ConstantKeys.KEY_ID_MEAL, idMeal);
+        map.put(ConstantKeys.KEY_ID_USER, idUser);
+        map.put(ConstantKeys.KEY_STR_MEAL, strMeal);
+        map.put(ConstantKeys.KEY_STR_CATEGORY, strCategory);
+        map.put(ConstantKeys.KEY_STR_AREA, strArea);
+        map.put(ConstantKeys.KEY_STR_INSTRUCTIONS, strInstructions);
+        map.put(ConstantKeys.KEY_STR_MEAL_THUMB, strMealThumb);
+        map.put(ConstantKeys.KEY_STR_YOUTUBE, strYoutube);
+        map.put(ConstantKeys.KEY_MEAL_TYPE, mealType);
+        map.put(ConstantKeys.KEY_DATE, date);
         return map;
     }
 
     public static MealPlan fromMap(Map<String, Object> map) {
-        String idMeal = (String) map.get("idMeal");
-        String idUser = (String) map.get("idUser");
-        String strMeal = (String) map.get("strMeal");
-        String strCategory = (String) map.get("strCategory");
-        String strArea = (String) map.get("strArea");
-        String strInstructions = (String) map.get("strInstructions");
-        String strMealThumb = (String) map.get("strMealThumb");
-        String strYoutube = (String) map.get("strYoutube");
-        String mealType = (String) map.get("mealType");
-        String date = (String) map.get("date");
+        String idMeal = (String) map.get(ConstantKeys.KEY_ID_MEAL);
+        String idUser = (String) map.get(ConstantKeys.KEY_ID_USER);
+        String strMeal = (String) map.get(ConstantKeys.KEY_STR_MEAL);
+        String strCategory = (String) map.get(ConstantKeys.KEY_STR_CATEGORY);
+        String strArea = (String) map.get(ConstantKeys.KEY_STR_AREA);
+        String strInstructions = (String) map.get(ConstantKeys.KEY_STR_INSTRUCTIONS);
+        String strMealThumb = (String) map.get(ConstantKeys.KEY_STR_MEAL_THUMB);
+        String strYoutube = (String) map.get(ConstantKeys.KEY_STR_YOUTUBE);
+        String mealType = (String) map.get(ConstantKeys.KEY_MEAL_TYPE);
+        String date = (String) map.get(ConstantKeys.KEY_DATE);
 
         return new MealPlan(Objects.requireNonNull(idMeal), Objects.requireNonNull(idUser), strMeal, strCategory, strArea, strInstructions,
                 strMealThumb, strYoutube, mealType, date);

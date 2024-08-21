@@ -1,9 +1,9 @@
-package com.example.mealapp.utils.validation_helpers;
+package com.example.mealapp.feature.auth.sign_up.model.validation_helpers;
 
 import android.text.TextUtils;
 import android.util.Patterns;
 
-import com.example.mealapp.utils.common_layer.models.ValidationResult;
+import com.example.mealapp.feature.auth.sign_up.model.ValidationResult;
 
 public abstract class EmailValidator {
 

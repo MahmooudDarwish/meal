@@ -1,4 +1,4 @@
-package com.example.mealapp.utils.common_layer.models;
+package com.example.mealapp.feature.search.model;
 
 public class Category {
     final private String idCategory;

@@ -1,4 +1,4 @@
-package com.example.mealapp.utils.common_layer.models;
+package com.example.mealapp.feature.auth.sign_up.model;
 
 public class ValidationResult {
     private final boolean isValid;
