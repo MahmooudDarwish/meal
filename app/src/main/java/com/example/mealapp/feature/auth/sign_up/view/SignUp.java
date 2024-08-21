@@ -108,7 +108,8 @@ public class SignUp extends BottomSheetDialogFragment implements ISignUp {
         progressDialog.show();
     }
 
-    private void hideLoading() {
+    @Override
+    public void hideLoading() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }

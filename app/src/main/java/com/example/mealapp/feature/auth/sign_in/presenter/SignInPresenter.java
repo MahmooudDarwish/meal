@@ -11,7 +11,6 @@ import com.example.mealapp.utils.firebase.FirebaseManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuthEmailException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
@@ -42,8 +41,10 @@ public class SignInPresenter implements  ISignInPresenter{
                     }
                 });
             } else {
+                String errorMsg = getErrorMsg(task);
+
                 Log.i(TAG, "sign in:failure", task.getException());
-                view.signInError("Authentication failed. Please check your credentials and try again.");
+                view.signInError(errorMsg);
             }
         });
     }
@@ -83,14 +84,13 @@ public class SignInPresenter implements  ISignInPresenter{
         String errorMsg;
         Exception exception = task.getException();
         if (exception instanceof FirebaseAuthInvalidCredentialsException) {
-            errorMsg = "Invalid credentials. Please try again.";
+            errorMsg = "Please check your Email/password and try again. ";
         } else if (exception instanceof FirebaseAuthInvalidUserException) {
             errorMsg = "No account found with this email.";
-        } else if (exception instanceof FirebaseAuthEmailException) {
-            errorMsg = "Email verification is pending. Please verify your email.";
-        } else {
+        }else {
             errorMsg = "Authentication failed. Please check your connection and try again.";
         }
         return errorMsg;
     }
+
 }
