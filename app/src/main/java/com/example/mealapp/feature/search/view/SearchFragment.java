@@ -77,7 +77,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
         networkReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (NetworkUtil.isConnected(requireContext())) {
+                if (NetworkUtil.isConnected()) {
                     swipeRefreshLayout.setEnabled(true);
                     refreshUI();
                 } else {
@@ -222,8 +222,8 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onPause() {
+        super.onPause();
         if (networkReceiver != null) {
             Objects.requireNonNull(requireActivity()).unregisterReceiver(networkReceiver);
         }

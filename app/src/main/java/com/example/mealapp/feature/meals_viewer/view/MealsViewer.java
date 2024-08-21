@@ -81,7 +81,7 @@ public class MealsViewer extends AppCompatActivity implements IMealsViewer, OnMe
     }
 
     private void checkInternetConnection() {
-        if (NetworkUtil.isConnected(this)) {
+        if (NetworkUtil.isConnected()) {
             bannerNoInternet.setVisibility(View.GONE);
             presenter.loadMeals();
         } else {

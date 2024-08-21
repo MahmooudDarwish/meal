@@ -3,11 +3,21 @@ package com.example.mealapp.utils.connection_helper;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
-import android.os.Build;
 
 public class NetworkUtil {
+    private static NetworkUtil instance;
+    private static Context context;
 
-    public static boolean isConnected(Context context) {
+    private NetworkUtil(Context context) {
+        this.context = context.getApplicationContext();
+    }
+
+    public static synchronized void init(Context context) {
+        if (instance == null) {
+            instance = new NetworkUtil(context);
+        }
+    }
+    public static boolean isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
             NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());

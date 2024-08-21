@@ -25,6 +25,7 @@ import com.example.mealapp.feature.auth.sign_up.view.SignUp;
 import com.example.mealapp.feature.main.view.MainScreen;
 import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
+import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -86,9 +87,13 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
             presenter.signIn(email, password);
         });
 
-        signInWithGoogleBtn.setOnClickListener(v ->
-
-                signInWithGoogle());
+        signInWithGoogleBtn.setOnClickListener(v ->{
+                if(NetworkUtil.isConnected()){
+                      signInWithGoogle();
+                }else{
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                }
+        });
     }
 
     private void showLoading() {

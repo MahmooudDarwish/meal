@@ -10,6 +10,7 @@ import com.example.mealapp.R;
 import com.example.mealapp.feature.main.view.MainScreen;
 import com.example.mealapp.feature.splash.presenter.ISplashPresenter;
 import com.example.mealapp.feature.splash.presenter.SplashPresenter;
+import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import com.google.firebase.FirebaseApp;
 
 public class Splash extends AppCompatActivity implements  ISplash {
@@ -19,6 +20,7 @@ public class Splash extends AppCompatActivity implements  ISplash {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
+        NetworkUtil.init(this);
 
         FirebaseApp.initializeApp(this);
 

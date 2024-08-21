@@ -100,7 +100,7 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void checkInternetConnection() {
-        if (NetworkUtil.isConnected(this)) {
+        if (NetworkUtil.isConnected()) {
             bannerNoInternet.setVisibility(View.GONE);
         } else {
             bannerNoInternet.setVisibility(View.VISIBLE);

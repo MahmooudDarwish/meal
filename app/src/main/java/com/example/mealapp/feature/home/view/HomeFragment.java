@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
         networkReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (NetworkUtil.isConnected(requireContext())) {
+                if (NetworkUtil.isConnected()) {
                     swipeRefreshLayout.setEnabled(true);
                     refreshUI();
                 } else {
@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
 
 
     private void refreshUI() {
-        if (NetworkUtil.isConnected(requireActivity())) {
+        if (NetworkUtil.isConnected()) {
             mealsAdapter.clearMeals();
             presenter.getRandomMeal();
             presenter.getRandomMeals();
@@ -142,7 +142,7 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
         }
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            if (NetworkUtil.isConnected(requireActivity())) {
+            if (NetworkUtil.isConnected()) {
                 refreshUI();
             } else {
                 swipeRefreshLayout.setRefreshing(false);
@@ -201,8 +201,8 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onPause() {
+        super.onPause();
         if (networkReceiver != null) {
             Objects.requireNonNull(requireActivity()).unregisterReceiver(networkReceiver);
         }
