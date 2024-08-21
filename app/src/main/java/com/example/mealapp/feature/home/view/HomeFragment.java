@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mealapp.R;
+import com.example.mealapp.feature.auth.sign_in.view.SignIn;
 import com.example.mealapp.feature.home.presenter.HomePresenter;
 import com.example.mealapp.feature.home.presenter.IHomePresenter;
 import com.example.mealapp.feature.main.view.MainScreen;
@@ -34,6 +34,7 @@ import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
+import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
@@ -59,13 +60,12 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate: sssss");
         presenter = new HomePresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity())));
         getActivity();
-        SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences("user_data", Context.MODE_PRIVATE);
-        boolean stayLoggedIn = sharedPreferences.getBoolean("stay_logged_in", false);
-        String userNameStr = sharedPreferences.getString("user_name", "");
-        String userEmail = sharedPreferences.getString("user_email", "");
+        SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences(ConstantKeys.USER_DATA, Context.MODE_PRIVATE);
+        boolean stayLoggedIn = sharedPreferences.getBoolean(ConstantKeys.STAY_LOGGED_IN, false);
+        String userNameStr = sharedPreferences.getString(ConstantKeys.USER_NAME, "");
+        String userEmail = sharedPreferences.getString(ConstantKeys.USER_EMAIL, "");
 
         if (stayLoggedIn) {
             UserSessionHolder.getInstance().setUser(new User(userEmail, userNameStr));
@@ -85,8 +85,6 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        Log.i(TAG, "onViewCreated: sssss");
         initUI(view);
 
         networkReceiver = new BroadcastReceiver() {
@@ -96,7 +94,7 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
                     swipeRefreshLayout.setEnabled(true);
                     refreshUI();
                 } else {
-                    Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.no_internet_message), Toast.LENGTH_SHORT).show();
                     swipeRefreshLayout.setEnabled(false);
                 }
             }
@@ -141,34 +139,34 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
             userName.setText(userNameStr);
         }
 
+
+    }
+
+    private void setUpListeners(String mealId) {
         swipeRefreshLayout.setOnRefreshListener(() -> {
             if (NetworkUtil.isConnected()) {
                 refreshUI();
             } else {
                 swipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.no_internet_message), Toast.LENGTH_SHORT).show();
             }
         });
+
+        mealOfDayCard.setOnClickListener(v -> onMealItemClicked(mealId));
+
+        signOutIcon.setOnClickListener(v -> signOut());
     }
 
-    private void setUpListeners(String mealId) {
-        mealOfDayCard.setOnClickListener(v -> {
-            Log.i(TAG, "setUpListeners: mealOfDayCard Clicked");
-            Intent intent = new Intent(getContext(), MealDetails.class);
-            intent.putExtra("MEAL_ID", mealId);
-            startActivity(intent);
-        });
+    private void signOut() {
+        UserSessionHolder.getInstance().setUser(null);
+        SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences(ConstantKeys.USER_DATA, Context.MODE_PRIVATE);
+        sharedPreferences.edit().clear().apply();
+        presenter.signOut();
+        Intent intent = new Intent(getActivity(), MainScreen.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        requireActivity().finish();
 
-        signOutIcon.setOnClickListener(v -> {
-            UserSessionHolder.getInstance().setUser(null);
-            SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences("user_data", Context.MODE_PRIVATE);
-            sharedPreferences.edit().clear().apply();
-            presenter.signOut();
-            Intent intent = new Intent(getActivity(), MainScreen.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            requireActivity().finish();
-        });
     }
 
     @Override
@@ -182,9 +180,14 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     @Override
     public void getCurrentUserSuccessfully(User user) {
         UserSessionHolder.getInstance().getUser().setUid(user.getUid());
+    }
 
-        Log.i(TAG, "getCurrentUserSuccessfully: " + UserSessionHolder.getInstance().getUser().getUid());
-
+    @Override
+    public void getCurrentUserFailed() {
+        Toast.makeText(getContext(), getString(R.string.error_try_sign_in_again), Toast.LENGTH_SHORT).show();
+        signOut();
+        SignIn signInFragment = new SignIn();
+        signInFragment.show(getParentFragmentManager(), "signInFragment");
     }
 
 
@@ -210,7 +213,7 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     @Override
     public void onMealItemClicked(String mealId) {
         Intent intent = new Intent(requireActivity(), MealDetails.class);
-        intent.putExtra("MEAL_ID", mealId);
+        intent.putExtra(ConstantKeys.MEAL_ID, mealId);
         startActivity(intent);
 
     }

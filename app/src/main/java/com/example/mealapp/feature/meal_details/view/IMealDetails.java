@@ -10,6 +10,7 @@ public interface IMealDetails {
     void updateFavoriteIcon (boolean isFavorite);
 
     void updateAddPlanBtnText (boolean isPlan);
+    String getStringFromRes(int resId);
 
 
 }

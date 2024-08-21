@@ -21,7 +21,6 @@
     <string name="or">OR</string>
     <string name="sign_in_google">Sign in with Google</string>
     <string name="sign_in_guest">Sign in as Guest</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">Home</string>
     <string name="search">Search</string>
@@ -66,5 +65,10 @@
     <string name="weak_password_error">The password is too weak. Please choose a stronger password.</string>
     <string name="invalid_credentials_error">The email address is badly formatted or the password is incorrect.</string>
     <string name="sign_up_failed_error">Sign-up failed. Please check your details and try again.</string>
-
+    <string name="error_try_sign_in_again">An error occurred. Please try signing in again.</string>">
+    <string name="meal_removed_from_favorites">Meal removed from your favorites</string>
+    <string name="meal_added_to_favorites">Meal added to your favorites</string>
+    <string name="meal_removed_from_plan">Meal removed from your plan</string>
+    <string name="meal_added_to_plan">Meal added to your plan</string>
+    <string name="please_select_meal_type">Please select a meal type.</string>
 </resources>

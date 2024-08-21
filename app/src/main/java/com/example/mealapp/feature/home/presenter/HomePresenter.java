@@ -16,7 +16,6 @@ import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
 
 import java.util.List;
-import java.util.Objects;
 
 
 public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
@@ -33,40 +32,25 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
 
     @Override
     public void getDataFromFirebase() {
-            String userId = UserSessionHolder.getInstance().getUser().getUid(); // Replace with the actual user ID
-            // Fetch Favorite Meals
+            String userId = UserSessionHolder.getInstance().getUser().getUid();
             FirebaseManager.getInstance().getFavoriteMeals(userId, task -> {
                 if (task.isSuccessful()) {
                     List<FavoriteMeal> favoriteMeals = task.getResult();
-                    Log.i("firebase", favoriteMeals.size()+"Favorite" );
-                    Log.i("firebase", favoriteMeals.get(0).toString());
                     _repo.addFavoriteMeals(favoriteMeals);
-                } else {
-                    Log.e("error", Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage()));
                 }
             });
 
-            // Fetch Meal Plans
             FirebaseManager.getInstance().getMealPlans(userId, task -> {
                 if (task.isSuccessful()) {
                     List<MealPlan> mealPlans = task.getResult();
-                    Log.i("firebase", mealPlans.size()+"plan" );
-                    Log.i("firebase", mealPlans.get(0).toString());
-
                     _repo.addMealPlans(mealPlans);
-                } else {
-                    Log.e("error", Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage()));
                 }
             });
 
-            // Fetch Meal Ingredients
             FirebaseManager.getInstance().getMealIngredients(userId, task -> {
                 if (task.isSuccessful()) {
                     List<MealIngredient> ingredients = task.getResult();
-
                     _repo.addMealIngredients(ingredients);
-                } else {
-                    Log.e("error", Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage()));
                 }
             });
         }
@@ -95,12 +79,14 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
                         if (user != null) {
                             _view.getCurrentUserSuccessfully(user);
                         } else {
+                            _view.getCurrentUserFailed();
                             Log.i(TAG, "User is null");
                         }
                     }
 
                     @Override
                     public void onError(Exception e) {
+                        _view.getCurrentUserFailed();
                         Log.i(TAG, "Error getting user data: " + e.getMessage());
                     }
                 });

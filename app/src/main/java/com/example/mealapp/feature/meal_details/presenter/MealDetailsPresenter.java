@@ -1,6 +1,7 @@
 package com.example.mealapp.feature.meal_details.presenter;
 
 
+import com.example.mealapp.R;
 import com.example.mealapp.feature.meal_details.view.IMealDetails;
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
 import com.example.mealapp.utils.common_layer.local_models.MealIngredient;
@@ -65,7 +66,11 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
         } else {
             String userId = UserSessionHolder.getInstance().getUser().getUid();
 
-            _repo.isMealFavorite(meal.getIdMeal(), userId, isFavorite -> _repo.isMealPlan(meal.getIdMeal(), userId, isInPlan -> _view.setUpMealDetails(meal, isFavorite, isInPlan)));
+            _repo.isMealFavorite(meal.getIdMeal(),
+                    userId,
+                    isFavorite -> _repo.isMealPlan(meal.getIdMeal(),
+                            userId,
+                            isInPlan -> _view.setUpMealDetails(meal, isFavorite, isInPlan)));
         }
     }
 
@@ -89,7 +94,7 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
                     }
                 });
                 _view.updateFavoriteIcon(false);
-                _view.showToast("Meal removed from your favorites");
+                _view.showToast(_view.getStringFromRes(R.string.meal_removed_from_favorites));
             } else {
                 _repo.saveFavoriteMeal(new FavoriteMeal(meal));
                 List<MealIngredient> ingredients = createFavoriteMealIngredients(meal);
@@ -97,7 +102,7 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
                     _repo.saveFavoriteMealIngredient(ingredient);
                 }
                 _view.updateFavoriteIcon(true);
-                _view.showToast("Meal added to your favorites");
+                _view.showToast(_view.getStringFromRes(R.string.meal_added_to_favorites));
             }
             isProcessingFavoriteToggle = false;
         });
@@ -118,7 +123,7 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
                     }
                 });
                 _view.updateAddPlanBtnText(false);
-                _view.showToast("Meal removed from your plan");
+                _view.showToast(_view.getStringFromRes(R.string.meal_removed_from_plan));
             } else {
                 _repo.saveMealPlan(new MealPlan(meal, meal.getMealDate(), meal.getMealType()));
                 List<MealIngredient> ingredients = createFavoriteMealIngredients(meal);
@@ -126,7 +131,7 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
                     _repo.saveFavoriteMealIngredient(ingredient);
                 }
                 _view.updateAddPlanBtnText(true);
-                _view.showToast("Meal added to your plan");
+                _view.showToast(_view.getStringFromRes(R.string.meal_added_to_plan));
             }
             isProcessingFavoriteToggle = false;
         });
@@ -137,10 +142,7 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
         List<MealIngredient> mealIngredients = new ArrayList<>();
 
         for (Ingredient ingredient : ingredientList) {
-            mealIngredients.add(new MealIngredient(
-                    detailedMeal.getIdMeal(),
-                    ingredient
-            ));
+            mealIngredients.add(new MealIngredient(detailedMeal.getIdMeal(), ingredient));
         }
 
         return mealIngredients;

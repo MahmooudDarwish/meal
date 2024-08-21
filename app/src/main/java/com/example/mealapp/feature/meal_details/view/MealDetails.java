@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -34,6 +33,7 @@ import com.example.mealapp.feature.meal_details.presenter.MealDetailsPresenter;
 import com.example.mealapp.utils.common_layer.models.DetailedMeal;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
+import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
@@ -74,14 +74,14 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
 
         presenter = new MealDetailsPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(this)));
 
-        if (getIntent() != null && getIntent().hasExtra("MEAL_ID")) {
-            String mealId = getIntent().getStringExtra("MEAL_ID");
+        if (getIntent() != null && getIntent().hasExtra(ConstantKeys.MEAL_ID)) {
+            String mealId = getIntent().getStringExtra(ConstantKeys.MEAL_ID);
             presenter.getMealDetails(mealId);
-        } else if (getIntent() != null && getIntent().hasExtra("FAVORITE_MEAL_ID")) {
-            String mealId = getIntent().getStringExtra("FAVORITE_MEAL_ID");
+        } else if (getIntent() != null && getIntent().hasExtra(ConstantKeys.FAVORITE_MEAL_ID)) {
+            String mealId = getIntent().getStringExtra(ConstantKeys.FAVORITE_MEAL_ID);
             presenter.getFavoriteMeal(mealId);
-        }else if(getIntent() != null && getIntent().hasExtra("PLAN_MEAL_ID")){
-            String mealId = getIntent().getStringExtra("PLAN_MEAL_ID");
+        }else if(getIntent() != null && getIntent().hasExtra(ConstantKeys.PLAN_MEAL_ID)){
+            String mealId = getIntent().getStringExtra(ConstantKeys.PLAN_MEAL_ID);
             presenter.getMealPlan(mealId);
         }
 
@@ -184,17 +184,11 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
                     @Override
                     public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                         String youtubeUrl = meal.getStrYoutube();
-                        Log.i("MealDetails", "youtubeUrl: " + youtubeUrl);
                         if (youtubeUrl != null) {
                             String videoId = extractVideoId(youtubeUrl);
-                            Log.i("MealDetails", "urlId: " + videoId);
                             if (videoId != null) {
                                 youTubePlayer.cueVideo(videoId, 0);
-                            } else {
-                                Log.e("MealDetails", "Invalid YouTube URL: " + youtubeUrl);
                             }
-                        } else {
-                            Log.e("MealDetails", "YouTube URL is null");
                         }
                     }
                 });
@@ -236,6 +230,12 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
             addToPlanBtn.setText(R.string.add_to_plan);
         }
     }
+
+    @Override
+    public String getStringFromRes(int resId) {
+        return getString(resId);
+    }
+
     @Override
     public void showToast(String msg){
       runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
@@ -266,7 +266,7 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         btnConfirm.setOnClickListener(v -> {
             int selectedMealTypeId = mealTypeGroup.getCheckedRadioButtonId();
             if (selectedMealTypeId == -1) {
-                Toast.makeText(this, "Please select a meal type.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.please_select_meal_type), Toast.LENGTH_SHORT).show();
             } else {
                 RadioButton selectedMealType = dialogView.findViewById(selectedMealTypeId);
 
