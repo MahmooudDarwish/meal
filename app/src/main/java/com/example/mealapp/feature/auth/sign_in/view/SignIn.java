@@ -26,6 +26,7 @@ import com.example.mealapp.feature.main.view.MainScreen;
 import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
+import com.example.mealapp.utils.constants.ConstantKeys;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -80,26 +81,26 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
             String password = passwordField.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(getActivity(), "Email and Password must not be empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.empty_email_password_message), Toast.LENGTH_SHORT).show();
                 return;
             }
             showLoading();
             presenter.signIn(email, password);
         });
 
-        signInWithGoogleBtn.setOnClickListener(v ->{
-                if(NetworkUtil.isConnected()){
-                      signInWithGoogle();
-                }else{
-                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
-                }
+        signInWithGoogleBtn.setOnClickListener(v -> {
+            if (NetworkUtil.isConnected()) {
+                signInWithGoogle();
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.no_internet_message), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
     private void showLoading() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Signing in...");
+            progressDialog.setMessage(getString(R.string.signing_in_message));
             progressDialog.setCancelable(false);
         }
         progressDialog.show();
@@ -129,7 +130,7 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
         }
         hideLoading();
         UserSessionHolder.getInstance().setUser(user);
-        Toast.makeText(getActivity(), "Welcome!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), getString(R.string.welcome_message), Toast.LENGTH_LONG).show();
         dismiss();
         requireActivity().finish();
         Intent intent = new Intent(getActivity(), MainScreen.class);
@@ -141,12 +142,11 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
     private void addUserToSharedPreferences(User user) {
         Log.i(TAG, "addUserToSharedPreferences: " + user.getName());
         Log.i(TAG, "addUserToSharedPreferences: " + user.getEmail());
-        SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences("user_data", Context.MODE_PRIVATE); // Use getActivity().MODE_PRIVATE
+        SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences(ConstantKeys.USER_DATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("user_name", user.getName());
-        editor.putString("user_email", user.getEmail());
-        editor.putBoolean("stay_logged_in", true);
-
+        editor.putString(ConstantKeys.USER_NAME, user.getName());
+        editor.putString(ConstantKeys.USER_EMAIL, user.getEmail());
+        editor.putBoolean(ConstantKeys.STAY_LOGGED_IN, true);
         editor.apply();
     }
 
@@ -170,9 +170,15 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
                 }
             } catch (ApiException e) {
                 Log.w(TAG, "Google sign-in failed", e);
-                signInError("Google sign-in failed. Please try again.");
+                signInError(getString(R.string.google_signin_failure_message));
             }
         }
+    }
+
+
+    @Override
+    public String getStringFromRes(int resId){
+        return getString(resId);
     }
 
     private void signInWithGoogle() {

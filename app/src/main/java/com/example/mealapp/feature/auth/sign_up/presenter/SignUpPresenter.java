@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.mealapp.R;
 import com.example.mealapp.utils.common_layer.models.ValidationResult;
 import com.example.mealapp.utils.validation_helpers.EmailValidator;
 import com.example.mealapp.feature.auth.sign_up.view.ISignUp;
@@ -41,7 +42,7 @@ public class SignUpPresenter implements ISignUpPresenter {
         if (isEmailValid && !TextUtils.isEmpty(name) && isPasswordValid && isConfirmPasswordValid) {
             signUp(email, name, password);
         } else {
-            view.showError("You should fix the above errors");
+            view.showError(view.getStringFromRes(R.string.fix_errors_message));
         }
     }
 
@@ -75,19 +76,19 @@ public class SignUpPresenter implements ISignUpPresenter {
     }
 
     @NonNull
-    private static String getSignUpErrorMsg(Task<AuthResult> task) {
+    private String getSignUpErrorMsg(Task<AuthResult> task) {
         String errorMsg;
         Exception exception = task.getException();
         if (exception instanceof FirebaseAuthUserCollisionException) {
-            errorMsg = "An account already exists with this email. Please try logging in or use a different email.";
+            errorMsg = view.getStringFromRes(R.string.account_exists_error);
         } else if (exception instanceof FirebaseAuthWeakPasswordException) {
-            errorMsg = "The password is too weak. Please choose a stronger password.";
+            errorMsg = view.getStringFromRes(R.string.weak_password_error);
         } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
-            errorMsg = "The email address is badly formatted or the password is incorrect.";
+            errorMsg = view.getStringFromRes(R.string.invalid_credentials_error);
         } else if (exception instanceof FirebaseNetworkException) {
-            errorMsg = "Network error. Please check your internet connection and try again.";
+            errorMsg = view.getStringFromRes(R.string.network_error);
         } else {
-            errorMsg = "Sign-up failed. Please check your details and try again.";
+            errorMsg = view.getStringFromRes(R.string.sign_up_failed_error);
         }
         return errorMsg;
     }

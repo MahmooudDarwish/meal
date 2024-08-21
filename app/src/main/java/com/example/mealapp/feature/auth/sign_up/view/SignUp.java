@@ -102,10 +102,15 @@ public class SignUp extends BottomSheetDialogFragment implements ISignUp {
     public void showLoading() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Signing Up...");
+            progressDialog.setMessage(getString(R.string.signing_up_message));
             progressDialog.setCancelable(false);
         }
         progressDialog.show();
+    }
+
+    @Override
+    public String getStringFromRes(int resId) {
+        return getString(resId);
     }
 
     @Override
@@ -129,7 +134,7 @@ public class SignUp extends BottomSheetDialogFragment implements ISignUp {
     @Override
     public void signUpSuccess() {
         hideLoading();
-        Toast.makeText(getContext(), "Sign Up Successful! Welcome ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getString(R.string.sign_up_success_message), Toast.LENGTH_SHORT).show();
         dismiss();
         SignIn signInFragment = new SignIn();
         signInFragment.show(requireActivity().getSupportFragmentManager(), "signInFragment");

@@ -4,7 +4,8 @@ import com.example.mealapp.utils.common_layer.models.User;
 
 public interface ISignIn {
 
-    public void signInSuccess(User user);
-    public void signInError(String errorMsg);
+     void signInSuccess(User user);
+     void signInError(String errorMsg);
+     String getStringFromRes(int resId);
 
 }

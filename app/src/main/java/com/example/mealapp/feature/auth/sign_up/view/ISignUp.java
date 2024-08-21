@@ -9,4 +9,6 @@ public interface ISignUp {
     void hideLoading();
 
     void showLoading();
+
+    String getStringFromRes(int resId);
 }

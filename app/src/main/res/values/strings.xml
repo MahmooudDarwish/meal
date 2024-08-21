@@ -48,4 +48,23 @@
     <string name="you_dont_have_any_plans_yet">You don\'t have any Plans yet</string>
     <string name="backup">Backup</string>
     <string name="sign_out">Sign Out</string>
+    <string name="sign_in_failed">Sign-in failed. Please check your details and try again.</string>
+    <string name="google_sign_in_failed">Google Sign-in failed. Please check your details and try again.</string>
+    <string name="invalid_credentials">Please check your Email/password and try again.</string>
+    <string name="invalid_user">No account found with this email.</string>
+    <string name="network_error">Network error. Please check your internet connection and try again.</string>
+    <string name="user_data_retrieval_failed">User data retrieval failed.</string>
+    <string name="signing_in_message">Signing in…</string>
+    <string name="empty_email_password_message">Email and Password must not be empty</string>
+    <string name="no_internet_message">No internet connection</string>
+    <string name="welcome_message">Welcome!</string>
+    <string name="google_signin_failure_message">Google sign-in failed. Please try again.</string>
+    <string name="signing_up_message">Signing Up…</string>
+    <string name="sign_up_success_message">Sign Up Successful!</string>
+    <string name="fix_errors_message">You should fix the above errors</string>
+    <string name="account_exists_error">An account already exists with this email. Please try logging in or use a different email.</string>
+    <string name="weak_password_error">The password is too weak. Please choose a stronger password.</string>
+    <string name="invalid_credentials_error">The email address is badly formatted or the password is incorrect.</string>
+    <string name="sign_up_failed_error">Sign-up failed. Please check your details and try again.</string>
+
 </resources>
