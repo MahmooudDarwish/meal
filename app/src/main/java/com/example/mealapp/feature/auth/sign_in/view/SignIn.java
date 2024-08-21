@@ -43,7 +43,7 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
     private ISignInPresenter presenter;
     private ProgressDialog progressDialog;
     private CheckBox staySignedIn;
-    private static final int REQ_ONE_TAP = 2;
+    private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient googleSignInClient;
     private static final String TAG = "SignIn";
 
@@ -153,7 +153,7 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQ_ONE_TAP) {
+        if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount googleSignInAccount = task.getResult(ApiException.class);
@@ -169,7 +169,10 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
     }
 
     private void signInWithGoogle() {
+        googleSignInClient.signOut();
+
         Intent signInIntent = googleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, REQ_ONE_TAP);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+
     }
 }
