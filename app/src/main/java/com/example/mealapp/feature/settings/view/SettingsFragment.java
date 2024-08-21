@@ -23,6 +23,7 @@ import com.example.mealapp.feature.main.view.MainScreen;
 import com.example.mealapp.feature.settings.presenter.ISettingsPresenter;
 import com.example.mealapp.feature.settings.presenter.SettingsPresenter;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
+import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
@@ -77,7 +78,13 @@ public class SettingsFragment extends Fragment implements ISettings {
                 requireActivity().finish();
         });
 
-        backUpBtn.setOnClickListener(view -> presenter.uploadDataToFirebase(this));
+        backUpBtn.setOnClickListener(view -> {
+            if(NetworkUtil.isConnected()){
+                presenter.uploadDataToFirebase(this);
+            }else{
+                showMessage("No Internet Connection");
+            }
+            });
     }
 
 

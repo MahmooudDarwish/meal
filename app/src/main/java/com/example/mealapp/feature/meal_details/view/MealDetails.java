@@ -250,22 +250,38 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         RadioGroup mealTypeGroup = dialogView.findViewById(R.id.mealTypeGroup);
         Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
 
+        long currentTimeMillis = System.currentTimeMillis();
+
+        datePicker.setMinDate(currentTimeMillis);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(currentTimeMillis);
+        calendar.add(Calendar.DAY_OF_MONTH, 30);
+        long maxDateMillis = calendar.getTimeInMillis();
+
+        datePicker.setMaxDate(maxDateMillis);
+
         AlertDialog dialog = builder.create();
 
         btnConfirm.setOnClickListener(v -> {
             int selectedMealTypeId = mealTypeGroup.getCheckedRadioButtonId();
-            RadioButton selectedMealType = dialogView.findViewById(selectedMealTypeId);
+            if (selectedMealTypeId == -1) {
+                Toast.makeText(this, "Please select a meal type.", Toast.LENGTH_SHORT).show();
+            } else {
+                RadioButton selectedMealType = dialogView.findViewById(selectedMealTypeId);
 
-            int day = datePicker.getDayOfMonth();
-            int month = datePicker.getMonth();
-            int year = datePicker.getYear();
+                int day = datePicker.getDayOfMonth();
+                int month = datePicker.getMonth();
+                int year = datePicker.getYear();
 
-            String formattedDate = formatDate(day, month, year);
-            String mealType = selectedMealType.getText().toString();
+                String formattedDate = formatDate(day, month, year);
+                String mealType = selectedMealType.getText().toString();
 
-            addMealToPlanner(formattedDate, mealType);
-            dialog.dismiss();
+                addMealToPlanner(formattedDate, mealType);
+                dialog.dismiss();
+            }
         });
+
         dialog.show();
     }
 

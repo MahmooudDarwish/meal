@@ -34,7 +34,6 @@ import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
 
 import java.util.List;
-import java.util.Objects;
 
 public class SearchFragment extends Fragment implements ISearch, OnCategoryClickedListener, OnCountryClickedListener, LoadMoreListener, OnIngredientClickedListener {
 
@@ -86,12 +85,15 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
                 }
             }
         };
+    }
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        Objects.requireNonNull(requireActivity()).registerReceiver(networkReceiver, filter);
+    @Override
+    public void onResume() {
+        super.onResume();
+        requireActivity().registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
     }
+
 
 
     private void setUpListeners() {
@@ -224,9 +226,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
     @Override
     public void onPause() {
         super.onPause();
-        if (networkReceiver != null) {
-            Objects.requireNonNull(requireActivity()).unregisterReceiver(networkReceiver);
-        }
+        requireActivity().unregisterReceiver(networkReceiver);
     }
 
     @Override

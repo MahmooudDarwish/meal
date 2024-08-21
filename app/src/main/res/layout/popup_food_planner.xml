@@ -8,11 +8,12 @@
 
     <DatePicker
         android:id="@+id/datePicker"
+        style="@android:style/Widget.DeviceDefault.DatePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:calendarTextColor="@color/black"
-        android:dayOfWeekBackground="@android:color/holo_orange_dark"
-        android:headerBackground="@android:color/holo_orange_dark" />
+        android:datePickerMode="calendar"
+        android:headerBackground="@android:color/holo_orange_dark"
+        android:pointerIcon="none" />
 
         <RadioGroup
             android:id="@+id/mealTypeGroup"
@@ -25,18 +26,23 @@
                 android:layout_width="wrap_content"
 
                 android:layout_height="wrap_content"
+                android:buttonTint="@drawable/meal_type_radio_btn"
                 android:text="@string/breakfast" />
 
             <RadioButton
                 android:id="@+id/rb_lunch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:buttonTint="@drawable/meal_type_radio_btn"
+
                 android:text="@string/lunch" />
 
             <RadioButton
                 android:id="@+id/rb_dinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:buttonTint="@drawable/meal_type_radio_btn"
+
                 android:text="@string/dinner" />
 
         </RadioGroup>

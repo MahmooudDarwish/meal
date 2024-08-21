@@ -101,14 +101,14 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
                 }
             }
         };
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        Objects.requireNonNull(requireActivity()).registerReceiver(networkReceiver, filter);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        requireActivity().registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-
-
+    }
 
     private void refreshUI() {
         if (NetworkUtil.isConnected()) {
@@ -203,10 +203,9 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     @Override
     public void onPause() {
         super.onPause();
-        if (networkReceiver != null) {
-            Objects.requireNonNull(requireActivity()).unregisterReceiver(networkReceiver);
-        }
+        requireActivity().unregisterReceiver(networkReceiver);
     }
+
 
     @Override
     public void onMealItemClicked(String mealId) {
