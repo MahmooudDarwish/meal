@@ -1,7 +1,39 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MealApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+    <style name="Base.Theme.MealApp.Dark" parent="Theme.Material3.Dark.NoActionBar">
     </style>
+
+    <style name="Theme.MealApp.Dark" parent="Base.Theme.MealApp.Dark">
+        <item name="colorPrimary">@color/colorPrimaryDarkTheme</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkTheme</item>
+        <item name="colorAccent">@color/colorAccentDarkTheme</item>
+        <item name="android:windowBackground">@color/backgroundColorDark</item>
+        <item name="android:textColor">@color/textColorDark</item>
+    </style>
+
+    <style name="CardStyle.Dark" parent="Base.CardView">
+        <item name="android:radius">12dp</item>
+        <item name="cardBackgroundColor">@color/cardBackgroundColorDark</item>
+        <item name="android:elevation">8dp</item>
+        <item name="cardCornerRadius">20dp</item>
+    </style>
+
+    <style name="CustomButtonStyle.Dark">
+        <item name="android:backgroundTint">@color/colorPrimaryDarkTheme</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="CustomEditTextStyle.Dark">
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:drawableTint">@color/colorSecondaryDarkTheme</item>
+        <item name="android:hint">@string/enter_email</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:textColorHint">@color/colorSecondaryDarkTheme</item>
+    </style>
+
 </resources>

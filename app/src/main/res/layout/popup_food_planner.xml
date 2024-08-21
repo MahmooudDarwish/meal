@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:datePickerMode="calendar"
-        android:headerBackground="@android:color/holo_orange_dark"
+        android:headerBackground="@color/colorPrimary"
         android:pointerIcon="none" />
 
         <RadioGroup
@@ -51,9 +51,9 @@
         android:id="@+id/btnConfirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/holo_orange_dark"
+        style="@style/CustomButtonStyle"
         android:text="@string/add_to_planner"
-        android:textColor="@color/black" />
+       />
 
 
 </LinearLayout>

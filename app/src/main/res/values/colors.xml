@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Light Theme Colors -->
-    <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
-    <color name="orange">#FFA500</color>
-    <color name="orangeLight">#FFCC80</color>
-    <color name="orangeDark">#FF8C00</color>
 
-    <!-- Dark Theme Colors -->
-    <color name="blackDark">#121212</color>
-    <color name="orangeDarkTheme">#FF5722</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="colorPrimary">#FF5722</color>
+    <color name="colorPrimaryDark">#E64A19</color>
+    <color name="colorSecondary">#FF8800</color>
+    <color name="colorAccent">#FFC107</color>
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="textColor">#000000</color>
+    <color name="textTitleColor">#FF8800</color>
+    <color name="buttonTextColor">#FFFFFF</color>
+    <color name="cardBackgroundColor">#FFFFFF</color>
+
+    <color name="colorPrimaryDarkTheme">#121212</color>
+    <color name="colorDarkTheme">#3700B3</color>
+    <color name="colorAccentDarkTheme">#BB86FC</color>
+    <color name="backgroundColorDark">#121212</color>
+    <color name="textColorDark">#FFFFFF</color>
+    <color name="cardBackgroundColorDark">#1E1E1E</color>
+    <color name="colorSecondaryDarkTheme">#03DAC5</color>
+
 </resources>

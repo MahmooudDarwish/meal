@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="16dp">
-
         <include
             android:id="@+id/bannerNoInternet"
             layout="@layout/banner_layout"
@@ -29,9 +28,10 @@
             android:layout_height="195dp"
             android:layout_marginTop="35dp"
             android:layout_marginEnd="16dp"
+            style="@style/CardStyle"
             android:elevation="8dp"
             android:radius="12dp"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,19 +55,19 @@
                 android:paddingTop="10dp"
                 android:paddingEnd="21dp"
                 android:paddingBottom="10dp"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="20sp" />
 
         </androidx.cardview.widget.CardView>
 
         <Button
+
             android:id="@+id/addToPlanBtn"
+            style="@style/CustomButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@android:color/holo_orange_dark"
+            android:layout_marginTop="10dp"
             android:text="@string/add_to_plan"
-            android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/favoriteBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mealCard" />
@@ -90,7 +90,7 @@
             android:layout_marginEnd="28dp"
             android:clickable="true"
             android:focusable="true"
-            app:backgroundTint="@android:color/holo_orange_dark"
+            app:backgroundTint="@color/colorSecondary"
             app:borderWidth="20dp"
             app:layout_constraintEnd_toEndOf="@+id/mealCard"
             app:layout_constraintTop_toTopOf="@+id/mealCard"
@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:textColor="@android:color/holo_orange_dark"
+            android:textColor="@color/textTitleColor"
             android:text="@string/ingrediants"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -135,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/country"
-            android:textColor="@android:color/holo_orange_dark"
+            android:textColor="@color/textTitleColor"
 
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -147,7 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="@string/instructions"
-            android:textColor="@android:color/holo_orange_dark"
+            android:textColor="@color/textTitleColor"
 
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"

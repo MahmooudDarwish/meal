@@ -10,8 +10,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <ImageView
             android:layout_width="match_parent"
@@ -59,7 +58,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/sign_in_subtitle"
-                        android:textColor="@android:color/holo_orange_dark"
+                        android:textColor="@color/textTitleColor"
                         android:textSize="18sp" />
 
                     <TextView
@@ -75,13 +74,11 @@
                         android:id="@+id/emailField"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
+                        style="@style/CustomEditTextStyle"
                         android:drawableStart="@android:drawable/sym_action_email"
-                        android:drawablePadding="10dp"
-                        android:drawableTint="@android:color/holo_orange_dark"
                         android:hint="@string/enter_email"
                         android:inputType="textEmailAddress"
-                        android:paddingTop="20dp"
-                        android:textColorHint="@android:color/holo_orange_dark" />
+                         />
 
                     <TextView
                         android:id="@+id/passwordText"
@@ -98,32 +95,29 @@
                         android:id="@+id/passwordField"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
+                        style="@style/CustomEditTextStyle"
                         android:drawableStart="@android:drawable/ic_lock_lock"
-                        android:drawablePadding="10dp"
-                        android:drawableTint="@android:color/holo_orange_dark"
                         android:hint="@string/enter_password"
                         android:inputType="textPassword"
-                        android:paddingTop="20dp"
-                        android:textColorHint="@android:color/holo_orange_dark" />
+                         />
 
                     <CheckBox
                         android:id="@+id/staySignedIn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@android:color/holo_orange_dark"
+                        android:buttonTint="@color/colorSecondary"
                         android:text="@string/stay_logged_in"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/textTitleColor"
+                        />
 
                     <Button
                         android:id="@+id/signInBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/CustomButtonStyle"
                         android:layout_marginTop="30dp"
-                        android:backgroundTint="@android:color/holo_orange_dark"
                         android:text="@string/sign_in"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                         />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -146,7 +140,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:text="@string/sign_up"
-                            android:textColor="@android:color/holo_orange_dark"
+                            android:textColor="@color/textTitleColor"
                             android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -193,18 +187,6 @@
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
-
-             <!--       <Button
-                        android:id="@+id/guestSignInBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:backgroundTint="@android:color/darker_gray"
-                        android:drawableLeft="@drawable/guest_icon"
-                        android:text="@string/sign_in_guest"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" /> -->
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </ScrollView>

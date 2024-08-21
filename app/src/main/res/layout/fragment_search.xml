@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textColor="@android:color/holo_orange_dark"
+            android:textColor="@color/textTitleColor"
 
             app:defaultQueryHint="@string/search"
             app:iconifiedByDefault="false"
@@ -51,7 +51,7 @@
                     android:layout_marginTop="15dp"
 
                     android:text="@string/categories"
-                    android:textColor="@android:color/holo_orange_dark"
+                    android:textColor="@color/textTitleColor"
                     android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -68,7 +68,7 @@
                     android:layout_marginTop="15dp"
 
                     android:text="@string/ingrediants"
-                    android:textColor="@android:color/holo_orange_dark"
+                    android:textColor="@color/textTitleColor"
                     android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -85,7 +85,7 @@
                     android:layout_marginTop="15dp"
 
                     android:text="@string/countries"
-                    android:textColor="@android:color/holo_orange_dark"
+                    android:textColor="@color/textTitleColor"
                     android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
