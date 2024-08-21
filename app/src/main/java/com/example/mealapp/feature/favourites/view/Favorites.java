@@ -19,6 +19,7 @@ import com.example.mealapp.feature.favourites.presenter.FavoritesPresenter;
 import com.example.mealapp.feature.favourites.presenter.IFavoritesPresenter;
 import com.example.mealapp.feature.meal_details.view.MealDetails;
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
+import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
@@ -95,7 +96,7 @@ public class Favorites extends Fragment implements IFavorites, OnFavoriteMealCli
     @Override
     public void favoriteMealClicked(String mealID) {
         Intent intent = new Intent(requireActivity(), MealDetails.class);
-        intent.putExtra("FAVORITE_MEAL_ID", mealID);
+        intent.putExtra(ConstantKeys.FAVORITE_MEAL_ID, mealID);
         startActivity(intent);
     }
 }
