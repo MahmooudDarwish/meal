@@ -162,7 +162,7 @@ public class SearchPresenter implements ISearchPresenter, SearchNetworkDelegate 
     private void loadNextPage() {
 
         if (currentIndex < allIngredients.size()) {
-            int PAGE_LIMIT = 10;
+            int PAGE_LIMIT = 20;
             int nextIndex = Math.min(currentIndex + PAGE_LIMIT, allIngredients.size());
             List<Ingredient> nextPage = allIngredients.subList(currentIndex, nextIndex);
             _view.addMoreIngredients(nextPage);

@@ -11,10 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,12 +119,20 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (layoutManager != null && layoutManager.findLastCompletelyVisibleItemPosition() == layoutManager.getItemCount() - 1) {
-                    presenter.loadMoreIngredients();
+
+                GridLayoutManager gridLayoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+                if (gridLayoutManager != null) {
+                    int totalItemCount = gridLayoutManager.getItemCount();
+                    int lastVisibleItemPosition = gridLayoutManager.findLastVisibleItemPosition();
+
+                    if (lastVisibleItemPosition >= totalItemCount - 1) {
+                        Log.i("SearchFragment", "get  list");
+                        presenter.loadMoreIngredients();
+                    }
                 }
             }
         });
+
     }
 
     private void refreshUI() {
@@ -140,7 +150,9 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
         categoriesRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         ingredientsRecycler = v.findViewById(R.id.ingeridentsRecycler);
-        ingredientsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2,GridLayoutManager.HORIZONTAL, false); // 2 columns
+        ingredientsRecycler.setLayoutManager(gridLayoutManager);
+
         ingredientsAdapter = new IngredientAdapter(this, this);
         ingredientsRecycler.setAdapter(ingredientsAdapter);
 

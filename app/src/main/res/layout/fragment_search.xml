@@ -38,7 +38,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -50,9 +49,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:textColor="@android:color/holo_orange_dark"
 
                     android:text="@string/categories"
+                    android:textColor="@android:color/holo_orange_dark"
                     android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -67,9 +66,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:textColor="@android:color/holo_orange_dark"
 
                     android:text="@string/ingrediants"
+                    android:textColor="@android:color/holo_orange_dark"
                     android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -84,9 +83,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:textColor="@android:color/holo_orange_dark"
 
                     android:text="@string/countries"
+                    android:textColor="@android:color/holo_orange_dark"
                     android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
