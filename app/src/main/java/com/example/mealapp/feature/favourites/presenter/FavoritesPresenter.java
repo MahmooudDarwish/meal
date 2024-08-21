@@ -24,7 +24,7 @@ public class FavoritesPresenter implements  IFavoritesPresenter {
     public void getFavorites(LifecycleOwner owner) {
         boolean isGuest = UserSessionHolder.isGuest();
         if (isGuest) {
-            _view.showLogin();
+            _view.showGuestMsg();
         } else {
             String userId = UserSessionHolder.getInstance().getUser().getUid();
             _repo.getAllFavoriteMealsForUser(userId).observe(owner, _view::showFavorites);

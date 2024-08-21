@@ -7,5 +7,5 @@ import java.util.List;
 public interface IFavorites {
      void showFavorites(List<FavoriteMeal> products);
 
-    void showLogin();
+    void showGuestMsg();
 }

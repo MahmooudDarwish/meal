@@ -21,7 +21,7 @@ public class FoodPlannerPreviewPresenter implements  IFoodPlannerPreviewPresente
     public void getPlannedMeals(LifecycleOwner owner) {
         boolean isGuest = UserSessionHolder.isGuest();
         if (isGuest) {
-            _view.showLogin();
+            _view.showGuestMsg();
         } else {
             String userId = UserSessionHolder.getInstance().getUser().getUid();
             _repo.getAllMealPlansForUser(userId).observe(owner, _view::showPlannedMeals);

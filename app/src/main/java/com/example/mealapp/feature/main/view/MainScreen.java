@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -16,6 +17,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.mealapp.R;
+import com.example.mealapp.feature.auth.sign_in.view.SignIn;
+import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -23,6 +26,9 @@ public class MainScreen extends AppCompatActivity {
 
     private RelativeLayout bannerNoInternet;
     private BroadcastReceiver networkReceiver;
+    private NavController navController;
+    BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +37,13 @@ public class MainScreen extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        NavHostFragment navHostFragment =
-                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         assert navHostFragment != null;
-        NavController navController = navHostFragment.getNavController();
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        navController = navHostFragment.getNavController();
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
+        setUpListeners();
         bannerNoInternet = findViewById(R.id.bannerNoInternet);
         networkReceiver = new BroadcastReceiver() {
             @Override
@@ -47,7 +53,39 @@ public class MainScreen extends AppCompatActivity {
         };
     }
 
+    void setUpListeners() {
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
 
+            if (itemId == R.id.homeFragment) {
+                navController.navigate(R.id.homeFragment);
+            } else if (itemId == R.id.searchFragment) {
+                navController.navigate(R.id.searchFragment);
+            } else if (itemId == R.id.favouritesFragment) {
+
+                navController.navigate(R.id.favouritesFragment);
+                showLogin();
+                Log.i("TAG", "favouritesFragment clicke" + "d");
+            } else if (itemId == R.id.foodPlannedPreviewFragment) {
+                navController.navigate(R.id.foodPlannedPreviewFragment);
+                showLogin();
+                Log.i("TAG", "foodPlannedPreviewFragment clicked");
+            } else if (itemId == R.id.settingsFragment) {
+                navController.navigate(R.id.settingsFragment);
+                Log.i("TAG", "settingsFragment clicked");
+
+            }
+
+            return true;
+        });
+    }
+
+    private void showLogin() {
+        if (UserSessionHolder.isGuest()) {
+            SignIn signInFragment = new SignIn();
+            signInFragment.show(this.getSupportFragmentManager(), "signInFragment");
+        }
+    }
 
     @Override
     protected void onResume() {

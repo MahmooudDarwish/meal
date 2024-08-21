@@ -8,7 +8,7 @@ public interface IFoodPlannerPreview {
 
     void showPlannedMeals(List<MealPlan> meals);
 
-    void showLogin();
+    void showGuestMsg();
 }
 
 

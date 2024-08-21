@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.mealapp.R;
-import com.example.mealapp.feature.auth.sign_in.view.SignIn;
 import com.example.mealapp.feature.favourites.presenter.FavoritesPresenter;
 import com.example.mealapp.feature.favourites.presenter.IFavoritesPresenter;
 import com.example.mealapp.feature.meal_details.view.MealDetails;
@@ -88,11 +87,9 @@ public class Favorites extends Fragment implements IFavorites, OnFavoriteMealCli
     }
 
     @Override
-    public void showLogin() {
+    public void showGuestMsg() {
         youNeedToSignInFirst.setVisibility(View.VISIBLE);
         favouritesRecyclerView.setVisibility(View.GONE);
-        SignIn signInFragment = new SignIn();
-        signInFragment.show(getParentFragmentManager(), "signInFragment");
     }
 
     @Override
@@ -104,10 +101,3 @@ public class Favorites extends Fragment implements IFavorites, OnFavoriteMealCli
 }
 
 
-/*
-    @Override
-    public void onClick(Product product) {
-        favouritePresenter.deleteFromFav(product);
-    }
-
- */

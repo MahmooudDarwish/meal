@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.mealapp.R;
-import com.example.mealapp.feature.auth.sign_in.view.SignIn;
 import com.example.mealapp.feature.food_planner_preview.presenter.FoodPlannerPreviewPresenter;
 import com.example.mealapp.feature.food_planner_preview.presenter.IFoodPlannerPreviewPresenter;
 import com.example.mealapp.feature.meal_details.view.MealDetails;
@@ -89,11 +88,9 @@ public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlanner
         presenter.getPlannedMeals(this);
     }
     @Override
-    public void showLogin() {
+    public void showGuestMsg() {
         youNeedToSignInFirst.setVisibility(View.VISIBLE);
         plannedMealsRecyclerView.setVisibility(View.GONE);
-        SignIn signInFragment = new SignIn();
-        signInFragment.show(getParentFragmentManager(), "signInFragment");
     }
 
     @Override

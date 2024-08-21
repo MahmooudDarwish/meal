@@ -63,8 +63,6 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
             FirebaseManager.getInstance().getMealIngredients(userId, task -> {
                 if (task.isSuccessful()) {
                     List<MealIngredient> ingredients = task.getResult();
-                    Log.i("firebase", ingredients.size()+"ingredient" );
-                    Log.i("firebase", ingredients.get(0).toString());
 
                     _repo.addMealIngredients(ingredients);
                 } else {

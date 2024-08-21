@@ -80,7 +80,7 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         } else if (getIntent() != null && getIntent().hasExtra("FAVORITE_MEAL_ID")) {
             String mealId = getIntent().getStringExtra("FAVORITE_MEAL_ID");
             presenter.getFavoriteMeal(mealId);
-        }else if(getIntent() != null && getIntent().hasExtra("PLAN_MEAL_ID")){
+        } else if (getIntent() != null && getIntent().hasExtra("PLAN_MEAL_ID")) {
             String mealId = getIntent().getStringExtra("PLAN_MEAL_ID");
             presenter.getMealPlan(mealId);
         }
@@ -121,16 +121,22 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
                 SignIn signInFragment = new SignIn();
                 signInFragment.show(getSupportFragmentManager(), "signInFragment");
             } else if (meal != null) {
-                    presenter.toggleFavoriteStatus(meal);
+                presenter.toggleFavoriteStatus(meal);
             }
         });
 
         addToPlanBtn.setOnClickListener(v -> {
-                        if(addToPlanBtn.getText() == getString(R.string.add_to_plan)){
-                             showAddToPlannerDialog();
-                        }else{
-                            presenter.toggleMealPlan(meal);
-                        }
+            if (UserSessionHolder.isGuest()) {
+                SignIn signInFragment = new SignIn();
+                signInFragment.show(getSupportFragmentManager(), "signInFragment");
+            } else if (meal != null) {
+                if (addToPlanBtn.getText() == getString(R.string.add_to_plan)) {
+                    showAddToPlannerDialog();
+                } else {
+                    presenter.toggleMealPlan(meal);
+                }
+            }
+
         });
     }
 
@@ -144,9 +150,7 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         youtubePlayerView = findViewById(R.id.mealVideo);
         addToPlanBtn = findViewById(R.id.addToPlanBtn);
 
-        ingredientRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this,
-                        LinearLayoutManager.HORIZONTAL, false));
+        ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
     @Override
@@ -161,10 +165,7 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
             updateAddPlanBtnText(isPlan);
 
             if (!isFinishing() && !isDestroyed()) {
-                Glide.with(this)
-                        .load(meal.getStrMealThumb())
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(mealImage);
+                Glide.with(this).load(meal.getStrMealThumb()).diskCacheStrategy(DiskCacheStrategy.ALL).into(mealImage);
             }
 
             mealName.setText(meal.getStrMeal());
@@ -230,9 +231,10 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
             addToPlanBtn.setText(R.string.add_to_plan);
         }
     }
+
     @Override
-    public void showToast(String msg){
-      runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
+    public void showToast(String msg) {
+        runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
     }
 
     private void showAddToPlannerDialog() {

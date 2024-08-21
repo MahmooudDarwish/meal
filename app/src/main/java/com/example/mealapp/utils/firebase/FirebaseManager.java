@@ -1,4 +1,5 @@
 package com.example.mealapp.utils.firebase;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ public class FirebaseManager {
 
 
     private static final String TAG = "FirebaseManager";
+
     private FirebaseManager() {
         firebaseAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
@@ -45,11 +47,13 @@ public class FirebaseManager {
         }
         return instance;
     }
+
     public void signInWithGoogle(GoogleSignInAccount account, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(onCompleteListener);
     }
+
     public void signUp(@NonNull String email, @NonNull String password, @NonNull String name, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
@@ -62,10 +66,12 @@ public class FirebaseManager {
                     onCompleteListener.onComplete(task);
                 });
     }
+
     public void signIn(@NonNull String email, @NonNull String password, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(onCompleteListener);
     }
+
     public void getCurrentUser(@NonNull OnUserRetrieveData listener) {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
@@ -92,9 +98,11 @@ public class FirebaseManager {
             listener.onError(new Exception("No current user"));
         }
     }
+
     public void signOut() {
         firebaseAuth.signOut();
     }
+
     public void saveUserData(User user) {
         if (firebaseAuth.getCurrentUser() != null) {
             String userId = firebaseAuth.getCurrentUser().getUid();
@@ -105,6 +113,7 @@ public class FirebaseManager {
                     .addOnFailureListener(e -> Log.e(TAG, "Error saving user data", e));
         }
     }
+
     public void getUserData(@NonNull final OnUserRetrieveData listener) {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
@@ -118,7 +127,7 @@ public class FirebaseManager {
                             if (document.exists()) {
                                 String name = document.getString("name");
                                 String email = document.getString("email");
-                                User user = new User(email, name , userId);
+                                User user = new User(email, name, userId);
                                 listener.onUserDataRetrieved(user);
                             } else {
                                 listener.onError(new Exception("No user data found"));
@@ -139,7 +148,7 @@ public class FirebaseManager {
 
         List<Task<Void>> tasks = new ArrayList<>();
 
-        if (currentUser != null ) {
+        if (currentUser != null) {
             for (FavoriteMeal meal : meals) {
                 DocumentReference docRef = firestore.collection("favorite_meals")
                         .document(meal.getIdMeal() + meal.getIdUser() + "favorite");
@@ -220,7 +229,12 @@ public class FirebaseManager {
                                 FavoriteMeal meal = FavoriteMeal.fromMap(document.getData());
                                 favoriteMeals.add(meal);
                             }
-                            onCompleteListener.onComplete(Tasks.forResult(favoriteMeals));
+                            if(!favoriteMeals.isEmpty()){
+                                onCompleteListener.onComplete(Tasks.forResult(favoriteMeals));
+
+                            }else{
+                               onCompleteListener.onComplete(Tasks.forException(new Exception("No favorite meals found")));
+                            }
                         } else {
                             onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
                         }
@@ -244,7 +258,11 @@ public class FirebaseManager {
                                 MealPlan plan = MealPlan.fromMap(document.getData());
                                 mealPlans.add(plan);
                             }
-                            onCompleteListener.onComplete(Tasks.forResult(mealPlans));
+                            if(!mealPlans.isEmpty()) {
+                                onCompleteListener.onComplete(Tasks.forResult(mealPlans));
+                            }else{
+                                onCompleteListener.onComplete(Tasks.forException(new Exception("No plan meals found")));
+                            }
                         } else {
                             onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
                         }
@@ -263,13 +281,18 @@ public class FirebaseManager {
                     .whereEqualTo("userId", userId)
                     .get()
                     .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() && task.getResult() != null) {
                             List<MealIngredient> mealIngredients = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 MealIngredient ingredient = MealIngredient.fromMap(document.getData());
                                 mealIngredients.add(ingredient);
                             }
-                            onCompleteListener.onComplete(Tasks.forResult(mealIngredients));
+
+                            if (!mealIngredients.isEmpty()) {
+                                onCompleteListener.onComplete(Tasks.forResult(mealIngredients));
+                            } else {
+                                onCompleteListener.onComplete(Tasks.forException(new Exception("No Ingredients found")));
+                            }
                         } else {
                             onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
                         }
@@ -278,7 +301,6 @@ public class FirebaseManager {
             onCompleteListener.onComplete(Tasks.forException(new Exception("No current user")));
         }
     }
-
 
 
 }
