@@ -19,6 +19,7 @@ import com.example.mealapp.feature.food_planner_preview.presenter.FoodPlannerPre
 import com.example.mealapp.feature.food_planner_preview.presenter.IFoodPlannerPreviewPresenter;
 import com.example.mealapp.feature.meal_details.view.MealDetails;
 import com.example.mealapp.utils.common_layer.local_models.MealPlan;
+import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
@@ -96,18 +97,7 @@ public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlanner
     @Override
     public void planMealClicked(String mealId) {
         Intent intent = new Intent(requireActivity(), MealDetails.class);
-        intent.putExtra("PLAN_MEAL_ID", mealId);
+        intent.putExtra(ConstantKeys.PLAN_MEAL_ID, mealId);
         startActivity(intent);
     }
 }
-
-
-
-
-/*
-    @Override
-    public void onClick(Product product) {
-        favouritePresenter.deleteFromFav(product);
-    }
-
- */
