@@ -53,6 +53,7 @@ public class SignUpPresenter implements ISignUpPresenter {
     }
 
     private void signUp(String email ,String name, String password) {
+        view.showLoading();
         FirebaseManager.getInstance().signUp(email, password, name, task -> {
             if (task.isSuccessful()) {
                 view.signUpSuccess();

@@ -1,6 +1,6 @@
 package com.example.mealapp.feature.auth.sign_up.view;
 
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,13 +19,14 @@ import com.example.mealapp.feature.auth.sign_in.view.SignIn;
 import com.example.mealapp.utils.common_layer.models.ValidationResult;
 import com.example.mealapp.feature.auth.sign_up.presenter.ISignUpPresenter;
 import com.example.mealapp.feature.auth.sign_up.presenter.SignUpPresenter;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class SignUp extends BottomSheetDialogFragment implements ISignUp {
     private EditText emailField, nameField, passwordField, confirmPasswordField;
     private Button signUpBtn;
     private TextView signInTextBtn;
+    private ProgressDialog progressDialog;
+
     private ISignUpPresenter presenter;
 
     @Nullable
@@ -64,7 +65,7 @@ public class SignUp extends BottomSheetDialogFragment implements ISignUp {
         signInTextBtn.setOnClickListener(v -> {
             dismiss();
             SignIn signInFragment = new SignIn();
-            signInFragment.show(getActivity().getSupportFragmentManager(), "signInFragment");
+            signInFragment.show(requireActivity().getSupportFragmentManager(), "signInFragment");
         });
 
         signUpBtn.setOnClickListener(v -> {
@@ -97,6 +98,23 @@ public class SignUp extends BottomSheetDialogFragment implements ISignUp {
         };
     }
 
+    @Override
+    public void showLoading() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Signing Up...");
+            progressDialog.setCancelable(false);
+        }
+        progressDialog.show();
+    }
+
+    private void hideLoading() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+
     @FunctionalInterface
     private interface Validator {
         ValidationResult validate(String text);
@@ -109,9 +127,10 @@ public class SignUp extends BottomSheetDialogFragment implements ISignUp {
 
     @Override
     public void signUpSuccess() {
+        hideLoading();
         Toast.makeText(getContext(), "Sign Up Successful! Welcome ", Toast.LENGTH_SHORT).show();
         dismiss();
         SignIn signInFragment = new SignIn();
-        signInFragment.show(getActivity().getSupportFragmentManager(), "signInFragment");
+        signInFragment.show(requireActivity().getSupportFragmentManager(), "signInFragment");
     }
 }
