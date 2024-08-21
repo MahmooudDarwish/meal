@@ -12,6 +12,7 @@ import com.example.mealapp.utils.validation_helpers.PasswordConfirmValidator;
 import com.example.mealapp.utils.validation_helpers.PasswordValidator;
 import com.example.mealapp.utils.firebase.FirebaseManager;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -83,6 +84,8 @@ public class SignUpPresenter implements ISignUpPresenter {
             errorMsg = "The password is too weak. Please choose a stronger password.";
         } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
             errorMsg = "The email address is badly formatted or the password is incorrect.";
+        } else if (exception instanceof FirebaseNetworkException) {
+            errorMsg = "Network error. Please check your internet connection and try again.";
         } else {
             errorMsg = "Sign-up failed. Please check your details and try again.";
         }

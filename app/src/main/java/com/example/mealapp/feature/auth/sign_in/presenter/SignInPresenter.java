@@ -10,6 +10,7 @@ import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.firebase.FirebaseManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
@@ -57,16 +58,11 @@ public class SignInPresenter implements  ISignInPresenter{
                     @Override
                     public void onUserDataRetrieved(User user) {
                         if (user != null) {
-                            Log.i(TAG, "Google sign-in: success");
-                            Log.i(TAG, "User data retrieved: " + user);
-                            Log.i(TAG, "User email: " + user.getEmail());
-                            Log.i(TAG, "User name: " + user.getName());
-                            view.signInSuccess(user);
+                              view.signInSuccess(user);
                         } else {
                             view.signInError("User data retrieval failed.");
                         }
                     }
-
                     @Override
                     public void onError(Exception e) {
                         view.signInError("Error: " + e.getMessage());
@@ -74,21 +70,23 @@ public class SignInPresenter implements  ISignInPresenter{
                 });
             } else {
                 Log.i(TAG, "Google sign-in: failure", task.getException());
-                view.signInError("Google sign-in failed. Please try again.");
+                view.signInError("Google Sign-in failed. Please check your details and try again.");
             }
         });
     }
 
-    @NonNull
-    private static String getErrorMsg(Task<AuthResult> task) {
+
+    private String getErrorMsg(Task<AuthResult> task) {
         String errorMsg;
         Exception exception = task.getException();
         if (exception instanceof FirebaseAuthInvalidCredentialsException) {
             errorMsg = "Please check your Email/password and try again. ";
         } else if (exception instanceof FirebaseAuthInvalidUserException) {
             errorMsg = "No account found with this email.";
-        }else {
-            errorMsg = "Authentication failed. Please check your connection and try again.";
+        }else if (exception instanceof FirebaseNetworkException) {
+            errorMsg = "Network error. Please check your internet connection and try again.";
+        } else {
+            errorMsg = "Sign-in failed. Please check your details and try again.";
         }
         return errorMsg;
     }

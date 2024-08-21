@@ -86,7 +86,9 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
             presenter.signIn(email, password);
         });
 
-        signInWithGoogleBtn.setOnClickListener(v -> signInWithGoogle());
+        signInWithGoogleBtn.setOnClickListener(v ->
+
+                signInWithGoogle());
     }
 
     private void showLoading() {
