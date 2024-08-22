@@ -27,6 +27,9 @@ import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import com.example.mealapp.utils.constants.ConstantKeys;
+import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
+import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
+import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -63,7 +66,8 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
                 .build();
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
 
-        presenter = new SignInPresenter(this);
+        presenter = new SignInPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity())));
+
         initUI(view);
         setUpListeners();
         super.onViewCreated(view, savedInstanceState);

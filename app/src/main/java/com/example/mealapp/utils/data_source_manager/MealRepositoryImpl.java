@@ -1,18 +1,25 @@
 package com.example.mealapp.utils.data_source_manager;
 
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
 import com.example.mealapp.utils.common_layer.local_models.MealIngredient;
 import com.example.mealapp.utils.common_layer.local_models.MealPlan;
+import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.dp.IsFavoriteMealCallback;
 import com.example.mealapp.utils.dp.IsPlanMealCallback;
 import com.example.mealapp.utils.dp.MealLocalDataSource;
+import com.example.mealapp.utils.firebase.FirebaseManager;
+import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
 import com.example.mealapp.utils.network.MealRemoteDataSource;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
 import com.example.mealapp.utils.network.SearchNetworkDelegate;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
 
 import java.util.List;
 
@@ -21,10 +28,12 @@ public class MealRepositoryImpl implements MealRepository {
     private final MealRemoteDataSource remoteSource;
     private final MealLocalDataSource localSource;
     private static MealRepositoryImpl repo = null;
+    private static FirebaseManager firebaseManager;
 
     public MealRepositoryImpl(MealRemoteDataSource remoteDataSource, MealLocalDataSource localDataSource) {
         this.remoteSource = remoteDataSource;
         this.localSource = localDataSource;
+        firebaseManager = FirebaseManager.getInstance();
     }
 
     public static MealRepositoryImpl getInstance(MealRemoteDataSource remoteDataSource, MealLocalDataSource localDataSource) {
@@ -95,6 +104,7 @@ public class MealRepositoryImpl implements MealRepository {
     public void deleteFavoriteMeal(FavoriteMeal favoriteMeal) {
         localSource.deleteFavoriteMeal(favoriteMeal);
     }
+
     @Override
     public LiveData<FavoriteMeal> getFavoriteMeal(String userId, String mealId) {
         return localSource.getFavoriteMeal(userId, mealId);
@@ -104,9 +114,10 @@ public class MealRepositoryImpl implements MealRepository {
     public LiveData<List<FavoriteMeal>> getAllFavoriteMealsForUser(String userId) {
         return localSource.getAllFavoriteMealsForUser(userId);
     }
+
     @Override
     public void isMealFavorite(String userId, String mealId, IsFavoriteMealCallback callback) {
-         localSource.isMealFavorite(userId, mealId, callback);
+        localSource.isMealFavorite(userId, mealId, callback);
     }
 
     @Override
@@ -116,7 +127,7 @@ public class MealRepositoryImpl implements MealRepository {
 
     @Override
     public void addMealPlans(List<MealPlan> mealPlans) {
-            localSource.addMealPlans(mealPlans);
+        localSource.addMealPlans(mealPlans);
     }
 
     @Override
@@ -128,14 +139,17 @@ public class MealRepositoryImpl implements MealRepository {
     public void isMealPlan(String userId, String mealId, IsPlanMealCallback callback) {
         localSource.isMealPlan(userId, mealId, callback);
     }
+
     @Override
     public LiveData<MealPlan> getMealPlan(String userId, String mealId) {
         return localSource.getMealPlan(userId, mealId);
     }
+
     @Override
     public LiveData<List<MealPlan>> getAllMealPlansForUser(String userId) {
         return localSource.getAllMealPlansForUser(userId);
     }
+
     @Override
     public void saveFavoriteMealIngredient(MealIngredient ingredient) {
         localSource.saveMealIngredient(ingredient);
@@ -150,6 +164,7 @@ public class MealRepositoryImpl implements MealRepository {
     public void deleteMealIngredient(String mealId) {
         localSource.deleteMealIngredient(mealId);
     }
+
     @Override
     public LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId) {
         return localSource.getIngredientsForMeal(mealId);
@@ -158,5 +173,65 @@ public class MealRepositoryImpl implements MealRepository {
     @Override
     public LiveData<List<MealIngredient>> getIngredientsForUser(String userId) {
         return localSource.getIngredientsForUserId(userId);
+    }
+
+    @Override
+    public void signInWithGoogle(GoogleSignInAccount account, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {
+        firebaseManager.signInWithGoogle(account, onCompleteListener);
+    }
+
+    @Override
+    public void signUp(@NonNull String email, @NonNull String password, @NonNull String name, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {
+        firebaseManager.signUp(email, password, name, onCompleteListener);
+    }
+
+    @Override
+    public void signIn(@NonNull String email, @NonNull String password, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {
+        firebaseManager.signIn(email, password, onCompleteListener);
+    }
+
+    @Override
+    public void getCurrentUser(@NonNull OnUserRetrieveData listener) {
+        firebaseManager.getCurrentUser(listener);
+    }
+
+    @Override
+    public void signOut() {
+        firebaseManager.signOut();
+    }
+
+    @Override
+    public void saveUserData(User user) {
+        firebaseManager.saveUserData(user);
+    }
+
+    @Override
+    public void setFavoriteMeals(List<FavoriteMeal> meals, @NonNull OnCompleteListener<Void> onCompleteListener) {
+        firebaseManager.setFavoriteMeals(meals, onCompleteListener);
+    }
+
+    @Override
+    public void setMealPlans(List<MealPlan> plans, @NonNull OnCompleteListener<Void> onCompleteListener) {
+        firebaseManager.setMealPlans(plans, onCompleteListener);
+    }
+
+    @Override
+    public void setMealIngredients(List<MealIngredient> ingredients, @NonNull OnCompleteListener<Void> onCompleteListener) {
+        firebaseManager.setMealIngredients(ingredients, onCompleteListener);
+    }
+
+    @Override
+    public void getFavoriteMeals(String userId, @NonNull OnCompleteListener<List<FavoriteMeal>> onCompleteListener) {
+        firebaseManager.getFavoriteMeals(userId, onCompleteListener);
+    }
+
+    @Override
+    public void getMealPlans(String userId, @NonNull OnCompleteListener<List<MealPlan>> onCompleteListener) {
+        firebaseManager.getMealPlans(userId, onCompleteListener);
+    }
+
+    @Override
+    public void getMealIngredients(String userId, @NonNull OnCompleteListener<List<MealIngredient>> onCompleteListener) {
+        firebaseManager.getMealIngredients(userId, onCompleteListener);
     }
 }

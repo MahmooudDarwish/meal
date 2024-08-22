@@ -11,7 +11,7 @@ import com.example.mealapp.feature.auth.sign_up.model.validation_helpers.EmailVa
 import com.example.mealapp.feature.auth.sign_up.view.ISignUp;
 import com.example.mealapp.feature.auth.sign_up.model.validation_helpers.PasswordConfirmValidator;
 import com.example.mealapp.feature.auth.sign_up.model.validation_helpers.PasswordValidator;
-import com.example.mealapp.utils.firebase.FirebaseManager;
+import com.example.mealapp.utils.data_source_manager.MealRepository;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
@@ -22,11 +22,13 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 public class SignUpPresenter implements ISignUpPresenter {
 
     private final ISignUp view;
+    MealRepository repo; 
 
     private static final String TAG = "SignUpPresenter";
 
-    public SignUpPresenter(ISignUp view) {
+    public SignUpPresenter(ISignUp view, MealRepository repo) {
         this.view = view;
+        this.repo = repo;
     }
 
     @Override
@@ -63,7 +65,7 @@ public class SignUpPresenter implements ISignUpPresenter {
 
     private void signUp(String email, String name, String password) {
         view.showLoading();
-        FirebaseManager.getInstance().signUp(email, password, name, task -> {
+        repo.signUp(email, password, name, task -> {
             if (task.isSuccessful()) {
                 view.signUpSuccess();
             } else {

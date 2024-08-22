@@ -19,6 +19,9 @@ import com.example.mealapp.feature.auth.sign_in.view.SignIn;
 import com.example.mealapp.feature.auth.sign_up.model.ValidationResult;
 import com.example.mealapp.feature.auth.sign_up.presenter.ISignUpPresenter;
 import com.example.mealapp.feature.auth.sign_up.presenter.SignUpPresenter;
+import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
+import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
+import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class SignUp extends BottomSheetDialogFragment implements ISignUp {
@@ -38,9 +41,9 @@ public class SignUp extends BottomSheetDialogFragment implements ISignUp {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        presenter = new SignUpPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity())));
 
         initializeUI(view);
-        presenter = new SignUpPresenter(this);
 
         setUpListeners();
     }

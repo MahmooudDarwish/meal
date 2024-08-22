@@ -11,7 +11,6 @@ import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
-import com.example.mealapp.utils.firebase.FirebaseManager;
 import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
 
@@ -21,36 +20,37 @@ import java.util.List;
 public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
 
     private final IHome _view;
-    private final MealRepository _repo;
+    private final MealRepository repo;
+
 
     private static final String TAG = "HomePresenter";
 
     public HomePresenter(IHome view, MealRepository repo) {
         _view = view;
-        _repo = repo;
+        this.repo = repo;
     }
 
     @Override
     public void getDataFromFirebase() {
             String userId = UserSessionHolder.getInstance().getUser().getUid();
-            FirebaseManager.getInstance().getFavoriteMeals(userId, task -> {
+            repo.getFavoriteMeals(userId, task -> {
                 if (task.isSuccessful()) {
                     List<FavoriteMeal> favoriteMeals = task.getResult();
-                    _repo.addFavoriteMeals(favoriteMeals);
+                    repo.addFavoriteMeals(favoriteMeals);
                 }
             });
 
-            FirebaseManager.getInstance().getMealPlans(userId, task -> {
+            repo.getMealPlans(userId, task -> {
                 if (task.isSuccessful()) {
                     List<MealPlan> mealPlans = task.getResult();
-                    _repo.addMealPlans(mealPlans);
+                    repo.addMealPlans(mealPlans);
                 }
             });
 
-            FirebaseManager.getInstance().getMealIngredients(userId, task -> {
+            repo.getMealIngredients(userId, task -> {
                 if (task.isSuccessful()) {
                     List<MealIngredient> ingredients = task.getResult();
-                    _repo.addMealIngredients(ingredients);
+                    repo.addMealIngredients(ingredients);
                 }
             });
         }
@@ -59,21 +59,21 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
 
     @Override
     public void getRandomMeal() {
-        _repo.getRandomMeal(this);
+        repo.getRandomMeal(this);
     }
 
     @Override
     public void getRandomMeals() {
         int MAX_MEALS = 20;
         for(int i = 0; i < MAX_MEALS; i++) {
-          _repo.getRandomMeals(this);
+          repo.getRandomMeals(this);
         }
     }
 
 
     @Override
     public void getCurrentUser() {
-        FirebaseManager.getInstance().getCurrentUser(
+        repo.getCurrentUser(
                 new OnUserRetrieveData() {
                     public void onUserDataRetrieved(User user) {
                         if (user != null) {
@@ -94,7 +94,7 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
 
     @Override
     public void signOut() {
-        FirebaseManager.getInstance().signOut();
+        repo.signOut();
     }
     @Override
     public void onGetRandomMealSuccessResult(PreviewMeal previewMeal) {

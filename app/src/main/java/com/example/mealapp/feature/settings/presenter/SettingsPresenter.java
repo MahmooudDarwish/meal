@@ -8,9 +8,7 @@ import com.example.mealapp.feature.settings.view.ISettings;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
-import com.example.mealapp.utils.firebase.FirebaseManager;
 
-import android.content.Context;
 import android.os.Handler;
 
 public class SettingsPresenter implements ISettingsPresenter {
@@ -27,7 +25,7 @@ public class SettingsPresenter implements ISettingsPresenter {
 
     @Override
     public void signOut() {
-        FirebaseManager.getInstance().signOut();
+        repo.signOut();
     }
 
     public void uploadDataToFirebase(LifecycleOwner owner) {
@@ -39,7 +37,7 @@ public class SettingsPresenter implements ISettingsPresenter {
             if (favoriteMeals != null && !favoriteMeals.isEmpty()) {
                 view.showLoading();
 
-                FirebaseManager.getInstance().setFavoriteMeals(favoriteMeals, task -> {
+                repo.setFavoriteMeals(favoriteMeals, task -> {
                     if (task.isSuccessful()) {
                         view.showMessage(view.getStringFromRes(R.string.favorite_meals_uploaded_successfully));
                     } else {
@@ -53,7 +51,7 @@ public class SettingsPresenter implements ISettingsPresenter {
 
         repo.getAllMealPlansForUser(userId).observe(owner, mealPlans -> {
             if (mealPlans != null && !mealPlans.isEmpty()) {
-                FirebaseManager.getInstance().setMealPlans(mealPlans, task -> {
+                repo.setMealPlans(mealPlans, task -> {
                     if (task.isSuccessful()) {
                         view.showMessage(view.getStringFromRes(R.string.meal_plans_uploaded_successfully));
                     } else {
@@ -67,7 +65,7 @@ public class SettingsPresenter implements ISettingsPresenter {
 
         repo.getIngredientsForUser(userId).observe(owner, mealIngredients -> {
             if (mealIngredients != null && !mealIngredients.isEmpty()) {
-                FirebaseManager.getInstance().setMealIngredients(mealIngredients, task -> {
+                repo.setMealIngredients(mealIngredients, task -> {
                     if (task.isSuccessful()) {
                         view.showMessage(view.getStringFromRes(R.string.meal_ingredients_uploaded_successfully));
                     } else {

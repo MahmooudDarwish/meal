@@ -5,9 +5,9 @@ import android.util.Log;
 
 import com.example.mealapp.R;
 import com.example.mealapp.feature.auth.sign_in.view.ISignIn;
+import com.example.mealapp.utils.data_source_manager.MealRepository;
 import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.common_layer.models.User;
-import com.example.mealapp.utils.firebase.FirebaseManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
@@ -17,21 +17,24 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 public class SignInPresenter implements ISignInPresenter {
     ISignIn view;
+    
+    MealRepository repo;
     private static final String TAG = "SignInPresenter";
 
-    public SignInPresenter(ISignIn view) {
+    public SignInPresenter(ISignIn view, MealRepository repo) {
         this.view = view;
+        this.repo = repo;
     }
 
     @Override
     public void signIn(String email, String password) {
-        FirebaseManager.getInstance().signIn(email, password, task -> {
+        repo.signIn(email, password, task -> {
             if (task.isSuccessful()) {
-                FirebaseManager.getInstance().getCurrentUser(new OnUserRetrieveData() {
+                repo.getCurrentUser(new OnUserRetrieveData() {
                     @Override
                     public void onUserDataRetrieved(User user) {
                         if (user != null) {
-                            FirebaseManager.getInstance().saveUserData(user);
+                            repo.saveUserData(user);
                             view.signInSuccess(user);
                         } else {
                             view.signInError(view.getStringFromRes(R.string.user_data_retrieval_failed));
@@ -53,9 +56,9 @@ public class SignInPresenter implements ISignInPresenter {
 
     @Override
     public void signInWithGoogle(GoogleSignInAccount account) {
-        FirebaseManager.getInstance().signInWithGoogle(account, task -> {
+        repo.signInWithGoogle(account, task -> {
             if (task.isSuccessful()) {
-                FirebaseManager.getInstance().getCurrentUser(new OnUserRetrieveData() {
+                repo.getCurrentUser(new OnUserRetrieveData() {
                     @Override
                     public void onUserDataRetrieved(User user) {
                         if (user != null) {

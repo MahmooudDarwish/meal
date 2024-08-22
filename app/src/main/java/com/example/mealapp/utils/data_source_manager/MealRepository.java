@@ -1,15 +1,21 @@
 package com.example.mealapp.utils.data_source_manager;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
 import com.example.mealapp.utils.common_layer.local_models.MealIngredient;
 import com.example.mealapp.utils.common_layer.local_models.MealPlan;
+import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.dp.IsFavoriteMealCallback;
 import com.example.mealapp.utils.dp.IsPlanMealCallback;
+import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
 import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
 import com.example.mealapp.utils.network.SearchNetworkDelegate;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
 
 import java.util.List;
 
@@ -67,5 +73,32 @@ public interface MealRepository {
 
      LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId);
      LiveData<List<MealIngredient>> getIngredientsForUser(String userId);
+
+     // Authentication methods
+     void signInWithGoogle(GoogleSignInAccount account, @NonNull OnCompleteListener<AuthResult> onCompleteListener);
+
+     void signUp(@NonNull String email, @NonNull String password, @NonNull String name, @NonNull OnCompleteListener<AuthResult> onCompleteListener);
+
+     void signIn(@NonNull String email, @NonNull String password, @NonNull OnCompleteListener<AuthResult> onCompleteListener);
+
+     void getCurrentUser(@NonNull OnUserRetrieveData listener);
+
+     void signOut();
+
+     // Data handling methods
+     void saveUserData(User user);
+
+     void setFavoriteMeals(List<FavoriteMeal> meals, @NonNull OnCompleteListener<Void> onCompleteListener);
+
+     void setMealPlans(List<MealPlan> plans, @NonNull OnCompleteListener<Void> onCompleteListener);
+
+     void setMealIngredients(List<MealIngredient> ingredients, @NonNull OnCompleteListener<Void> onCompleteListener);
+
+     void getFavoriteMeals(String userId, @NonNull OnCompleteListener<List<FavoriteMeal>> onCompleteListener);
+
+     void getMealPlans(String userId, @NonNull OnCompleteListener<List<MealPlan>> onCompleteListener);
+
+     void getMealIngredients(String userId, @NonNull OnCompleteListener<List<MealIngredient>> onCompleteListener);
+
 
 }
