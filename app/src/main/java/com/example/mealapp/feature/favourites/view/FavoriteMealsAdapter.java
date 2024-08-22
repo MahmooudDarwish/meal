@@ -3,6 +3,8 @@ package com.example.mealapp.feature.favourites.view;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,6 +43,11 @@ public class FavoriteMealsAdapter extends RecyclerView.Adapter<FavoriteMealsAdap
 
     @Override
     public void onBindViewHolder(@NonNull FavoriteMealViewHolder holder, int position) {
+        Animation fadeIn = AnimationUtils.loadAnimation(holder.mealImage.getContext(), R.anim.fade_in);
+        Animation slideOutBottom = AnimationUtils.loadAnimation(holder.mealName.getContext(), R.anim.slide_in_bottom);
+        holder.mealImage.startAnimation(fadeIn);
+        holder.mealName.startAnimation(slideOutBottom);
+
         FavoriteMeal favoriteMeal = favoriteMeals.get(position);
         holder.mealName.setText(favoriteMeal.getStrMeal());
         Glide.with(holder.itemView.getContext())

@@ -8,6 +8,8 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -54,6 +56,10 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
     private ImageView mealImage;
     private TextView mealName;
     private TextView mealCountry;
+
+    private TextView countryText;
+    private TextView ingredientsText;
+    private TextView instructionsText;
     private YouTubePlayerView youtubePlayerView;
     private RelativeLayout bannerNoInternet;
     private TextView mealInstructions;
@@ -110,8 +116,12 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
     private void checkInternetConnection() {
         if (NetworkUtil.isConnected()) {
             bannerNoInternet.setVisibility(View.GONE);
+            youtubePlayerView.setVisibility(View.VISIBLE);
         } else {
             bannerNoInternet.setVisibility(View.VISIBLE);
+            youtubePlayerView.setVisibility(View.GONE);
+
+
         }
     }
 
@@ -141,6 +151,9 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
     }
 
     private void initUI() {
+        countryText = findViewById(R.id.countryText);
+        ingredientsText = findViewById(R.id.ingredientsText);
+        instructionsText = findViewById(R.id.instructionsText);
         mealImage = findViewById(R.id.mealImage);
         mealName = findViewById(R.id.mealName);
         mealCountry = findViewById(R.id.mealCountry);
@@ -194,6 +207,27 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
                 });
             }
         });
+        setUpAnimation();
+
+    }
+
+    void setUpAnimation(){
+        Animation fadeIn = AnimationUtils.loadAnimation(mealImage.getContext(), R.anim.fade_in);
+        Animation slideOutLeft = AnimationUtils.loadAnimation(mealImage.getContext(), R.anim.slide_in_left);
+        Animation slideOutBottom = AnimationUtils.loadAnimation(mealName.getContext(), R.anim.slide_in_bottom);
+        Animation slideOutTop = AnimationUtils.loadAnimation(mealName.getContext(), R.anim.slide_in_top);
+        Animation slideOutRight = AnimationUtils.loadAnimation(mealName.getContext(), R.anim.slide_in_right);
+
+        mealImage.startAnimation(slideOutLeft);
+        mealName.startAnimation(slideOutBottom);
+        favoriteBtn.startAnimation(slideOutTop);
+        addToPlanBtn.startAnimation(slideOutLeft);
+        mealCountry.startAnimation(slideOutRight);
+        mealInstructions.startAnimation(slideOutRight);
+        countryText.startAnimation(fadeIn);
+        ingredientsText.startAnimation(fadeIn);
+        instructionsText.startAnimation(fadeIn);
+        youtubePlayerView.startAnimation(fadeIn);
     }
 
     private String extractVideoId(String url) {

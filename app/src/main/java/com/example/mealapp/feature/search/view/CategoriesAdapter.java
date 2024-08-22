@@ -3,6 +3,8 @@ package com.example.mealapp.feature.search.view;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,6 +50,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
                 .into(holder.categoryImage);
 
         holder.itemView.setOnClickListener(v -> listener.onCategoryClicked(category.getStrCategory()));
+        Animation slideInBottom = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.slide_in_top);
+
+      //  holder.itemView.startAnimation(fadeIn);
+        holder.itemView.startAnimation(slideInBottom);
+
     }
 
     @Override

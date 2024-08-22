@@ -3,6 +3,8 @@ package com.example.mealapp.feature.search.view;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +45,11 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Area
         String country = countryList.get(position).getStrArea();
         holder.countryName.setText(country);
         holder.itemView.setOnClickListener(v-> listener.onCountryClicked(country));
+
+        Animation slideInBottom = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.slide_in_right);
+
+        holder.itemView.startAnimation(slideInBottom);
+
     }
 
     @Override

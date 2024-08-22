@@ -19,6 +19,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -173,6 +175,12 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     public void showRandomMeal(PreviewMeal meal) {
         mealOfDayTitle.setText(meal.getStrMeal());
         Glide.with(this).load(meal.getStrMealThumb()).into(mealOfDayImage);
+        Animation fadeIn = AnimationUtils.loadAnimation(mealOfDayImage.getContext(), R.anim.fade_in);
+        mealOfDayImage.startAnimation(fadeIn);
+        Animation slideInBottom = AnimationUtils.loadAnimation(mealOfDayTitle.getContext(), R.anim.slide_in_bottom);
+        mealOfDayTitle.startAnimation(slideInBottom);
+
+
         setUpListeners(meal.getIdMeal());
         swipeRefreshLayout.setRefreshing(false);
     }

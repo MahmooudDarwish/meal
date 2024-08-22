@@ -3,6 +3,8 @@ package com.example.mealapp.feature.meal_details.view;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealapp.R;
 import com.example.mealapp.utils.common_layer.models.Ingredient;
+import com.example.mealapp.utils.constants.ConstantKeys;
 
 import java.util.List;
 
@@ -37,10 +40,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         Ingredient ingredient = ingredients.get(position);
         String ingredientTitle = ingredient.getQuantity() +" "+ ingredient.getStrIngredient();
         holder.ingredientName.setText(ingredientTitle);
-        String imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredient.getStrIngredient()+ "-Small" + ".png";
-        Glide.with(holder.ingredientImage.getContext())
+        String imageUrl = ConstantKeys.getIngredientImageUrl(ingredient.getStrIngredient());
+                Glide.with(holder.ingredientImage.getContext())
                 .load(imageUrl).diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.ingredientImage);
+        Animation slideInBottom = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.slide_in_bottom);
+        holder.itemView.startAnimation(slideInBottom);
+
 
     }
 

@@ -3,6 +3,8 @@ package com.example.mealapp.feature.home.view;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,6 +51,13 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
+
+        Animation fadeIn = AnimationUtils.loadAnimation(holder.mealImage.getContext(), R.anim.fade_in);
+        Animation slideOutBottom = AnimationUtils.loadAnimation(holder.mealName.getContext(), R.anim.slide_in_bottom);
+        holder.mealImage.startAnimation(fadeIn);
+        holder.mealName.startAnimation(slideOutBottom);
+
+
         PreviewMeal meal = meals.get(position);
         holder.mealName.setText(meal.getStrMeal());
 
@@ -56,7 +65,6 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
                 load(meal.getStrMealThumb()).into(holder.mealImage);
 
         holder.itemView.setOnClickListener( v -> listener.onMealItemClicked(meal.getIdMeal()));
-
     }
 
 
@@ -76,6 +84,8 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
             mealImage = itemView.findViewById(R.id.mealImage);
             mealName = itemView.findViewById(R.id.mealName);
             mealCard = itemView.findViewById(R.id.mealCard);
+
+
         }
     }
 }
