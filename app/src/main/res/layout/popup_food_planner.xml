@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp">
 
-
-    <DatePicker
-        android:id="@+id/datePicker"
-        style="@android:style/Widget.DeviceDefault.DatePicker"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:datePickerMode="calendar"
-        android:headerBackground="@color/colorPrimary"
-        android:pointerIcon="none" />
+        android:orientation="vertical">
+
+        <DatePicker
+            android:id="@+id/datePicker"
+            style="@android:style/Widget.DeviceDefault.DatePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:datePickerMode="calendar"
+            android:headerBackground="@color/colorPrimary"
+            android:pointerIcon="none" />
 
         <RadioGroup
             android:id="@+id/mealTypeGroup"
@@ -24,7 +27,6 @@
             <RadioButton
                 android:id="@+id/rb_breakfast"
                 android:layout_width="wrap_content"
-
                 android:layout_height="wrap_content"
                 android:buttonTint="@drawable/meal_type_radio_btn"
                 android:text="@string/breakfast" />
@@ -34,7 +36,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@drawable/meal_type_radio_btn"
-
                 android:text="@string/lunch" />
 
             <RadioButton
@@ -42,18 +43,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@drawable/meal_type_radio_btn"
-
                 android:text="@string/dinner" />
-
         </RadioGroup>
 
-    <Button
-        android:id="@+id/btnConfirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/CustomButtonStyle"
-        android:text="@string/add_to_planner"
-       />
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/CustomButtonStyle"
+            android:text="@string/add_to_planner" />
 
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

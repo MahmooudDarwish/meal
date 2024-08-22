@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
@@ -65,7 +66,12 @@ public class MealsViewer extends AppCompatActivity implements IMealsViewer, OnMe
 
     private void initUI() {
         mealsRecycler = findViewById(R.id.mealsRecycler);
-        mealsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            mealsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        }else{
+            mealsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        }
         searchView = findViewById(R.id.searchView);
         bannerNoInternet = findViewById(R.id.bannerNoInternet);
     }

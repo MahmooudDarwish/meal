@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.meal_details.view.MealDetails">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="16dp">
+        <include
+            android:id="@+id/bannerNoInternet"
+            layout="@layout/banner_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginTop="30dp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/mealCard"
+            style="@style/CardStyle"
+            android:layout_width="454dp"
+            android:layout_height="195dp"
+            android:layout_marginTop="35dp"
+            android:elevation="8dp"
+            android:radius="12dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/bannerNoInternet">
+
+            <ImageView
+                android:id="@+id/mealImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/mealName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@android:drawable/screen_background_dark_transparent"
+                android:maxLines="1"
+                android:paddingStart="21dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="21dp"
+                android:paddingBottom="10dp"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+
+            android:id="@+id/addToPlanBtn"
+            style="@style/CustomButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/add_to_plan"
+            app:layout_constraintEnd_toStartOf="@+id/favoriteBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mealCard" />
+
+        <TextView
+            android:id="@+id/mealCountry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="35dp"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/countryText"
+            app:layout_constraintTop_toTopOf="@+id/bannerNoInternet" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/favoriteBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="170dp"
+            android:layout_marginEnd="28dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:backgroundTint="@color/colorSecondary"
+            app:borderWidth="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/mealCard"
+            app:layout_constraintTop_toTopOf="@+id/mealCard"
+            app:srcCompat="@drawable/empty_heart" />
+
+        <TextView
+            android:id="@+id/ingredientsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/ingrediants"
+            android:textColor="@color/textTitleColor"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/mealCard"
+            app:layout_constraintTop_toBottomOf="@+id/countryText" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ingredientRecycler"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/mealCard"
+            app:layout_constraintTop_toBottomOf="@+id/ingredientsText" />
+
+        <TextView
+            android:id="@+id/mealInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="21dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/instructionsText" />
+
+        <TextView
+            android:id="@+id/countryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="35dp"
+
+            android:text="@string/country"
+            android:textColor="@color/textTitleColor"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/mealCard"
+            app:layout_constraintTop_toTopOf="@+id/bannerNoInternet" />
+
+        <TextView
+            android:id="@+id/instructionsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/instructions"
+
+            android:textColor="@color/textTitleColor"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addToPlanBtn" />
+
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+            android:id="@+id/mealVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:paddingBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mealInstructions" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

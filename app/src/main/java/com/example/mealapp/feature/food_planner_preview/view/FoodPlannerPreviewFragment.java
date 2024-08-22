@@ -1,11 +1,13 @@
 package com.example.mealapp.feature.food_planner_preview.view;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,10 +68,12 @@ public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlanner
         youDontHavePlan = v.findViewById(R.id.youDontHavePlan);
         youNeedToSignInFirst = v.findViewById(R.id.youNeedToSigninFirst);
         plannedMealsRecyclerView = v.findViewById(R.id.plannedMealsRecyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        plannedMealsRecyclerView.setLayoutManager(linearLayoutManager);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            plannedMealsRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
+        }else{
+            plannedMealsRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2,LinearLayoutManager.VERTICAL, false));
 
+        }
     }
     @Override
     public void showPlannedMeals(List<MealPlan> meals) {
