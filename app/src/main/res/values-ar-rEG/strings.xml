@@ -95,6 +95,5 @@
     <string name="yes">نعم</string>
     <string name="no">لا</string>
     <string name="choose_language">غير لغتك</string>
-    <string name="choose_theme">غير سمة العرض</string>
     <string name="lang">English</string>
 </resources>
