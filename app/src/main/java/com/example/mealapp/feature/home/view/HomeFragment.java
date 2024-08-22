@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -150,8 +151,6 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
             String userNameStr = UserSessionHolder.getInstance().getUser().getName();
             userName.setText(userNameStr);
         }
-
-
     }
 
     private void setUpListeners(String mealId) {
@@ -166,8 +165,18 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
 
         mealOfDayCard.setOnClickListener(v -> onMealItemClicked(mealId));
 
-        signOutIcon.setOnClickListener(v -> signOut());
+        signOutIcon.setOnClickListener(v -> showSignOutDialog());
     }
+
+    private void showSignOutDialog() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.sign_out))
+                .setMessage(getString(R.string.are_you_sure_sign_out))
+                .setPositiveButton(getString(R.string.yes), (dialog, which) -> signOut())
+                .setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
 
     private void signOut() {
         UserSessionHolder.getInstance().setUser(null);

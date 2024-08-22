@@ -91,6 +91,9 @@
     <string name="error_response_unsuccessful">Response unsuccessful</string>
     <string name="error_network">Network error: Please check your internet connection and try again.</string>
     <string name="error_unexpected">Unexpected error: please contact us for assistance.</string>
+    <string name="are_you_sure_sign_out">Are you sure you want to sign out?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>"
 
 
 </resources>
