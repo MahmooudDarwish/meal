@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,9 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     CardView mealOfDayCard;
     RecyclerView mealsRecycler;
     SwipeRefreshLayout swipeRefreshLayout;
+
+    ProgressBar mealOfDayProgressBar, mealsProgressBar;
+
 
     MealsAdapter mealsAdapter;
 
@@ -88,7 +92,6 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initUI(view);
-
         networkReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -97,6 +100,8 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
                     refreshUI();
                 } else {
                     Toast.makeText(getContext(), getString(R.string.no_internet_message), Toast.LENGTH_SHORT).show();
+                    mealOfDayProgressBar.setVisibility(View.GONE);
+                    mealsProgressBar.setVisibility(View.GONE);
                     swipeRefreshLayout.setEnabled(false);
                 }
             }
@@ -112,6 +117,9 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
 
     private void refreshUI() {
         if (NetworkUtil.isConnected()) {
+            mealOfDayProgressBar.setVisibility(View.VISIBLE);
+            mealsProgressBar.setVisibility(View.VISIBLE);
+            mealOfDayCard.setVisibility(View.GONE);
             mealsAdapter.clearMeals();
             presenter.getRandomMeal();
             presenter.getRandomMeals();
@@ -126,6 +134,8 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
         mealOfDayCard = v.findViewById(R.id.mealOfTheDayCard);
         mealOfDayImage = v.findViewById(R.id.mealImage);
         mealOfDayTitle = v.findViewById(R.id.mealName);
+        mealOfDayProgressBar = v.findViewById(R.id.mealOfDayProgress);
+        mealsProgressBar = v.findViewById(R.id.mealsProgress);
         swipeRefreshLayout = v.findViewById(R.id.swipeRefreshLayout);
         mealsRecycler = v.findViewById(R.id.mealsRecycler);
         mealsRecycler.setLayoutManager(new LinearLayoutManager(requireActivity()));
@@ -180,7 +190,7 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
         Animation slideInBottom = AnimationUtils.loadAnimation(mealOfDayTitle.getContext(), R.anim.slide_in_bottom);
         mealOfDayTitle.startAnimation(slideInBottom);
 
-
+        mealOfDayProgressBar.setVisibility(View.GONE);
         setUpListeners(meal.getIdMeal());
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -202,11 +212,16 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     @Override
     public void onFailureResult(String errorMsg) {
         Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+        mealsProgressBar.setVisibility(View.GONE);
+        mealOfDayCard.setVisibility(View.VISIBLE);
+        mealOfDayProgressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void showRandomMeals(PreviewMeal meal) {
         mealsAdapter.updateMeals(meal);
+        mealsProgressBar.setVisibility(View.GONE);
+        mealOfDayCard.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setRefreshing(false);
 
     }

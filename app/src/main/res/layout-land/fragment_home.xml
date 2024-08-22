@@ -93,6 +93,16 @@
                     android:textColor="@color/white"
                     android:textSize="20sp" />
 
+                <TextView
+                    android:id="@+id/noInternetMealOfDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/no_internet_message"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
+
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -116,6 +126,28 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/mealOfTheDayCard"
                 app:layout_constraintTop_toBottomOf="@+id/mealsText" />
+
+            <ProgressBar
+                android:id="@+id/mealsProgress"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                app:layout_constraintEnd_toEndOf="@+id/mealsRecycler"
+                app:layout_constraintStart_toStartOf="@+id/mealsRecycler"
+                app:layout_constraintTop_toTopOf="@+id/mealsRecycler" />
+
+            <ProgressBar
+                android:id="@+id/mealOfDayProgress"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="200dp"
+                android:layout_marginTop="72dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mealOfTheDayText" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

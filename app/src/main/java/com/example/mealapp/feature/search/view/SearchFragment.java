@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.mealapp.R;
@@ -45,7 +46,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
     CountriesAdapter countriesAdapter;
     CategoriesAdapter categoriesAdapter;
     IngredientAdapter ingredientsAdapter;
-
+    ProgressBar countriesProgress, categoriesProgress, ingredientsProgress;
     BroadcastReceiver networkReceiver;
 
     SearchView searchView;
@@ -79,9 +80,13 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
             public void onReceive(Context context, Intent intent) {
                 if (NetworkUtil.isConnected()) {
                     swipeRefreshLayout.setEnabled(true);
+
                     refreshUI();
                 } else {
                     Toast.makeText(getContext(), getString(R.string.no_internet_message), Toast.LENGTH_SHORT).show();
+                    categoriesProgress.setVisibility(View.GONE);
+                    countriesProgress.setVisibility(View.GONE);
+                    ingredientsProgress.setVisibility(View.GONE);
                     swipeRefreshLayout.setEnabled(false);
                 }
             }
@@ -133,6 +138,9 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
     }
 
     private void refreshUI() {
+        categoriesProgress.setVisibility(View.VISIBLE);
+        countriesProgress.setVisibility(View.VISIBLE);
+        ingredientsProgress.setVisibility(View.VISIBLE);
         presenter.getAllCategories();
         presenter.getAllCountries();
         presenter.getAllIngredients();
@@ -140,6 +148,9 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
     }
 
     private void initUI(View v) {
+        countriesProgress = v.findViewById(R.id.countriesProgress);
+        categoriesProgress = v.findViewById(R.id.categoriesProgress);
+        ingredientsProgress = v.findViewById(R.id.ingredientsProgress);
 
         searchView = v.findViewById(R.id.searchView);
         searchView.clearFocus();
@@ -161,12 +172,14 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
     public void showCategories(List<Category> categories) {
         categoriesAdapter = new CategoriesAdapter(categories, this);
         categoriesRecycler.setAdapter(categoriesAdapter);
+        categoriesProgress.setVisibility(View.GONE);
     }
 
     @Override
     public void showCountries(List<Country> countries) {
         countriesAdapter = new CountriesAdapter(countries, this);
         countriesRecycler.setAdapter(countriesAdapter);
+        countriesProgress.setVisibility(View.GONE);
     }
 
     @Override
@@ -174,6 +187,7 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
         if (!ingredientsRecycler.isComputingLayout()) {
             ingredientsAdapter.addIngredients(ingredients);
         }
+        ingredientsProgress.setVisibility(View.GONE);
     }
 
     @Override
@@ -201,6 +215,9 @@ public class SearchFragment extends Fragment implements ISearch, OnCategoryClick
     @Override
     public void onFailureResult(String errorMsg) {
         Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+        categoriesProgress.setVisibility(View.GONE);
+        countriesProgress.setVisibility(View.GONE);
+        ingredientsProgress.setVisibility(View.GONE);
     }
 
     @Override

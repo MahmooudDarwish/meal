@@ -54,6 +54,12 @@
                     android:textColor="@color/textTitleColor"
                     android:textSize="20sp" />
 
+                <ProgressBar
+                    android:id="@+id/categoriesProgress"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/categoriesRecycler"
                     android:layout_width="match_parent"
@@ -71,6 +77,12 @@
                     android:textColor="@color/textTitleColor"
                     android:textSize="20sp" />
 
+                <ProgressBar
+                    android:id="@+id/ingredientsProgress"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/ingeridentsRecycler"
                     android:layout_width="match_parent"
@@ -87,6 +99,12 @@
                     android:text="@string/countries"
                     android:textColor="@color/textTitleColor"
                     android:textSize="20sp" />
+
+                <ProgressBar
+                    android:id="@+id/countriesProgress"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/countriesRecycler"
