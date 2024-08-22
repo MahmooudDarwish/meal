@@ -13,6 +13,9 @@ public abstract class ConstantKeys {
     public static final String KEY_STR_MEAL = "strMeal";
     public static final String KEY_STR_CATEGORY = "strCategory";
     public static final String KEY_STR_AREA = "strArea";
+    public static final String LANGUAGE_KEY = "language";
+    public static final String USER_SETTINGS = "user_settings";
+
     public static final String KEY_STR_INSTRUCTIONS = "strInstructions";
     public static final String KEY_STR_MEAL_THUMB = "strMealThumb";
     public static final String KEY_STR_YOUTUBE = "strYoutube";
@@ -41,7 +44,13 @@ public abstract class ConstantKeys {
     public static final String COLLECTION_PLAN_MEALS = "plan_meals";
     public static final String COLLECTION_INGREDIENTS = "ingredients";
 
+
     public static final String COLLECTION_USERS = "users";
+
+    public static final String KEY_AR = "ar";
+    public static final String KEY_EN = "en";
+
+
 
 
 

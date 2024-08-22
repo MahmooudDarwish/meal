@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,32 +27,44 @@ import com.example.mealapp.feature.settings.presenter.ISettingsPresenter;
 import com.example.mealapp.feature.settings.presenter.SettingsPresenter;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
+import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
 
+import java.util.Locale;
 import java.util.Objects;
 
 
 public class SettingsFragment extends Fragment implements ISettings {
 
     Button signInBtn, signOutBtn, backUpBtn;
-    TextView email, emailText;
+    TextView email, emailText, language;
+
     private ProgressDialog progressDialog;
-
-
+    LinearLayout languageContainer;
     ISettingsPresenter presenter;
+    boolean isEnglish = true;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new SettingsPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity())));
 
+        SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences(ConstantKeys.USER_SETTINGS, Context.MODE_PRIVATE);
+
+        if (sharedPreferences.contains(ConstantKeys.LANGUAGE_KEY)) {
+            String savedLanguage = sharedPreferences.getString(ConstantKeys.LANGUAGE_KEY, ConstantKeys.KEY_EN);
+            isEnglish = savedLanguage.equals(ConstantKeys.KEY_EN);
+        } else {
+            String currentLanguage = Locale.getDefault().getLanguage();
+            isEnglish = currentLanguage.equals(ConstantKeys.KEY_EN);
+            saveLanguageToPreferences(currentLanguage);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
@@ -73,15 +87,28 @@ public class SettingsFragment extends Fragment implements ISettings {
         backUpBtn.setOnClickListener(view -> {
             if(NetworkUtil.isConnected()){
                 presenter.uploadDataToFirebase(this);
-            }else{
+            } else {
                 showMessage(getString(R.string.no_internet_message));
             }
-            });
-    }
+        });
+
+        languageContainer.setOnClickListener(v -> {
+            if (isEnglish) {
+                setLocale(ConstantKeys.KEY_AR);
+                isEnglish = false;
+                saveLanguageToPreferences(ConstantKeys.KEY_AR);
+                language.setText(getString(R.string.lang));
+            } else {
+                setLocale(ConstantKeys.KEY_EN);
+                isEnglish = true;
+                saveLanguageToPreferences(ConstantKeys.KEY_EN);
+                language.setText(getString(R.string.lang));
+            }
+        });  }
 
     void signOut(){
         UserSessionHolder.getInstance().setUser(null);
-        SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences("user_data", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences(ConstantKeys.USER_DATA, Context.MODE_PRIVATE);
         sharedPreferences.edit().clear().apply();
         presenter.signOut();
         Intent intent = new Intent(getActivity(), MainScreen.class);
@@ -107,8 +134,16 @@ public class SettingsFragment extends Fragment implements ISettings {
         backUpBtn = view.findViewById(R.id.backUpBtn);
         email = view.findViewById(R.id.email);
         emailText = view.findViewById(R.id.emailText);
+        language = view.findViewById(R.id.language);
+        languageContainer = view.findViewById(R.id.languageContainer);
 
-        if(UserSessionHolder.getInstance().getUser() != null){
+        if(isEnglish){
+            language.setText(getString(R.string.lang));
+        } else {
+            language.setText(getString(R.string.lang));
+        }
+
+        if (UserSessionHolder.getInstance().getUser() != null) {
             signInBtn.setVisibility(View.GONE);
             signOutBtn.setVisibility(View.VISIBLE);
             emailText.setVisibility(View.VISIBLE);
@@ -118,6 +153,22 @@ public class SettingsFragment extends Fragment implements ISettings {
         }
     }
 
+
+    private void saveLanguageToPreferences(String language) {
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(ConstantKeys.USER_SETTINGS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(ConstantKeys.LANGUAGE_KEY, language);
+        editor.apply();
+    }
+
+    private void setLocale(String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        requireActivity().recreate();
+    }
 
     @Override
     public void showMessage(String msg) {
