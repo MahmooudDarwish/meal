@@ -6,13 +6,19 @@ import androidx.lifecycle.LifecycleOwner;
 import com.example.mealapp.R;
 import com.example.mealapp.feature.settings.view.ISettings;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
+import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
 import com.example.mealapp.utils.firebase.FirebaseManager;
+
+import android.content.Context;
+import android.os.Handler;
 
 public class SettingsPresenter implements ISettingsPresenter {
 
     private final ISettings view;
     private final MealRepository repo;
+    private final Handler handler = new Handler();
+    private final int checkInterval = 1000;
 
     public SettingsPresenter(ISettings view, MealRepository repo) {
         this.view = view;
@@ -25,6 +31,8 @@ public class SettingsPresenter implements ISettingsPresenter {
     }
 
     public void uploadDataToFirebase(LifecycleOwner owner) {
+        startNetworkChecking();
+
         String userId = UserSessionHolder.getInstance().getUser().getUid();
 
         repo.getAllFavoriteMealsForUser(userId).observe(owner, favoriteMeals -> {
@@ -43,7 +51,6 @@ public class SettingsPresenter implements ISettingsPresenter {
             }
         });
 
-        // Fetch meal plans from Room
         repo.getAllMealPlansForUser(userId).observe(owner, mealPlans -> {
             if (mealPlans != null && !mealPlans.isEmpty()) {
                 FirebaseManager.getInstance().setMealPlans(mealPlans, task -> {
@@ -58,7 +65,6 @@ public class SettingsPresenter implements ISettingsPresenter {
             }
         });
 
-        // Fetch meal ingredients from Room
         repo.getIngredientsForUser(userId).observe(owner, mealIngredients -> {
             if (mealIngredients != null && !mealIngredients.isEmpty()) {
                 FirebaseManager.getInstance().setMealIngredients(mealIngredients, task -> {
@@ -67,9 +73,32 @@ public class SettingsPresenter implements ISettingsPresenter {
                     } else {
                         view.showMessage(view.getStringFromRes(R.string.failed_to_upload_meal_ingredients));
                     }
+                    cancelChecking();
                     view.hideLoading();
                 });
+            } else {
+                view.hideLoading();
             }
         });
+    }
+
+    private void startNetworkChecking() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!NetworkUtil.isConnected()) {
+                    cancelChecking();
+                    view.showBackUpWarning();
+                } else  {
+                    handler.postDelayed(this, checkInterval); // Continue checking
+                }
+            }
+        }, checkInterval);
+    }
+
+
+    private void cancelChecking() {
+        view.hideLoading();
+        handler.removeCallbacksAndMessages(null); // Stop network checking
     }
 }

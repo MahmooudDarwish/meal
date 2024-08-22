@@ -20,9 +20,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -119,76 +121,134 @@ public class FirebaseManager {
 
     //BackUp handling
 
-    public void setFavoriteMeals(List<FavoriteMeal> meals, @NonNull OnCompleteListener<Void> onCompleteListener) {
+    private void deleteFavoriteMeals(@NonNull OnCompleteListener<Void> onCompleteListener) {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-
-        List<Task<Void>> tasks = new ArrayList<>();
-
         if (currentUser != null) {
-            for (FavoriteMeal meal : meals) {
-                DocumentReference docRef = firestore.collection(ConstantKeys.COLLECTION_FAVORITE_MEALS)
-                        .document(meal.getIdMeal() + meal.getIdUser() + "favorite");
+            String userId = currentUser.getUid();
+            CollectionReference collectionRef = firestore.collection(ConstantKeys.COLLECTION_FAVORITE_MEALS);
+            //Filter docs
+            Query query = collectionRef.whereEqualTo(ConstantKeys.KEY_ID_USER, userId);
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    List<Task<Void>> deleteTasks = new ArrayList<>();
+                    for (DocumentSnapshot document : task.getResult()) {
+                        deleteTasks.add(document.getReference().delete());
+                    }
 
-                Task<Void> task = docRef.set(meal.toMap())
-                        .addOnSuccessListener(suc -> Log.d(TAG, "Favorite meal saved successfully: " + meal.getStrMeal()))
-                        .addOnFailureListener(e -> Log.e(TAG, "Error saving favorite meal: " + meal.getStrMeal()));
-
-                tasks.add(task);
-            }
-
-            Task<Void> allTasks = Tasks.whenAll(tasks);
-            allTasks.addOnCompleteListener(onCompleteListener);
+                    Tasks.whenAll(deleteTasks).addOnCompleteListener(onCompleteListener);
+                } else {
+                    onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
+                }
+            });
         } else {
             onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.error_no_current_user))));
         }
+    }
+
+    public void deleteMealPlans(@NonNull OnCompleteListener<Void> onCompleteListener) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            CollectionReference collectionRef = firestore.collection(ConstantKeys.COLLECTION_PLAN_MEALS);
+
+            Query query = collectionRef.whereEqualTo(ConstantKeys.KEY_ID_USER, userId);
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    List<Task<Void>> deleteTasks = new ArrayList<>();
+                    for (DocumentSnapshot document : task.getResult()) {
+                        deleteTasks.add(document.getReference().delete());
+                    }
+
+                    Tasks.whenAll(deleteTasks).addOnCompleteListener(onCompleteListener);
+                } else {
+                    onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
+                }
+            });
+        } else {
+            onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.error_no_current_user))));
+        }
+    }
+
+    public void deleteMealIngredients(@NonNull OnCompleteListener<Void> onCompleteListener) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            CollectionReference collectionRef = firestore.collection(ConstantKeys.COLLECTION_INGREDIENTS);
+
+            Query query = collectionRef.whereEqualTo(ConstantKeys.KEY_ID_USER, userId);
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    List<Task<Void>> deleteTasks = new ArrayList<>();
+                    for (DocumentSnapshot document : task.getResult()) {
+                        deleteTasks.add(document.getReference().delete());
+                    }
+
+                    Tasks.whenAll(deleteTasks).addOnCompleteListener(onCompleteListener);
+                } else {
+                    onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
+                }
+            });
+        } else {
+            onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.error_no_current_user))));
+        }
+    }
+
+
+    public void setFavoriteMeals(List<FavoriteMeal> meals, @NonNull OnCompleteListener<Void> onCompleteListener) {
+        deleteFavoriteMeals(deleteTask -> {
+            if (deleteTask.isSuccessful()) {
+                List<Task<Void>> tasks = new ArrayList<>();
+                for (FavoriteMeal meal : meals) {
+                    DocumentReference docRef = firestore.collection(ConstantKeys.COLLECTION_FAVORITE_MEALS)
+                            .document(meal.getIdMeal() + meal.getIdUser() + "favorite");
+                    Task<Void> task = docRef.set(meal.toMap())
+                            .addOnSuccessListener(suc -> Log.d(TAG, "Favorite meal saved successfully: " + meal.getStrMeal()))
+                            .addOnFailureListener(e -> Log.e(TAG, "Error saving favorite meal: " + meal.getStrMeal()));
+                    tasks.add(task);
+                }
+                Tasks.whenAll(tasks).addOnCompleteListener(onCompleteListener);
+            } else {
+                onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(deleteTask.getException())));
+            }
+        });
     }
 
     public void setMealPlans(List<MealPlan> plans, @NonNull OnCompleteListener<Void> onCompleteListener) {
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-
-        List<Task<Void>> tasks = new ArrayList<>();
-
-        if (currentUser != null) {
-            for (MealPlan meal : plans) {
-                DocumentReference docRef = firestore.collection(ConstantKeys.COLLECTION_PLAN_MEALS)
-                        .document(meal.getIdMeal() + meal.getIdUser() + "plan");
-
-                Task<Void> task = docRef.set(meal.toMap())
-                        .addOnSuccessListener(suc -> Log.d(TAG, "Plan meal saved successfully: " + meal.getStrMeal()))
-                        .addOnFailureListener(e -> Log.e(TAG, "Error saving plan meal: " + meal.getStrMeal()));
-
-                tasks.add(task);
+        deleteMealPlans(deleteTask -> {
+            if (deleteTask.isSuccessful()) {
+                List<Task<Void>> tasks = new ArrayList<>();
+                for (MealPlan meal : plans) {
+                    DocumentReference docRef = firestore.collection(ConstantKeys.COLLECTION_PLAN_MEALS)
+                            .document(meal.getIdMeal() + meal.getIdUser() + "plan");
+                    Task<Void> task = docRef.set(meal.toMap())
+                            .addOnSuccessListener(suc -> Log.d(TAG, "Plan meal saved successfully: " + meal.getStrMeal()))
+                            .addOnFailureListener(e -> Log.e(TAG, "Error saving plan meal: " + meal.getStrMeal()));
+                    tasks.add(task);
+                }
+                Tasks.whenAll(tasks).addOnCompleteListener(onCompleteListener);
+            } else {
+                onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(deleteTask.getException())));
             }
-
-            Task<Void> allTasks = Tasks.whenAll(tasks);
-            allTasks.addOnCompleteListener(onCompleteListener);
-        } else {
-            onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.error_no_current_user))));
-        }
+        });
     }
 
     public void setMealIngredients(List<MealIngredient> ingredients, @NonNull OnCompleteListener<Void> onCompleteListener) {
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-
-        List<Task<Void>> tasks = new ArrayList<>();
-
-        if (currentUser != null) {
-            for (MealIngredient ingredient : ingredients) {
-                DocumentReference docRef = firestore.collection(ConstantKeys.COLLECTION_INGREDIENTS)
-                        .document(ingredient.getIngredientName() + ingredient.getIdUser() + "ingredient");
-
-                Task<Void> task = docRef.set(ingredient.toMap())
-                        .addOnSuccessListener(suc -> Log.d(TAG, "Ingredient saved successfully: " + ingredient.getIngredientName()))
-                        .addOnFailureListener(e -> Log.e(TAG, "Error saving plan meal: " + ingredient.getIngredientName()));
-
-                tasks.add(task);
+        deleteMealIngredients(deleteTask -> {
+            if (deleteTask.isSuccessful()) {
+                List<Task<Void>> tasks = new ArrayList<>();
+                for (MealIngredient ingredient : ingredients) {
+                    DocumentReference docRef = firestore.collection(ConstantKeys.COLLECTION_INGREDIENTS)
+                            .document(ingredient.getIngredientName() + ingredient.getIdUser() + "ingredient");
+                    Task<Void> task = docRef.set(ingredient.toMap())
+                            .addOnSuccessListener(suc -> Log.d(TAG, "Ingredient saved successfully: " + ingredient.getIngredientName()))
+                            .addOnFailureListener(e -> Log.e(TAG, "Error saving plan meal: " + ingredient.getIngredientName()));
+                    tasks.add(task);
+                }
+                Tasks.whenAll(tasks).addOnCompleteListener(onCompleteListener);
+            } else {
+                onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(deleteTask.getException())));
             }
-
-            Task<Void> allTasks = Tasks.whenAll(tasks);
-            allTasks.addOnCompleteListener(onCompleteListener);
-        } else {
-            onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.error_no_current_user))));
-        }
+        });
     }
 
     public void getFavoriteMeals(String userId, @NonNull OnCompleteListener<List<FavoriteMeal>> onCompleteListener) {
@@ -280,35 +340,3 @@ public class FirebaseManager {
 
 
 }
-
-
-
-/*
-    public void getUserData(@NonNull final OnUserRetrieveData listener) {
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-            firestore.collection(ConstantKeys.COLLECTION_USERS)
-                    .document(userId)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                String name = document.getString(ConstantKeys.KEY_NAME);
-                                String email = document.getString(ConstantKeys.KEY_EMAIL);
-                                User user = new User(email, name, userId);
-                                listener.onUserDataRetrieved(user);
-                            } else {
-                                listener.onError(new Exception("No user data found"));
-                            }
-                        } else {
-                            listener.onError(task.getException());
-                        }
-                    });
-        } else {
-            listener.onError(new Exception("No current user"));
-        }
-    }
-
- */

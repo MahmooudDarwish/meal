@@ -176,6 +176,18 @@ public class SettingsFragment extends Fragment implements ISettings {
     }
 
     @Override
+    public void showBackUpWarning() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        builder.setTitle(getString(R.string.warning))
+                .setMessage(getString(R.string.backup_interrupted_message))
+                .setPositiveButton(getStringFromRes(R.string.ok), (dialog, id) -> {
+                    dialog.dismiss();
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
 
     public void showLoading() {
         if (progressDialog == null) {

@@ -105,6 +105,12 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="choose_language">Change your language</string>
+
     <string name="lang">العربية</string>
+
+    <string name="backup_interrupted_message">Backup has been interrupted but will continue on background when the connection is restored.</string>
+    <string name="warning">Warning</string>
+    <string name="ok">OK</string>
+
 
 </resources>
