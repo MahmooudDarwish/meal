@@ -266,7 +266,9 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
                     presenter.saveMealPlan(meal);
                     dialog.dismiss();
                 })
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+                    dialog.dismiss();
+                })
                 .show());
     }
 
@@ -275,7 +277,9 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         runOnUiThread(() -> new AlertDialog.Builder(this)
                 .setTitle(R.string.warning)
                 .setMessage(R.string.cannot_add_meal)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    dialog.dismiss();
+                })
                 .show());
     }
     @Override

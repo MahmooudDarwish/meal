@@ -39,7 +39,6 @@ public class SettingsPresenter implements ISettingsPresenter {
         repo.getAllFavoriteMealsForUser(userId).observe(owner, favoriteMeals -> {
             if (favoriteMeals != null && !favoriteMeals.isEmpty()) {
                 view.showLoading();
-
                 repo.setFavoriteMeals(favoriteMeals, task -> {
                     if (task.isSuccessful()) {
                         view.showMessage(view.getStringFromRes(R.string.favorite_meals_uploaded_successfully));
@@ -54,6 +53,7 @@ public class SettingsPresenter implements ISettingsPresenter {
 
         repo.getAllMealPlansForUser(userId).observe(owner, mealPlans -> {
             if (mealPlans != null && !mealPlans.isEmpty()) {
+                view.showLoading();
                 repo.setMealPlans(mealPlans, task -> {
                     if (task.isSuccessful()) {
                         view.showMessage(view.getStringFromRes(R.string.meal_plans_uploaded_successfully));
@@ -68,6 +68,7 @@ public class SettingsPresenter implements ISettingsPresenter {
 
         repo.getIngredientsForUser(userId).observe(owner, mealIngredients -> {
             if (mealIngredients != null && !mealIngredients.isEmpty()) {
+                view.showLoading();
                 repo.setMealIngredients(mealIngredients, task -> {
                     if (task.isSuccessful()) {
                         view.showMessage(view.getStringFromRes(R.string.meal_ingredients_uploaded_successfully));
@@ -77,10 +78,11 @@ public class SettingsPresenter implements ISettingsPresenter {
                     cancelChecking();
                     view.hideLoading();
                 });
-            } else {
-                view.hideLoading();
             }
         });
+        cancelChecking();
+        view.hideLoading();
+
     }
 
     @Override

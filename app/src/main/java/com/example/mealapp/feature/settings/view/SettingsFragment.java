@@ -10,6 +10,7 @@
     import androidx.appcompat.app.AlertDialog;
     import androidx.fragment.app.Fragment;
 
+    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
@@ -157,7 +158,8 @@
 
         public void showLoading() {
             if (progressDialog == null) {
-                progressDialog = new ProgressDialog(getActivity());
+                Log.d("TAG", "showLoading: ");
+                progressDialog = new ProgressDialog(requireActivity());
                 progressDialog.setMessage(getString(R.string.backing_up_message));
                 progressDialog.setCancelable(false);
             }
@@ -165,7 +167,6 @@
         }
 
         @Override
-
         public void hideLoading() {
             if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
