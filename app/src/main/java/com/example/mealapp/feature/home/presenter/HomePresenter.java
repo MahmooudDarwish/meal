@@ -44,7 +44,7 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
         String userNameStr = repo.getPreference(ConstantKeys.USER_NAME, true);
         String userEmail = repo.getPreference(ConstantKeys.USER_EMAIL, true);
 
-        if (stayLoggedIn) {
+        if (stayLoggedIn && UserSessionHolder.isGuest()) {
             UserSessionHolder.getInstance().setUser(new User(userEmail, userNameStr));
             getCurrentUser();
         }

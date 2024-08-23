@@ -165,8 +165,8 @@ public class MealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public void deleteMealIngredient(String mealId) {
-        localSource.deleteMealIngredient(mealId);
+    public void deleteMealIngredient(String mealId, String userId) {
+        localSource.deleteMealIngredient(mealId, userId);
     }
 
     @Override

@@ -26,7 +26,7 @@ public interface MealLocalDataSource {
 
     void saveMealIngredient(MealIngredient ingredient);
     void addMealIngredients(List<MealIngredient> ingredients);
-     void deleteMealIngredient(String mealId);
+    public void deleteMealIngredient(String mealId, String userId);
     LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId);
 
     LiveData<List<MealIngredient>> getIngredientsForUserId(String userId);

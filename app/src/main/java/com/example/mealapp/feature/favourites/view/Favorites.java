@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class Favorites extends Fragment implements IFavorites, OnFavoriteMealCli
 
     @Override
     public void onResume() {
+        Log.d("TAG", "onResume:herreee ");
         super.onResume();
         presenter.getFavorites(this);
     }
@@ -83,13 +85,14 @@ public class Favorites extends Fragment implements IFavorites, OnFavoriteMealCli
     @Override
     public void showFavorites(List<FavoriteMeal> meals) {
         if (meals.isEmpty()){
+            Log.d("TAG", "showFavorites: empty");
             youDontHaveFavorites.setVisibility(View.VISIBLE);
             favouritesRecyclerView.setVisibility(View.GONE);
         }else{
+            Log.d("TAG", "showFavorites: not empty");
             youDontHaveFavorites.setVisibility(View.GONE);
             favouritesRecyclerView.setVisibility(View.VISIBLE);
             favouritesAdapter.updateData(meals);
-
         }
     }
 

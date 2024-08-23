@@ -124,8 +124,8 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public void deleteMealIngredient(String mealId) {
-        executor.execute(() -> mealIngredientDao.deleteMealIngredient(mealId));
+    public void deleteMealIngredient(String mealId, String userId) {
+        executor.execute(() -> mealIngredientDao.deleteMealIngredient(mealId, userId));
     }
 
     @Override

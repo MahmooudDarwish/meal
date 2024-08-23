@@ -69,7 +69,7 @@ public interface MealRepository {
 
      void addMealIngredients(List<MealIngredient> ingredients);
 
-     void deleteMealIngredient(String mealId);
+     void deleteMealIngredient(String mealId, String userId);
 
      LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId);
      LiveData<List<MealIngredient>> getIngredientsForUser(String userId);

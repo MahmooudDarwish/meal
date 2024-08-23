@@ -90,7 +90,7 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
                 _repo.deleteFavoriteMeal(new FavoriteMeal(meal));
                 _repo.isMealPlan(userId, meal.getIdMeal(), isInPlan -> {
                     if (isInPlan) {
-                        _repo.deleteMealIngredient(meal.getIdMeal());
+                        _repo.deleteMealIngredient(meal.getIdMeal(), userId);
                     }
                 });
                 _view.updateFavoriteIcon(false);
@@ -119,7 +119,7 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
                 _repo.deleteMealPlan(new MealPlan(meal, meal.getMealDate(), meal.getMealType()));
                 _repo.isMealFavorite(userId, meal.getIdMeal(), isFavorite -> {
                     if (isFavorite) {
-                        _repo.deleteMealIngredient(meal.getIdMeal());
+                        _repo.deleteMealIngredient(meal.getIdMeal(), userId);
                     }
                 });
                 _view.updateAddPlanBtnText(false);

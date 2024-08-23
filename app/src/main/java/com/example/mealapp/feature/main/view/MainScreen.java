@@ -29,7 +29,6 @@ public class MainScreen extends AppCompatActivity {
     private NavController navController;
     BottomNavigationView bottomNavigationView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +61,6 @@ public class MainScreen extends AppCompatActivity {
             } else if (itemId == R.id.searchFragment) {
                 navController.navigate(R.id.searchFragment);
             } else if (itemId == R.id.favouritesFragment) {
-
                 navController.navigate(R.id.favouritesFragment);
                 showLogin();
                 Log.i("TAG", "favouritesFragment clicke" + "d");
