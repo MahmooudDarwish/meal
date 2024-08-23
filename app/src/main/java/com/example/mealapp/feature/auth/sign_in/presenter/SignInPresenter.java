@@ -5,6 +5,9 @@ import android.util.Log;
 
 import com.example.mealapp.R;
 import com.example.mealapp.feature.auth.sign_in.view.ISignIn;
+import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
+import com.example.mealapp.utils.common_layer.local_models.MealIngredient;
+import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
@@ -16,6 +19,8 @@ import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+
+import java.util.List;
 
 public class SignInPresenter implements ISignInPresenter {
     ISignIn view;
@@ -38,6 +43,35 @@ public class SignInPresenter implements ISignInPresenter {
         repo.savePreference(ConstantKeys.STAY_LOGGED_IN, true, true);
 
     }
+
+    @Override
+    public void getDataFromFirebase() {
+        if (!UserSessionHolder.isGuest()) {
+            String userId = UserSessionHolder.getInstance().getUser().getUid();
+
+            repo.getFavoriteMeals(userId, task -> {
+                if (task.isSuccessful()) {
+                    List<FavoriteMeal> favoriteMeals = task.getResult();
+                    repo.addFavoriteMeals(favoriteMeals);
+                }
+            });
+
+            repo.getMealPlans(userId, task -> {
+                if (task.isSuccessful()) {
+                    List<MealPlan> mealPlans = task.getResult();
+                    repo.addMealPlans(mealPlans);
+                }
+            });
+
+            repo.getMealIngredients(userId, task -> {
+                if (task.isSuccessful()) {
+                    List<MealIngredient> ingredients = task.getResult();
+                    repo.addMealIngredients(ingredients);
+                }
+            });
+        }
+    }
+
     @Override
     public void signIn(String email, String password) {
         repo.signIn(email, password, task -> {

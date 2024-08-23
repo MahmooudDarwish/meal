@@ -9,6 +9,6 @@ public interface IMealDetailsPresenter {
 
     void toggleFavoriteStatus(DetailedMeal meal);
 
-    void toggleMealPlan(DetailedMeal meal);
+    void saveMealPlan(DetailedMeal meal);
 
     }

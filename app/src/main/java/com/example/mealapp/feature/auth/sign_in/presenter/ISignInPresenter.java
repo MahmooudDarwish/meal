@@ -8,4 +8,5 @@ public interface ISignInPresenter {
      void signInWithGoogle(GoogleSignInAccount account);
 
      void addUserToSharedPref();
+     void getDataFromFirebase();
 }

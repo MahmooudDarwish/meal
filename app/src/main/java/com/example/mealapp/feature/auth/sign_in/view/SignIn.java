@@ -129,6 +129,7 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
         }
         hideLoading();
         Toast.makeText(getActivity(), getString(R.string.welcome_message), Toast.LENGTH_LONG).show();
+        presenter.getDataFromFirebase();
         dismiss();
         requireActivity().finish();
         Intent intent = new Intent(getActivity(), MainScreen.class);

@@ -22,8 +22,11 @@ public abstract class ConstantKeys {
     public static final String KEY_MEAL_TYPE = "mealType";
     public static final String KEY_DATE = "date";
 
+    public static final String KEY_DATE_CREATED = "dateCreated";
+
     public static final String KEY_NAME = "name";
     public static final String KEY_EMAIL = "email";
+
 
 
     public static final String KEY_INGREDIENT_NAME = "ingredientName";

@@ -141,11 +141,7 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
                 SignIn signInFragment = new SignIn();
                 signInFragment.show(getSupportFragmentManager(), "signInFragment");
             } else if (meal != null) {
-                if(addToPlanBtn.getText() == getString(R.string.add_to_plan)){
                     showAddToPlannerDialog();
-                }else{
-                    presenter.toggleMealPlan(meal);
-                }
             }
 
         });
@@ -178,7 +174,6 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
 
             this.meal = meal;
             updateFavoriteIcon(isFavorite);
-            updateAddPlanBtnText(isPlan);
 
             if (!isFinishing() && !isDestroyed()) {
                 Glide.with(this)
@@ -258,15 +253,6 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
     }
 
     @Override
-    public void updateAddPlanBtnText(boolean isPlan) {
-        if (isPlan) {
-            addToPlanBtn.setText(R.string.remove_from_plan);
-        } else {
-            addToPlanBtn.setText(R.string.add_to_plan);
-        }
-    }
-
-    @Override
     public String getStringFromRes(int resId) {
         return getString(resId);
     }
@@ -323,14 +309,14 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
     private String formatDate(int day, int month, int year) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE, d MMMM", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE, d MMMM yyyy", Locale.ENGLISH);
         return simpleDateFormat.format(calendar.getTime());
     }
 
     private void addMealToPlanner(String date, String mealType) {
         meal.setMealType(mealType);
         meal.setMealDate(date);
-        presenter.toggleMealPlan(meal);
+        presenter.saveMealPlan(meal);
     }
 
 }

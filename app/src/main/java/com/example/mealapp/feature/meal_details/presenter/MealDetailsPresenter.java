@@ -1,6 +1,7 @@
 package com.example.mealapp.feature.meal_details.presenter;
 
 
+
 import com.example.mealapp.R;
 import com.example.mealapp.feature.meal_details.view.IMealDetails;
 import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
@@ -12,8 +13,11 @@ import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
 import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsNetworkDelegate {
     private final IMealDetails _view;
@@ -109,34 +113,15 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
     }
 
     @Override
-    public void toggleMealPlan(DetailedMeal meal) {
-        if (isProcessingFavoriteToggle) return;
-        isProcessingFavoriteToggle = true;
-
-        String userId = UserSessionHolder.getInstance().getUser().getUid();
-        _repo.isMealPlan(meal.getIdMeal(), userId, isPlan -> {
-            if (isPlan) {
-                _repo.deleteMealPlan(new MealPlan(meal, meal.getMealDate(), meal.getMealType()));
-                _repo.isMealFavorite(userId, meal.getIdMeal(), isFavorite -> {
-                    if (isFavorite) {
-                        _repo.deleteMealIngredient(meal.getIdMeal(), userId);
-                    }
-                });
-                _view.updateAddPlanBtnText(false);
-                _view.showToast(_view.getStringFromRes(R.string.meal_removed_from_plan));
-            } else {
-                _repo.saveMealPlan(new MealPlan(meal, meal.getMealDate(), meal.getMealType()));
-                List<MealIngredient> ingredients = createFavoriteMealIngredients(meal);
-                for (MealIngredient ingredient : ingredients) {
-                    _repo.saveFavoriteMealIngredient(ingredient);
-                }
-                _view.updateAddPlanBtnText(true);
-                _view.showToast(_view.getStringFromRes(R.string.meal_added_to_plan));
-            }
-            isProcessingFavoriteToggle = false;
-        });
+    public void saveMealPlan(DetailedMeal meal) {
+        String dateCreated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+        _repo.saveMealPlan(new MealPlan(meal, meal.getMealDate(), meal.getMealType(), dateCreated));
+        List<MealIngredient> ingredients = createFavoriteMealIngredients(meal);
+        for (MealIngredient ingredient : ingredients) {
+            _repo.saveFavoriteMealIngredient(ingredient);
+        }
+        _view.showToast(_view.getStringFromRes(R.string.meal_added_to_plan));
     }
-
     private List<MealIngredient> createFavoriteMealIngredients(DetailedMeal detailedMeal) {
         List<Ingredient> ingredientList = detailedMeal.getIngredients();
         List<MealIngredient> mealIngredients = new ArrayList<>();

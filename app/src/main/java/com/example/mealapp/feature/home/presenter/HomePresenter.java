@@ -4,9 +4,6 @@ import android.util.Log;
 
 
 import com.example.mealapp.feature.home.view.IHome;
-import com.example.mealapp.utils.common_layer.local_models.FavoriteMeal;
-import com.example.mealapp.utils.common_layer.local_models.MealIngredient;
-import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
@@ -14,7 +11,6 @@ import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
 import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
-import java.util.List;
 
 
 public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
@@ -48,37 +44,7 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
             UserSessionHolder.getInstance().setUser(new User(userEmail, userNameStr));
             getCurrentUser();
         }
-
-        if (!UserSessionHolder.isGuest()) {
-            getDataFromFirebase();
-        }
     }
-
-    private void getDataFromFirebase() {
-        String userId = UserSessionHolder.getInstance().getUser().getUid();
-        repo.getFavoriteMeals(userId, task -> {
-            if (task.isSuccessful()) {
-                List<FavoriteMeal> favoriteMeals = task.getResult();
-                repo.addFavoriteMeals(favoriteMeals);
-            }
-        });
-
-        repo.getMealPlans(userId, task -> {
-            if (task.isSuccessful()) {
-                List<MealPlan> mealPlans = task.getResult();
-                repo.addMealPlans(mealPlans);
-            }
-        });
-
-        repo.getMealIngredients(userId, task -> {
-            if (task.isSuccessful()) {
-                List<MealIngredient> ingredients = task.getResult();
-                repo.addMealIngredients(ingredients);
-            }
-        });
-    }
-
-
     @Override
     public void getRandomMeal() {
         repo.getRandomMeal(this);

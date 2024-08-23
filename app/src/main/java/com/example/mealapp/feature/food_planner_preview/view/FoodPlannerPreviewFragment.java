@@ -2,6 +2,7 @@ package com.example.mealapp.feature.food_planner_preview.view;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,8 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mealapp.R;
+import com.example.mealapp.feature.food_planner_preview.model.MealEventDecorator;
 import com.example.mealapp.feature.food_planner_preview.presenter.FoodPlannerPreviewPresenter;
 import com.example.mealapp.feature.food_planner_preview.presenter.IFoodPlannerPreviewPresenter;
 import com.example.mealapp.feature.meal_details.view.MealDetails;
@@ -26,20 +29,23 @@ import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
 import com.example.mealapp.utils.shared_preferences.SharedPreferencesManager;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
-public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlannerPreview, OnPlannedMealClick{
+public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlannerPreview, OnPlannedMealAction {
 
     IFoodPlannerPreviewPresenter presenter;
     PlannedMealsAdapter plannedMealsAdapter;
     TextView youDontHavePlan;
     TextView youNeedToSignInFirst;
     RecyclerView plannedMealsRecyclerView;
-
-
+    MaterialCalendarView calenderFilter;
+    private CalendarDay selectedDate;
 
 
     @Override
@@ -60,15 +66,53 @@ public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlanner
         super.onViewCreated(view, savedInstanceState);
         presenter = new FoodPlannerPreviewPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity()), SharedPreferencesManager.getInstance(requireActivity())));
         initUi(view);
-
-        plannedMealsAdapter = new PlannedMealsAdapter(new ArrayList<>(), this);
-        plannedMealsRecyclerView.setAdapter(plannedMealsAdapter);
+        setUpListeners();
     }
+
+    private void setUpListeners() {
+        calenderFilter.setOnDateChangedListener((widget, date, selected) -> {
+            if (selectedDate != null && selectedDate.equals(date)) {
+                calenderFilter.clearSelection();
+                selectedDate = null;
+                presenter.getPlannedMeals(this);
+            } else {
+                selectedDate = date;
+                presenter.filterMealsByDate(date);
+            }
+        });
+    }
+
+
+    @Override
+    public void updateCalendarWithMealDates(Set<CalendarDay> mealDates) {
+        int dotColor = Color.RED;
+        MealEventDecorator decorator = new MealEventDecorator(mealDates, dotColor);
+        calenderFilter.addDecorator(decorator);
+    }
+
+    @Override
+    public String getStringFromRes(int resId) {
+        return getString(resId);
+    }
+
+    @Override
+    public void showToast(String message) {
+        requireActivity().runOnUiThread(() -> Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show());
+    }
+
+    @Override
+    public void onMealPlanDeleted() {
+        presenter.getPlannedMeals(this);
+    }
+
 
     void initUi(View v){
         youDontHavePlan = v.findViewById(R.id.youDontHavePlan);
+        calenderFilter = v.findViewById(R.id.calenderFilter);
         youNeedToSignInFirst = v.findViewById(R.id.youNeedToSigninFirst);
         plannedMealsRecyclerView = v.findViewById(R.id.plannedMealsRecyclerView);
+        plannedMealsAdapter = new PlannedMealsAdapter(new ArrayList<>(), this);
+        plannedMealsRecyclerView.setAdapter(plannedMealsAdapter);
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             plannedMealsRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
         }else{
@@ -82,10 +126,17 @@ public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlanner
             youDontHavePlan.setVisibility(View.VISIBLE);
             plannedMealsRecyclerView.setVisibility(View.GONE);
         }else{
+
             youDontHavePlan.setVisibility(View.GONE);
             plannedMealsRecyclerView.setVisibility(View.VISIBLE);
             plannedMealsAdapter.updateData(meals);
         }
+    }
+
+    @Override
+    public void filterMealsByDate(List<MealPlan> meals){
+        plannedMealsAdapter.updateData(meals);
+
     }
 
     @Override
@@ -104,5 +155,10 @@ public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlanner
         Intent intent = new Intent(requireActivity(), MealDetails.class);
         intent.putExtra(ConstantKeys.PLAN_MEAL_ID, mealId);
         startActivity(intent);
+    }
+
+    @Override
+    public void deletePlanMealClicked(MealPlan mealPlan) {
+            presenter.deleteMealPlan(mealPlan);
     }
 }

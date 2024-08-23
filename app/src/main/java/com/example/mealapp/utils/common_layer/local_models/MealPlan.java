@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@Entity(tableName = "food_plans", primaryKeys = {"idUser", "idMeal"})
+@Entity(tableName = "food_plans", primaryKeys = {"idUser", "idMeal", "dateCreated"})
 public class MealPlan {
 
     @NonNull
@@ -26,11 +26,12 @@ public class MealPlan {
     private final String strYoutube;
     private final String mealType;
     private final String date;
-
-    // Room requires this constructor with all the fields
+    @NonNull
+    private final String dateCreated;
     public MealPlan(@NonNull String idMeal, @NonNull String idUser, String strMeal,
                     String strCategory, String strArea, String strInstructions,
-                    String strMealThumb, String strYoutube, String mealType, String date) {
+                    String strMealThumb, String strYoutube, String mealType, String date,
+                    @NonNull String dateCreated) { // Include dateCreated
         this.idMeal = idMeal;
         this.idUser = idUser;
         this.strMeal = strMeal;
@@ -41,14 +42,14 @@ public class MealPlan {
         this.strYoutube = strYoutube;
         this.mealType = mealType;
         this.date = date;
+        this.dateCreated = dateCreated;
     }
 
-    // This constructor can be used for convenience in your code
-    public MealPlan(DetailedMeal meal, String date, String mealType) {
+    public MealPlan(DetailedMeal meal, String date, String mealType, @NonNull String dateCreated) {
         this(meal.getIdMeal(), UserSessionHolder.getInstance().getUser().getUid(),
                 meal.getStrMeal(), meal.getStrCategory(), meal.getStrArea(),
                 meal.getStrInstructions(), meal.getStrMealThumb(), meal.getStrYoutube(),
-                mealType, date);
+                mealType, date, dateCreated);
     }
 
     public Map<String, Object> toMap() {
@@ -63,6 +64,7 @@ public class MealPlan {
         map.put(ConstantKeys.KEY_STR_YOUTUBE, strYoutube);
         map.put(ConstantKeys.KEY_MEAL_TYPE, mealType);
         map.put(ConstantKeys.KEY_DATE, date);
+        map.put(ConstantKeys.KEY_DATE_CREATED, dateCreated); // Include dateCreated
         return map;
     }
 
@@ -77,10 +79,12 @@ public class MealPlan {
         String strYoutube = (String) map.get(ConstantKeys.KEY_STR_YOUTUBE);
         String mealType = (String) map.get(ConstantKeys.KEY_MEAL_TYPE);
         String date = (String) map.get(ConstantKeys.KEY_DATE);
+        String dateCreated = (String) map.get(ConstantKeys.KEY_DATE_CREATED); // Retrieve dateCreated
 
         return new MealPlan(Objects.requireNonNull(idMeal), Objects.requireNonNull(idUser), strMeal, strCategory, strArea, strInstructions,
-                strMealThumb, strYoutube, mealType, date);
+                strMealThumb, strYoutube, mealType, date, Objects.requireNonNull(dateCreated));
     }
+
     @NonNull
     public String getIdMeal() {
         return idMeal;
@@ -121,5 +125,10 @@ public class MealPlan {
 
     public String getDate() {
         return date;
+    }
+
+    @NonNull
+    public String getDateCreated() {
+        return dateCreated;
     }
 }

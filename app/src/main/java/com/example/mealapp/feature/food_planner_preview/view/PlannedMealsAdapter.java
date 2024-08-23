@@ -22,9 +22,10 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
 
     private final List<MealPlan> plannedMeals;
 
-    private final OnPlannedMealClick listener;
-    public PlannedMealsAdapter(List<MealPlan> favoriteMeals, OnPlannedMealClick onPlannedMealClick) {
+    private final OnPlannedMealAction listener;
+    public PlannedMealsAdapter(List<MealPlan> favoriteMeals, OnPlannedMealAction onPlannedMealClick) {
         this.plannedMeals = favoriteMeals;
+
         this.listener = onPlannedMealClick;
     }
 
@@ -65,6 +66,8 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
 
         holder.itemView.setOnClickListener(v -> listener.planMealClicked(mealPlan.getIdMeal()));
 
+        holder.deleteIcon.setOnClickListener(v -> listener.deletePlanMealClicked(mealPlan));
+
     }
 
     @Override
@@ -79,6 +82,7 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
 
         TextView mealPlanDate;
         TextView mealType;
+        ImageView deleteIcon;
 
         PlannedMealViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,6 +90,7 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
             mealName = itemView.findViewById(R.id.mealName);
             mealPlanDate = itemView.findViewById(R.id.mealPlanDate);
             mealType = itemView.findViewById(R.id.mealType);
+            deleteIcon = itemView.findViewById(R.id.deleteIcon);
         }
     }
 }
