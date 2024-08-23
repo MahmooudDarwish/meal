@@ -1,6 +1,7 @@
 package com.example.mealapp.feature.meal_details.presenter;
 
 
+import android.util.Log;
 
 import com.example.mealapp.R;
 import com.example.mealapp.feature.meal_details.view.IMealDetails;
@@ -70,11 +71,7 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
         } else {
             String userId = UserSessionHolder.getInstance().getUser().getUid();
 
-            _repo.isMealFavorite(meal.getIdMeal(),
-                    userId,
-                    isFavorite -> _repo.isMealPlan(meal.getIdMeal(),
-                            userId,
-                            isInPlan -> _view.setUpMealDetails(meal, isFavorite, isInPlan)));
+            _repo.isMealFavorite(meal.getIdMeal(), userId, isFavorite -> _repo.isMealPlan(meal.getIdMeal(), userId, isInPlan -> _view.setUpMealDetails(meal, isFavorite, isInPlan)));
         }
     }
 
@@ -114,14 +111,38 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
 
     @Override
     public void saveMealPlan(DetailedMeal meal) {
+        String userId = UserSessionHolder.getInstance().getUser().getUid();
         String dateCreated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-        _repo.saveMealPlan(new MealPlan(meal, meal.getMealDate(), meal.getMealType(), dateCreated));
-        List<MealIngredient> ingredients = createFavoriteMealIngredients(meal);
-        for (MealIngredient ingredient : ingredients) {
-            _repo.saveFavoriteMealIngredient(ingredient);
-        }
-        _view.showToast(_view.getStringFromRes(R.string.meal_added_to_plan));
+
+        _repo.getMealPlanCount(userId, meal.getIdMeal(), meal.getMealDate(), count -> {
+            Log.i("MealDetailsPresenter", "Meal plan exists three times: " + count);
+            if (count >= 3) {
+                _view.showWarningMealCannotBeAdded();
+            } else {
+                _repo.saveMealPlan(new MealPlan(meal, meal.getMealDate(), meal.getMealType(), dateCreated));
+                List<MealIngredient> ingredients = createFavoriteMealIngredients(meal);
+                for (MealIngredient ingredient : ingredients) {
+                    _repo.saveFavoriteMealIngredient(ingredient);
+                }
+                _view.showToast(_view.getStringFromRes(R.string.meal_added_to_plan));
+            }
+        });
     }
+
+    @Override
+    public void checkPlanExist(DetailedMeal meal){
+        String userId = UserSessionHolder.getInstance().getUser().getUid();
+        _repo.getMealPlanCount(userId, meal.getIdMeal(),meal.getMealDate(), count -> {
+            Log.i("MealDetailsPresenter", "Meal plan exists on the same day: " + count);
+            if (count > 0 && count < 3) {
+                Log.i("MealDetailsPresenter", "Meal plan already exists on the same day");
+                _view.showWarningMealPlanExist(meal);
+            }else{
+                saveMealPlan(meal);
+            }
+        });
+    }
+
     private List<MealIngredient> createFavoriteMealIngredients(DetailedMeal detailedMeal) {
         List<Ingredient> ingredientList = detailedMeal.getIngredients();
         List<MealIngredient> mealIngredients = new ArrayList<>();

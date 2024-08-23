@@ -1,16 +1,6 @@
 <resources>
     <string name="app_name">Food Planner</string>
     <string name="client_id">888404159185-g38llii2eq74ttrm8f315k5ju27o4lii.apps.googleusercontent.com</string>
-    <string-array name="language_options">
-        <item>Choose Language</item>
-        <item>English</item>
-        <item>Arabic</item>
-    </string-array>
-    <string-array name="theme_options">
-        <item>Light</item>
-        <item>Dark</item>
-    </string-array>
-
     <string name="sign_up">Sign Up</string>
     <string name="email">Email</string>
     <string name="enter_email">Enter your E-mail</string>
@@ -105,9 +95,9 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="choose_language">Change your language</string>
-
     <string name="lang">العربية</string>
-
+    <string name="meal_already_exist">This meal already exists on the same day. Are you sure you want to continue</string>
+    <string name="cannot_add_meal">This meal plan already exists 3 times on the same day. you cant add it again</string>
     <string name="backup_interrupted_message">Backup has been interrupted but will continue on background when the connection is restored.</string>
     <string name="warning">Warning</string>
     <string name="ok">OK</string>

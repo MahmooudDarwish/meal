@@ -9,6 +9,7 @@ import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.dp.IsFavoriteMealCallback;
 import com.example.mealapp.utils.dp.IsPlanMealCallback;
+import com.example.mealapp.utils.dp.MealPlanCountCallback;
 import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
 import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
@@ -59,6 +60,7 @@ public interface MealRepository {
      void deleteMealPlan(MealPlan mealPlan);
 
      void isMealPlan(String userId, String mealId, IsPlanMealCallback callback);
+     void getMealPlanCount(String mealId, String userId, String date, MealPlanCountCallback callback);
 
 
      LiveData<MealPlan> getMealPlan(String userId, String mealId);

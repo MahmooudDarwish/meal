@@ -22,11 +22,13 @@ public interface MealLocalDataSource {
     void deleteMealPlan(MealPlan mealPlan);
     LiveData<MealPlan> getMealPlan(String userId, String mealId);
     LiveData<List<MealPlan>> getAllMealPlansForUser(String userId);
-    void isMealPlan(String userId, String mealId, IsPlanMealCallback callback);
+    void isMealPlanExist(String userId, String mealId, IsPlanMealCallback callback);
+
+    void getMealPlanCount(String mealId, String userId, String date, MealPlanCountCallback callback);
 
     void saveMealIngredient(MealIngredient ingredient);
     void addMealIngredients(List<MealIngredient> ingredients);
-    public void deleteMealIngredient(String mealId, String userId);
+    void deleteMealIngredient(String mealId, String userId);
     LiveData<List<MealIngredient>> getIngredientsForMeal(String mealId);
 
     LiveData<List<MealIngredient>> getIngredientsForUserId(String userId);

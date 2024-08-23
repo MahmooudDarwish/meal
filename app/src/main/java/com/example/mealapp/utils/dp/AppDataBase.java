@@ -12,7 +12,7 @@ import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 import com.example.mealapp.utils.constants.ConstantKeys;
 
 
-@Database(entities = {FavoriteMeal.class, MealPlan.class, MealIngredient.class}, version = 4, exportSchema = false)
+@Database(entities = {FavoriteMeal.class, MealPlan.class, MealIngredient.class}, version = 5, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
 
     private static volatile AppDataBase INSTANCE;

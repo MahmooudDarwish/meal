@@ -31,5 +31,8 @@ public interface MealPlanDao {
 
     @Query("SELECT COUNT(*) > 0 FROM food_plans WHERE idMeal = :mealId AND idUser = :userId")
     boolean isMealPlanExists(String mealId, String userId);
+    @Query("SELECT COUNT(*) FROM food_plans WHERE idMeal = :mealId AND idUser = :userId AND date = :date")
+    int getMealPlanCount(String mealId, String userId, String date);
+
 }
 

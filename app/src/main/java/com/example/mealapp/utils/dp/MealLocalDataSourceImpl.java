@@ -70,8 +70,6 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     public void isMealFavorite(String userId, String mealId, IsFavoriteMealCallback callback) {
         executor.execute(() -> {
             boolean isFavorite = favoriteMealDao.isFavoriteMeal(userId, mealId);
-            Log.i("MealRepository", "Meal is favorite: " + isFavorite);
-
             callback.onFavoriteStatusResult(isFavorite);
         });
     }
@@ -103,7 +101,7 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public void isMealPlan(String userId, String mealId, IsPlanMealCallback callback) {
+    public void isMealPlanExist(String userId, String mealId, IsPlanMealCallback callback) {
         executor.execute(() -> {
             boolean isPlan = mealPlanDao.isMealPlanExists(userId, mealId);
             Log.i("MealRepository", "Meal is plan: " + isPlan);
@@ -111,6 +109,15 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
             callback.onPlanStatusResult(isPlan);
         });
     }
+
+    @Override
+    public void getMealPlanCount(String mealId, String userId, String date, MealPlanCountCallback callback) {
+        executor.execute(() -> {
+            int count = mealPlanDao.getMealPlanCount(userId, mealId, date);
+            callback.onPlanStatusResult(count);
+        });
+    }
+
 
     @Override
     public void saveMealIngredient(MealIngredient ingredient) {

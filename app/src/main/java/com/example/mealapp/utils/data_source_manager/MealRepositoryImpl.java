@@ -11,6 +11,7 @@ import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.dp.IsFavoriteMealCallback;
 import com.example.mealapp.utils.dp.IsPlanMealCallback;
 import com.example.mealapp.utils.dp.MealLocalDataSource;
+import com.example.mealapp.utils.dp.MealPlanCountCallback;
 import com.example.mealapp.utils.firebase.FirebaseManager;
 import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
@@ -141,8 +142,14 @@ public class MealRepositoryImpl implements MealRepository {
 
     @Override
     public void isMealPlan(String userId, String mealId, IsPlanMealCallback callback) {
-        localSource.isMealPlan(userId, mealId, callback);
+        localSource.isMealPlanExist(userId, mealId, callback);
     }
+
+    @Override
+    public void getMealPlanCount(String mealId, String userId, String date, MealPlanCountCallback callback) {
+        localSource.getMealPlanCount(mealId, userId, date, callback);
+    }
+
 
     @Override
     public LiveData<MealPlan> getMealPlan(String userId, String mealId) {

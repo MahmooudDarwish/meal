@@ -258,6 +258,27 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
     }
 
     @Override
+    public void showWarningMealPlanExist(DetailedMeal meal) {
+        runOnUiThread(() -> new AlertDialog.Builder(this)
+                .setTitle(R.string.warning)
+                .setMessage(R.string.meal_already_exist)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    presenter.saveMealPlan(meal);
+                    dialog.dismiss();
+                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .show());
+    }
+
+    @Override
+    public void showWarningMealCannotBeAdded() {
+        runOnUiThread(() -> new AlertDialog.Builder(this)
+                .setTitle(R.string.warning)
+                .setMessage(R.string.cannot_add_meal)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                .show());
+    }
+    @Override
     public void showToast(String msg){
       runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
     }
@@ -298,7 +319,7 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
                 String formattedDate = formatDate(day, month, year);
                 String mealType = selectedMealType.getText().toString();
 
-                addMealToPlanner(formattedDate, mealType);
+                checkMealExistence(formattedDate, mealType);
                 dialog.dismiss();
             }
         });
@@ -313,10 +334,10 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         return simpleDateFormat.format(calendar.getTime());
     }
 
-    private void addMealToPlanner(String date, String mealType) {
+    private void checkMealExistence(String date, String mealType) {
         meal.setMealType(mealType);
         meal.setMealDate(date);
-        presenter.saveMealPlan(meal);
+        presenter.checkPlanExist(meal);
     }
 
 }

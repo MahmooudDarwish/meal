@@ -96,6 +96,8 @@
     <string name="no">لا</string>
     <string name="choose_language">غير لغتك</string>
     <string name="lang">English</string>
+    <string name="meal_already_exist">هذه الوجبه موجودة بالفعل في نفس اليوم. هل أنت متأكد أنك تريد المتابعة؟</string>
+    <string name="cannot_add_meal">هذه الخطة الغذائية موجودة بالفعل 3 مرات في نفس اليوم. لا يمكنك إضافتها مرة أخرى</string>
     <string name="backup_interrupted_message">تم إيقاف النسخ الاحتياطي ولكنه سيستمر في الخلفية عند استعادة الاتصال.</string>
     <string name="warning">تحذير</string>
     <string name="ok">حسنًا</string>

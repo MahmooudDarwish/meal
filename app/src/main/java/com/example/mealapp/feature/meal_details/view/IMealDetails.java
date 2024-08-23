@@ -11,5 +11,8 @@ public interface IMealDetails {
 
     String getStringFromRes(int resId);
 
+    void showWarningMealPlanExist(DetailedMeal meal);
+    void showWarningMealCannotBeAdded();
+
 
 }

@@ -219,7 +219,7 @@ public class FirebaseManager {
                 List<Task<Void>> tasks = new ArrayList<>();
                 for (MealPlan meal : plans) {
                     DocumentReference docRef = firestore.collection(ConstantKeys.COLLECTION_PLAN_MEALS)
-                            .document(meal.getIdMeal() + meal.getIdUser() + "plan");
+                            .document(meal.getIdMeal() + meal.getIdUser() + meal.getDateCreated() +"plan");
                     Task<Void> task = docRef.set(meal.toMap())
                             .addOnSuccessListener(suc -> Log.d(TAG, "Plan meal saved successfully: " + meal.getStrMeal()))
                             .addOnFailureListener(e -> Log.e(TAG, "Error saving plan meal: " + meal.getStrMeal()));
