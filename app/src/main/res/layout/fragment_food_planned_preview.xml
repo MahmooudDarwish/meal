@@ -10,10 +10,12 @@
         android:id="@+id/calenderFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/rounded_background"
         app:mcv_calendarMode="week"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:mcv_showOtherDates="all" />
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/plannedMealsRecyclerView"

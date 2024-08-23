@@ -66,6 +66,8 @@ public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlanner
         presenter = new FoodPlannerPreviewPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity()), SharedPreferencesManager.getInstance(requireActivity())));
         initUi(view);
         setUpListeners();
+        presenter.getPlannedMeals(this);
+
     }
 
     private void setUpListeners() {
@@ -118,6 +120,10 @@ public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlanner
             plannedMealsRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         }
+
+        calenderFilter.clearSelection();
+        calenderFilter.clearFocus();
+
     }
     @Override
     public void showPlannedMeals(List<MealPlan> meals) {
@@ -139,9 +145,22 @@ public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlanner
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (selectedDate != null) {
+            outState.putInt("SELECTED_DATE_YEAR", selectedDate.getYear());
+            outState.putInt("SELECTED_DATE_MONTH", selectedDate.getMonth());
+            outState.putInt("SELECTED_DATE_DAY", selectedDate.getDay());
+        }
+    }
+
+
+    @Override
     public void onResume() {
         super.onResume();
         presenter.getPlannedMeals(this);
+        calenderFilter.clearSelection();
+
     }
     @Override
     public void showGuestMsg() {

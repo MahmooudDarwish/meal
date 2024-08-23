@@ -26,6 +26,6 @@ public class MealEventDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(@NonNull DayViewFacade view) {
-        view.addSpan(new DotSpan(dotColor));
+        view.addSpan(new DotSpan(5,dotColor));
     }
 }

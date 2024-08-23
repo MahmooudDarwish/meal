@@ -1,9 +1,7 @@
 package com.example.mealapp.feature.food_planner_preview.presenter;
 
 import android.util.Log;
-
 import androidx.lifecycle.LifecycleOwner;
-
 import com.example.mealapp.R;
 import com.example.mealapp.feature.food_planner_preview.view.IFoodPlannerPreview;
 import com.example.mealapp.utils.common_layer.local_models.MealPlan;
@@ -79,6 +77,8 @@ public class FoodPlannerPreviewPresenter implements IFoodPlannerPreviewPresenter
         });
         _view.onMealPlanDeleted();
     }
+
+
 
     private Set<CalendarDay> getMealDates(List<MealPlan> _plannedMeals) {
         Set<CalendarDay> dates = new HashSet<>();
