@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -116,7 +115,7 @@ public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlanner
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             plannedMealsRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
         }else{
-            plannedMealsRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2,LinearLayoutManager.VERTICAL, false));
+            plannedMealsRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         }
     }
@@ -147,6 +146,7 @@ public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlanner
     @Override
     public void showGuestMsg() {
         youNeedToSignInFirst.setVisibility(View.VISIBLE);
+        calenderFilter.setVisibility(View.GONE);
         plannedMealsRecyclerView.setVisibility(View.GONE);
     }
 
