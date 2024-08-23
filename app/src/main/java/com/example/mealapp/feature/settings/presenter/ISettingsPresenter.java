@@ -7,4 +7,5 @@ public interface ISettingsPresenter {
      void uploadDataToFirebase(LifecycleOwner owner);
     void handleLanguageSetting(boolean isEnglish);
     void initializeLanguageSetting();
+    String getCurrentLang();
 }

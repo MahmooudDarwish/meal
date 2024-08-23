@@ -24,6 +24,10 @@ public class SplashPresenter implements ISplashPresenter {
         new Handler().postDelayed(view::navigateToHome, 3000);
     }
 
+    @Override
+    public String getCurrentLang(){
+        return repo.getPreference(ConstantKeys.LANGUAGE_KEY, false);
+    }
     private void checkLanguageSetting() {
         String savedLanguage = repo.getPreference(ConstantKeys.LANGUAGE_KEY, false);
         if (savedLanguage != null) {

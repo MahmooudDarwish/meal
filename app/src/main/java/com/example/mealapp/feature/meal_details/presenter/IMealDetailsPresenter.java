@@ -16,5 +16,7 @@ public interface IMealDetailsPresenter {
 
     void checkPlanExist(DetailedMeal meal);
 
+    String getCurrentLang();
+
 
 }

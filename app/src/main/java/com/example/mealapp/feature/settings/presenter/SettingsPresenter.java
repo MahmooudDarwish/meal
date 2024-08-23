@@ -92,6 +92,11 @@ public class SettingsPresenter implements ISettingsPresenter {
         repo.savePreference(ConstantKeys.LANGUAGE_KEY, languageCode, false);
     }
 
+    @Override
+    public String getCurrentLang(){
+        return repo.getPreference(ConstantKeys.LANGUAGE_KEY, false);
+    }
+
 
     @Override
     public void initializeLanguageSetting() {

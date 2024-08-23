@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mealapp.R;
@@ -22,17 +23,21 @@ import com.google.firebase.FirebaseApp;
 import java.util.Locale;
 
 public class Splash extends AppCompatActivity implements ISplash {
-
+    ISplashPresenter presenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
+        if (savedInstanceState != null) {
+            String languageCode = presenter.getCurrentLang();
+            setLocale(languageCode);
+        }
         NetworkUtil.init(this);
         ResourceHelper.init(this);
         FirebaseApp.initializeApp(this);
 
-        ISplashPresenter presenter = new SplashPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(this), SharedPreferencesManager.getInstance(this)));
+         presenter = new SplashPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(this), SharedPreferencesManager.getInstance(this)));
         presenter.start();
 
     }
@@ -43,6 +48,14 @@ public class Splash extends AppCompatActivity implements ISplash {
         Configuration config = new Configuration();
         config.setLocale(locale);
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String languageCode = presenter.getCurrentLang();
+        setLocale(languageCode);
+
     }
 
     @Override

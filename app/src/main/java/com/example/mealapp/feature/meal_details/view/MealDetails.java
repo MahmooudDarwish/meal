@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -76,6 +78,10 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_meal_details);
 
+        if (savedInstanceState != null) {
+            String lang = savedInstanceState.getString(ConstantKeys.LANGUAGE_KEY);
+            setLocale(lang);
+        }
         initUI();
         setUpListeners();
 
@@ -266,9 +272,7 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
                     presenter.saveMealPlan(meal);
                     dialog.dismiss();
                 })
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> {
-                    dialog.dismiss();
-                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .show());
     }
 
@@ -277,11 +281,26 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         runOnUiThread(() -> new AlertDialog.Builder(this)
                 .setTitle(R.string.warning)
                 .setMessage(R.string.cannot_add_meal)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                    dialog.dismiss();
-                })
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                 .show());
     }
+
+    public void setLocale(String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+        Resources resources = getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String lang = presenter.getCurrentLang();
+        outState.putString(ConstantKeys.LANGUAGE_KEY, lang);
+    }
+
     @Override
     public void showToast(String msg){
       runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());

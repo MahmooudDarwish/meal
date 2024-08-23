@@ -3,6 +3,8 @@ package com.example.mealapp.feature.meals_viewer.presenter;
 import com.example.mealapp.feature.meals_viewer.model.MealsViewModel;
 import com.example.mealapp.feature.meals_viewer.view.IMealsViewer;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
+import com.example.mealapp.utils.constants.ConstantKeys;
+import com.example.mealapp.utils.data_source_manager.MealRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +14,12 @@ public class MealsViewerPresenter implements IMealsViewerPresenter {
     private final IMealsViewer view;
     private final MealsViewModel viewModel;
 
-    public MealsViewerPresenter(IMealsViewer view) {
+    private final MealRepository _repo;
+
+    public MealsViewerPresenter(IMealsViewer view, MealRepository _repo) {
         this.view = view;
         this.viewModel = MealsViewModel.getInstance();
+        this._repo = _repo;
     }
 
     @Override
@@ -52,5 +57,10 @@ public class MealsViewerPresenter implements IMealsViewerPresenter {
         if (meals != null && !meals.isEmpty()) {
             view.displayMeals(meals);
         }
+    }
+
+    @Override
+    public String getCurrentLang(){
+        return _repo.getPreference(ConstantKeys.LANGUAGE_KEY, false);
     }
 }

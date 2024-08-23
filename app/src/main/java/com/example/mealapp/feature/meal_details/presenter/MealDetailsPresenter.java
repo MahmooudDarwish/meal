@@ -11,6 +11,7 @@ import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 import com.example.mealapp.utils.common_layer.models.DetailedMeal;
 import com.example.mealapp.utils.common_layer.models.Ingredient;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
+import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
 import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
 
@@ -127,6 +128,11 @@ public class MealDetailsPresenter implements IMealDetailsPresenter, MealDetailsN
                 _view.showToast(_view.getStringFromRes(R.string.meal_added_to_plan));
             }
         });
+    }
+
+    @Override
+    public String getCurrentLang(){
+        return _repo.getPreference(ConstantKeys.LANGUAGE_KEY, false);
     }
 
     @Override

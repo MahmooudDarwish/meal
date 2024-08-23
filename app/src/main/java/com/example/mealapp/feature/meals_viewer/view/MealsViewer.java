@@ -5,23 +5,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
+
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mealapp.R;
 import com.example.mealapp.feature.meal_details.view.MealDetails;
 import com.example.mealapp.feature.meals_viewer.presenter.MealsViewerPresenter;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
 import com.example.mealapp.utils.constants.ConstantKeys;
+import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
+import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
+import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
+import com.example.mealapp.utils.shared_preferences.SharedPreferencesManager;
 
 import java.util.List;
+import java.util.Locale;
 
 public class MealsViewer extends AppCompatActivity implements IMealsViewer, OnMealItemClicked {
 
@@ -38,9 +47,13 @@ public class MealsViewer extends AppCompatActivity implements IMealsViewer, OnMe
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_meals_viewer);
 
+        if (savedInstanceState != null) {
+            String lang = savedInstanceState.getString(ConstantKeys.LANGUAGE_KEY);
+            setLocale(lang);
+        }
         initUI();
 
-        presenter = new MealsViewerPresenter(this);
+        presenter = new MealsViewerPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(this), SharedPreferencesManager.getInstance(this)));
         checkInternetConnection();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -66,9 +79,9 @@ public class MealsViewer extends AppCompatActivity implements IMealsViewer, OnMe
 
     private void initUI() {
         mealsRecycler = findViewById(R.id.mealsRecycler);
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             mealsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        }else{
+        } else {
             mealsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         }
@@ -97,6 +110,21 @@ public class MealsViewer extends AppCompatActivity implements IMealsViewer, OnMe
         }
     }
 
+    public void setLocale(String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+        Resources resources = getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String lang = presenter.getCurrentLang();
+        outState.putString(ConstantKeys.LANGUAGE_KEY, lang);
+    }
     @Override
     public void displayMeals(List<PreviewMeal> meals) {
         if (mealsAdapter == null) {

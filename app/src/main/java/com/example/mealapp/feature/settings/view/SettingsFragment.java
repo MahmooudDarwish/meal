@@ -3,6 +3,7 @@
     import android.app.ProgressDialog;
     import android.content.Intent;
     import android.content.res.Configuration;
+    import android.content.res.Resources;
     import android.os.Bundle;
 
     import androidx.annotation.NonNull;
@@ -128,10 +129,18 @@
         public void setLocale(String languageCode) {
             Locale locale = new Locale(languageCode);
             Locale.setDefault(locale);
-            Configuration config = new Configuration();
+            Resources resources = requireActivity().getResources();
+            Configuration config = resources.getConfiguration();
             config.setLocale(locale);
-            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+            resources.updateConfiguration(config, resources.getDisplayMetrics());
             requireActivity().recreate();
+          }
+
+        @Override
+        public void onConfigurationChanged(@NonNull Configuration newConfig) {
+            super.onConfigurationChanged(newConfig);
+            String lang = presenter.getCurrentLang();
+            setLocale(lang);
         }
 
         @Override
