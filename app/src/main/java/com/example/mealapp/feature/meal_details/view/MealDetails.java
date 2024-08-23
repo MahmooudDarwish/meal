@@ -39,6 +39,7 @@ import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
+import com.example.mealapp.utils.shared_preferences.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
@@ -78,7 +79,7 @@ public class MealDetails extends AppCompatActivity implements IMealDetails {
         initUI();
         setUpListeners();
 
-        presenter = new MealDetailsPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(this)));
+        presenter = new MealDetailsPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(this), SharedPreferencesManager.getInstance(this)));
 
         if (getIntent() != null && getIntent().hasExtra(ConstantKeys.MEAL_ID)) {
             String mealId = getIntent().getStringExtra(ConstantKeys.MEAL_ID);

@@ -3,17 +3,36 @@ package com.example.mealapp.feature.splash.presenter;
 import android.os.Handler;
 
 import com.example.mealapp.feature.splash.view.ISplash;
+import com.example.mealapp.utils.data_source_manager.MealRepository;
+import com.example.mealapp.utils.constants.ConstantKeys;
 
-public class SplashPresenter implements ISplashPresenter{
+import java.util.Locale;
 
-    private final ISplash splashView;
+public class SplashPresenter implements ISplashPresenter {
 
-    public SplashPresenter(ISplash view) {
-        this.splashView = view;
+    private final ISplash view;
+    private final MealRepository repo;
+
+    public SplashPresenter(ISplash view, MealRepository repo) {
+        this.view = view;
+        this.repo = repo;
     }
 
     @Override
     public void start() {
-        new Handler().postDelayed(splashView::navigateToHome, 3000); // 3-second delay
+        checkLanguageSetting();
+        new Handler().postDelayed(view::navigateToHome, 3000);
     }
+
+    private void checkLanguageSetting() {
+        String savedLanguage = repo.getPreference(ConstantKeys.LANGUAGE_KEY, false);
+        if (savedLanguage != null) {
+            view.setLocale(savedLanguage);
+        } else {
+            String currentLanguage = Locale.getDefault().getLanguage();
+            view.setLocale(currentLanguage);
+            repo.savePreference(ConstantKeys.LANGUAGE_KEY, currentLanguage, false);
+        }
+    }
+
 }

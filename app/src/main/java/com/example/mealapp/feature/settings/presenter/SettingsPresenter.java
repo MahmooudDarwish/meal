@@ -7,6 +7,7 @@ import com.example.mealapp.R;
 import com.example.mealapp.feature.settings.view.ISettings;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
+import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
 
 import android.os.Handler;
@@ -25,9 +26,11 @@ public class SettingsPresenter implements ISettingsPresenter {
 
     @Override
     public void signOut() {
+        UserSessionHolder.getInstance().setUser(null);
+        repo.clearPreferences(true);
         repo.signOut();
+        view.onSignOut();
     }
-
     public void uploadDataToFirebase(LifecycleOwner owner) {
         startNetworkChecking();
 
@@ -78,6 +81,21 @@ public class SettingsPresenter implements ISettingsPresenter {
                 view.hideLoading();
             }
         });
+    }
+
+    @Override
+    public void handleLanguageSetting(boolean isEnglish) {
+        String languageCode = isEnglish ? ConstantKeys.KEY_EN : ConstantKeys.KEY_AR;
+        view.setLocale(languageCode);
+        repo.savePreference(ConstantKeys.LANGUAGE_KEY, languageCode, false);
+    }
+
+
+    @Override
+    public void initializeLanguageSetting() {
+        String savedLanguage = repo.getPreference(ConstantKeys.LANGUAGE_KEY, false);
+        boolean isEnglish = savedLanguage != null && savedLanguage.equals(ConstantKeys.KEY_EN);
+        view.setLanguage(isEnglish);
     }
 
     private void startNetworkChecking() {

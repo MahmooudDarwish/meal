@@ -25,6 +25,7 @@ import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
+import com.example.mealapp.utils.shared_preferences.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,7 @@ public class FoodPlannerPreviewFragment extends Fragment implements IFoodPlanner
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter = new FoodPlannerPreviewPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity())));
+        presenter = new FoodPlannerPreviewPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity()), SharedPreferencesManager.getInstance(requireActivity())));
         initUi(view);
 
         plannedMealsAdapter = new PlannedMealsAdapter(new ArrayList<>(), this);

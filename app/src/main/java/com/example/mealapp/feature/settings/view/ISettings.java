@@ -5,9 +5,12 @@ public interface ISettings {
 
     void showBackUpWarning();
 
+    void setLocale(String lang);
+    void setLanguage(boolean isEnglish);
 
     void showLoading();
     void hideLoading();
+    void onSignOut();
 
-    String getStringFromRes(int resId);
+        String getStringFromRes(int resId);
 }

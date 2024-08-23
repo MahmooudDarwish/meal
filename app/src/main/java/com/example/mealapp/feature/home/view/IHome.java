@@ -11,6 +11,8 @@ public interface IHome {
     void getCurrentUserSuccessfully(User user);
     void getCurrentUserFailed();
 
+    void onSignOut();
+
     void onFailureResult(String errorMsg);
 
     void showRandomMeals(PreviewMeal meals);

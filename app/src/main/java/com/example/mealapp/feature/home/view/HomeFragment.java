@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
@@ -42,8 +41,8 @@ import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
+import com.example.mealapp.utils.shared_preferences.SharedPreferencesManager;
 
-import java.util.Objects;
 
 public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
 
@@ -62,26 +61,14 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
 
     IHomePresenter presenter;
 
-    private static final String TAG = "HomeFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new HomePresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity())));
+        presenter = new HomePresenter(this,
+                MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity()), SharedPreferencesManager.getInstance(requireActivity())));
         getActivity();
-        SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences(ConstantKeys.USER_DATA, Context.MODE_PRIVATE);
-        boolean stayLoggedIn = sharedPreferences.getBoolean(ConstantKeys.STAY_LOGGED_IN, false);
-        String userNameStr = sharedPreferences.getString(ConstantKeys.USER_NAME, "");
-        String userEmail = sharedPreferences.getString(ConstantKeys.USER_EMAIL, "");
-
-        if (stayLoggedIn) {
-            UserSessionHolder.getInstance().setUser(new User(userEmail, userNameStr));
-            presenter.getCurrentUser();
-        }
-
-        if (!UserSessionHolder.isGuest()) {
-            presenter.getDataFromFirebase();
-        }
+        presenter.checkUser();
     }
 
     @Override
@@ -172,22 +159,9 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
         new AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.sign_out))
                 .setMessage(getString(R.string.are_you_sure_sign_out))
-                .setPositiveButton(getString(R.string.yes), (dialog, which) -> signOut())
+                .setPositiveButton(getString(R.string.yes), (dialog, which) ->  presenter.signOut())
                 .setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.dismiss())
                 .show();
-    }
-
-
-    private void signOut() {
-        UserSessionHolder.getInstance().setUser(null);
-        SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences(ConstantKeys.USER_DATA, Context.MODE_PRIVATE);
-        sharedPreferences.edit().clear().apply();
-        presenter.signOut();
-        Intent intent = new Intent(getActivity(), MainScreen.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        requireActivity().finish();
-
     }
 
     @Override
@@ -212,9 +186,18 @@ public class HomeFragment extends Fragment implements IHome, OnMealItemClicked {
     @Override
     public void getCurrentUserFailed() {
         Toast.makeText(getContext(), getString(R.string.error_try_sign_in_again), Toast.LENGTH_SHORT).show();
-        signOut();
+        presenter.signOut();
         SignIn signInFragment = new SignIn();
         signInFragment.show(getParentFragmentManager(), "signInFragment");
+    }
+
+    @Override
+    public void onSignOut() {
+        Intent intent = new Intent(getActivity(), MainScreen.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        requireActivity().finish();
+
     }
 
 

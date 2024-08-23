@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.example.mealapp.R;
 import com.example.mealapp.feature.auth.sign_in.view.ISignIn;
+import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
+import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
 import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.common_layer.models.User;
@@ -26,6 +28,16 @@ public class SignInPresenter implements ISignInPresenter {
         this.repo = repo;
     }
 
+
+    @Override
+    public void addUserToSharedPref(){
+        String name = UserSessionHolder.getInstance().getUser().getName();
+        String email = UserSessionHolder.getInstance().getUser().getEmail();
+        repo.savePreference(ConstantKeys.USER_NAME, name, true);
+        repo.savePreference(ConstantKeys.USER_EMAIL, email, true);
+        repo.savePreference(ConstantKeys.STAY_LOGGED_IN, true, true);
+
+    }
     @Override
     public void signIn(String email, String password) {
         repo.signIn(email, password, task -> {
@@ -35,6 +47,7 @@ public class SignInPresenter implements ISignInPresenter {
                     public void onUserDataRetrieved(User user) {
                         if (user != null) {
                             repo.saveUserData(user);
+                            UserSessionHolder.getInstance().setUser(user);
                             view.signInSuccess(user);
                         } else {
                             view.signInError(view.getStringFromRes(R.string.user_data_retrieval_failed));
@@ -62,6 +75,7 @@ public class SignInPresenter implements ISignInPresenter {
                     @Override
                     public void onUserDataRetrieved(User user) {
                         if (user != null) {
+                            UserSessionHolder.getInstance().setUser(user);
                             view.signInSuccess(user);
                         } else {
                             view.signInError(view.getStringFromRes(R.string.user_data_retrieval_failed));

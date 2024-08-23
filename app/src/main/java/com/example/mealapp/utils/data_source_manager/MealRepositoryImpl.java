@@ -17,6 +17,7 @@ import com.example.mealapp.utils.network.MealDetailsNetworkDelegate;
 import com.example.mealapp.utils.network.MealRemoteDataSource;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
 import com.example.mealapp.utils.network.SearchNetworkDelegate;
+import com.example.mealapp.utils.shared_preferences.SharedPreferencesManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
@@ -30,15 +31,18 @@ public class MealRepositoryImpl implements MealRepository {
     private static MealRepositoryImpl repo = null;
     private static FirebaseManager firebaseManager;
 
-    public MealRepositoryImpl(MealRemoteDataSource remoteDataSource, MealLocalDataSource localDataSource) {
+    private static SharedPreferencesManager sharedPreferencesManager;
+
+    public MealRepositoryImpl(MealRemoteDataSource remoteDataSource, MealLocalDataSource localDataSource, SharedPreferencesManager sharedPreferencesManager) {
         this.remoteSource = remoteDataSource;
         this.localSource = localDataSource;
         firebaseManager = FirebaseManager.getInstance();
+        MealRepositoryImpl.sharedPreferencesManager = sharedPreferencesManager;
     }
 
-    public static MealRepositoryImpl getInstance(MealRemoteDataSource remoteDataSource, MealLocalDataSource localDataSource) {
+    public static MealRepositoryImpl getInstance(MealRemoteDataSource remoteDataSource, MealLocalDataSource localDataSource, SharedPreferencesManager sharedPreferencesManager) {
         if (repo == null) {
-            repo = new MealRepositoryImpl(remoteDataSource, localDataSource);
+            repo = new MealRepositoryImpl(remoteDataSource, localDataSource, sharedPreferencesManager);
         }
         return repo;
     }
@@ -234,4 +238,37 @@ public class MealRepositoryImpl implements MealRepository {
     public void getMealIngredients(String userId, @NonNull OnCompleteListener<List<MealIngredient>> onCompleteListener) {
         firebaseManager.getMealIngredients(userId, onCompleteListener);
     }
+
+    //Shared Preferences Methods
+    @Override
+    public void savePreference(String key, String value, boolean fromUserData) {
+        sharedPreferencesManager.savePreference(key, value, fromUserData);
+    }
+
+    @Override
+    public String getPreference(String key, boolean fromUserData) {
+        return sharedPreferencesManager.getPreference(key, fromUserData);
+    }
+
+    @Override
+    public void clearPreferences(boolean fromUserData) {
+        sharedPreferencesManager.clearPreferences(fromUserData);
+    }
+
+    @Override
+    public void clearAllPreferences() {
+        sharedPreferencesManager.clearAllPreferences();
+    }
+
+    @Override
+    public void savePreference(String key, boolean value, boolean fromUserData) {
+        sharedPreferencesManager.savePreference(key, value, fromUserData);
+    }
+
+    @Override
+    public boolean getPreference(String key, boolean defaultValue, boolean fromUserData) {
+        return sharedPreferencesManager.getPreference(key, defaultValue, fromUserData);
+    }
+
+
 }

@@ -100,5 +100,14 @@ public interface MealRepository {
 
      void getMealIngredients(String userId, @NonNull OnCompleteListener<List<MealIngredient>> onCompleteListener);
 
+     //Shared prefernnces
+     void savePreference(String key, String value, boolean fromUserData);
+     String getPreference(String key, boolean fromUserData);
+     void clearPreferences(boolean fromUserData);
+     void clearAllPreferences();
 
-}
+      void savePreference(String key, boolean value, boolean fromUserData);
+      boolean getPreference(String key, boolean defaultValue, boolean fromUserData);
+
+
+     }

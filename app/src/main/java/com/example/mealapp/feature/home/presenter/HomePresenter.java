@@ -10,10 +10,10 @@ import com.example.mealapp.utils.common_layer.local_models.MealPlan;
 import com.example.mealapp.utils.common_layer.models.PreviewMeal;
 import com.example.mealapp.utils.common_layer.models.User;
 import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
+import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepository;
 import com.example.mealapp.utils.firebase.OnUserRetrieveData;
 import com.example.mealapp.utils.network.HomeNetworkDelegate;
-
 import java.util.List;
 
 
@@ -31,30 +31,52 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
     }
 
     @Override
-    public void getDataFromFirebase() {
-            String userId = UserSessionHolder.getInstance().getUser().getUid();
-            repo.getFavoriteMeals(userId, task -> {
-                if (task.isSuccessful()) {
-                    List<FavoriteMeal> favoriteMeals = task.getResult();
-                    repo.addFavoriteMeals(favoriteMeals);
-                }
-            });
+    public void signOut() {
+        UserSessionHolder.getInstance().setUser(null);
+        repo.clearPreferences(true);
+        repo.signOut();
+        _view.onSignOut();
+    }
 
-            repo.getMealPlans(userId, task -> {
-                if (task.isSuccessful()) {
-                    List<MealPlan> mealPlans = task.getResult();
-                    repo.addMealPlans(mealPlans);
-                }
-            });
+    @Override
+    public void checkUser() {
+        boolean stayLoggedIn = repo.getPreference(ConstantKeys.STAY_LOGGED_IN, false, true);
+        String userNameStr = repo.getPreference(ConstantKeys.USER_NAME, true);
+        String userEmail = repo.getPreference(ConstantKeys.USER_EMAIL, true);
 
-            repo.getMealIngredients(userId, task -> {
-                if (task.isSuccessful()) {
-                    List<MealIngredient> ingredients = task.getResult();
-                    repo.addMealIngredients(ingredients);
-                }
-            });
+        if (stayLoggedIn) {
+            UserSessionHolder.getInstance().setUser(new User(userEmail, userNameStr));
+            getCurrentUser();
         }
 
+        if (!UserSessionHolder.isGuest()) {
+            getDataFromFirebase();
+        }
+    }
+
+    private void getDataFromFirebase() {
+        String userId = UserSessionHolder.getInstance().getUser().getUid();
+        repo.getFavoriteMeals(userId, task -> {
+            if (task.isSuccessful()) {
+                List<FavoriteMeal> favoriteMeals = task.getResult();
+                repo.addFavoriteMeals(favoriteMeals);
+            }
+        });
+
+        repo.getMealPlans(userId, task -> {
+            if (task.isSuccessful()) {
+                List<MealPlan> mealPlans = task.getResult();
+                repo.addMealPlans(mealPlans);
+            }
+        });
+
+        repo.getMealIngredients(userId, task -> {
+            if (task.isSuccessful()) {
+                List<MealIngredient> ingredients = task.getResult();
+                repo.addMealIngredients(ingredients);
+            }
+        });
+    }
 
 
     @Override
@@ -65,37 +87,30 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
     @Override
     public void getRandomMeals() {
         int MAX_MEALS = 20;
-        for(int i = 0; i < MAX_MEALS; i++) {
-          repo.getRandomMeals(this);
+        for (int i = 0; i < MAX_MEALS; i++) {
+            repo.getRandomMeals(this);
         }
     }
 
-
-    @Override
     public void getCurrentUser() {
-        repo.getCurrentUser(
-                new OnUserRetrieveData() {
-                    public void onUserDataRetrieved(User user) {
-                        if (user != null) {
-                            _view.getCurrentUserSuccessfully(user);
-                        } else {
-                            _view.getCurrentUserFailed();
-                            Log.i(TAG, "User is null");
-                        }
-                    }
+        repo.getCurrentUser(new OnUserRetrieveData() {
+            public void onUserDataRetrieved(User user) {
+                if (user != null) {
+                    _view.getCurrentUserSuccessfully(user);
+                } else {
+                    _view.getCurrentUserFailed();
+                    Log.i(TAG, "User is null");
+                }
+            }
 
-                    @Override
-                    public void onError(Exception e) {
-                        _view.getCurrentUserFailed();
-                        Log.i(TAG, "Error getting user data: " + e.getMessage());
-                    }
-                });
+            @Override
+            public void onError(Exception e) {
+                _view.getCurrentUserFailed();
+                Log.i(TAG, "Error getting user data: " + e.getMessage());
+            }
+        });
     }
 
-    @Override
-    public void signOut() {
-        repo.signOut();
-    }
     @Override
     public void onGetRandomMealSuccessResult(PreviewMeal previewMeal) {
         _view.showRandomMeal(previewMeal);
@@ -103,7 +118,7 @@ public class HomePresenter implements IHomePresenter, HomeNetworkDelegate {
 
     @Override
     public void onGetRandomMealsSuccessResult(PreviewMeal meal) {
-            _view.showRandomMeals(meal);
+        _view.showRandomMeals(meal);
     }
 
     @Override

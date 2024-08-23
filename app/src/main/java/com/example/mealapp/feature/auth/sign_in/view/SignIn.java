@@ -1,9 +1,7 @@
 package com.example.mealapp.feature.auth.sign_in.view;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,12 +22,11 @@ import com.example.mealapp.feature.auth.sign_in.presenter.SignInPresenter;
 import com.example.mealapp.feature.auth.sign_up.view.SignUp;
 import com.example.mealapp.feature.main.view.MainScreen;
 import com.example.mealapp.utils.common_layer.models.User;
-import com.example.mealapp.utils.common_layer.models.UserSessionHolder;
 import com.example.mealapp.utils.connection_helper.NetworkUtil;
-import com.example.mealapp.utils.constants.ConstantKeys;
 import com.example.mealapp.utils.data_source_manager.MealRepositoryImpl;
 import com.example.mealapp.utils.dp.MealLocalDataSourceImpl;
 import com.example.mealapp.utils.network.MealRemoteDataSourceImpl;
+import com.example.mealapp.utils.shared_preferences.SharedPreferencesManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -38,7 +35,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.Objects;
 
 public class SignIn extends BottomSheetDialogFragment implements ISignIn {
 
@@ -66,7 +62,8 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
                 .build();
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
 
-        presenter = new SignInPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity())));
+        presenter = new SignInPresenter(this, MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireActivity()),
+                SharedPreferencesManager.getInstance(requireActivity())));
 
         initUI(view);
         setUpListeners();
@@ -127,13 +124,10 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
 
     @Override
     public void signInSuccess(User user) {
-        Log.i(TAG, "signInSuccess: " + user.getName());
         if (staySignedIn.isChecked()) {
-            Log.i(TAG, "staySignedIn is checked:" + user.getName());
-            addUserToSharedPreferences(user);
+            presenter.addUserToSharedPref();
         }
         hideLoading();
-        UserSessionHolder.getInstance().setUser(user);
         Toast.makeText(getActivity(), getString(R.string.welcome_message), Toast.LENGTH_LONG).show();
         dismiss();
         requireActivity().finish();
@@ -141,17 +135,6 @@ public class SignIn extends BottomSheetDialogFragment implements ISignIn {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         requireActivity().finish();
-    }
-
-    private void addUserToSharedPreferences(User user) {
-        Log.i(TAG, "addUserToSharedPreferences: " + user.getName());
-        Log.i(TAG, "addUserToSharedPreferences: " + user.getEmail());
-        SharedPreferences sharedPreferences = Objects.requireNonNull(requireActivity()).getSharedPreferences(ConstantKeys.USER_DATA, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(ConstantKeys.USER_NAME, user.getName());
-        editor.putString(ConstantKeys.USER_EMAIL, user.getEmail());
-        editor.putBoolean(ConstantKeys.STAY_LOGGED_IN, true);
-        editor.apply();
     }
 
     @Override

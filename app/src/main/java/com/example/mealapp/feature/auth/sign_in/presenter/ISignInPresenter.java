@@ -4,6 +4,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 public interface ISignInPresenter {
 
-    public void signIn(String email, String password);
-    public void signInWithGoogle(GoogleSignInAccount account);
+     void signIn(String email, String password);
+     void signInWithGoogle(GoogleSignInAccount account);
+
+     void addUserToSharedPref();
 }
