@@ -22,6 +22,7 @@
 
     import com.example.mealapp.R;
     import com.example.mealapp.feature.auth.sign_in.view.SignIn;
+    import com.example.mealapp.feature.auth.sign_up.view.SignUp;
     import com.example.mealapp.feature.main.view.MainScreen;
     import com.example.mealapp.feature.settings.presenter.ISettingsPresenter;
     import com.example.mealapp.feature.settings.presenter.SettingsPresenter;
@@ -37,7 +38,7 @@
 
     public class SettingsFragment extends Fragment implements ISettings {
 
-        Button signInBtn, signOutBtn, backUpBtn;
+        Button signInBtn, signOutBtn, backUpBtn, signUpBtn;
         TextView email, emailText, language;
 
         private ProgressDialog progressDialog;
@@ -70,6 +71,12 @@
                 SignIn signInFragment = new SignIn();
                 signInFragment.show(getParentFragmentManager(), "signInFragment");
             });
+
+            signUpBtn.setOnClickListener(view -> {
+                SignUp signUpFragment = new SignUp();
+                signUpFragment.show(getParentFragmentManager(), "signUpFragment");
+            });
+
 
             signOutBtn.setOnClickListener(view -> showSignOutDialog());
 
@@ -112,12 +119,14 @@
             emailText = view.findViewById(R.id.emailText);
             language = view.findViewById(R.id.language);
             languageContainer = view.findViewById(R.id.languageContainer);
+            signUpBtn = view.findViewById(R.id.signUpBtn);
 
             language.setText(isEnglish ? getString(R.string.lang) : getString(R.string.lang));
 
 
             if (UserSessionHolder.getInstance().getUser() != null) {
                 signInBtn.setVisibility(View.GONE);
+                signUpBtn.setVisibility(View.GONE);
                 signOutBtn.setVisibility(View.VISIBLE);
                 emailText.setVisibility(View.VISIBLE);
                 email.setVisibility(View.VISIBLE);
