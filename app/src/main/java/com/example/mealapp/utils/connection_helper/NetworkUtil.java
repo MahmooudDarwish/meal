@@ -23,8 +23,8 @@ public class NetworkUtil {
             NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
             return networkCapabilities != null && (
                         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
+                                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                               );
            }
         return false;
     }
