@@ -228,7 +228,7 @@ public class FirebaseManager {
                 List<Task<Void>> tasks = new ArrayList<>();
                 for (MealPlan meal : plans) {
                     DocumentReference docRef = firestore.collection(ConstantKeys.COLLECTION_PLAN_MEALS)
-                            .document(meal.getIdMeal() + meal.getIdUser() + meal.getDateCreated() +"plan");
+                            .document(meal.getIdMeal() + meal.getIdUser() + meal.getDateCreated() + "plan");
                     Task<Void> task = docRef.set(meal.toMap())
                             .addOnSuccessListener(suc -> Log.d(TAG, "Plan meal saved successfully: " + meal.getStrMeal()))
                             .addOnFailureListener(e -> Log.e(TAG, "Error saving plan meal: " + meal.getStrMeal()));
@@ -274,11 +274,11 @@ public class FirebaseManager {
                                 FavoriteMeal meal = FavoriteMeal.fromMap(document.getData());
                                 favoriteMeals.add(meal);
                             }
-                            if(!favoriteMeals.isEmpty()){
+                            if (!favoriteMeals.isEmpty()) {
                                 onCompleteListener.onComplete(Tasks.forResult(favoriteMeals));
 
-                            }else{
-                               onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.no_favorite_meals_found))));
+                            } else {
+                                onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.no_favorite_meals_found))));
                             }
                         } else {
                             onCompleteListener.onComplete(Tasks.forException(Objects.requireNonNull(task.getException())));
@@ -303,9 +303,9 @@ public class FirebaseManager {
                                 MealPlan plan = MealPlan.fromMap(document.getData());
                                 mealPlans.add(plan);
                             }
-                            if(!mealPlans.isEmpty()) {
+                            if (!mealPlans.isEmpty()) {
                                 onCompleteListener.onComplete(Tasks.forResult(mealPlans));
-                            }else{
+                            } else {
                                 onCompleteListener.onComplete(Tasks.forException(new Exception(ResourceHelper.getString(R.string.no_meal_plans_found))));
                             }
                         } else {
