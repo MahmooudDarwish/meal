@@ -55,7 +55,16 @@ public class FirebaseManager {
     public void signInWithGoogle(GoogleSignInAccount account, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(onCompleteListener);
+                .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                if (firebaseUser != null) {
+                                    saveUserData(new User(account.getEmail(), account.getDisplayName()));
+                                }
+                            }
+                            onCompleteListener.onComplete(task);
+                        }
+                );
     }
 
     public void signUp(@NonNull String email, @NonNull String password, @NonNull String name, @NonNull OnCompleteListener<AuthResult> onCompleteListener) {

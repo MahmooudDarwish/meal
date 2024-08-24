@@ -108,6 +108,7 @@ public class SignInPresenter implements ISignInPresenter {
                 repo.getCurrentUser(new OnUserRetrieveData() {
                     @Override
                     public void onUserDataRetrieved(User user) {
+                        Log.i(TAG, "User data retrieved " + user.getName() + " " + user.getEmail());
                         if (user != null) {
                             UserSessionHolder.getInstance().setUser(user);
                             view.signInSuccess(user);
@@ -118,6 +119,7 @@ public class SignInPresenter implements ISignInPresenter {
 
                     @Override
                     public void onError(Exception e) {
+                        Log.e(TAG, "Error retrieving user data", e);
                         view.signInError(view.getStringFromRes(R.string.sign_in_failed) + " " + e.getMessage());
                     }
                 });
