@@ -21,6 +21,46 @@ The **Food Planner Application** is an Android mobile application designed to he
 - **Splash Screen**: Animated splash screen using Lottie.
 - **Design**: The application follows Material Design principles.
 
+## App Screenshots (Guest & User Views)
+
+<table>
+  <tr>
+    <td><b>Guest Home</b></td>
+    <td><b>Guest Settings</b></td>
+    <td><b>Need to Login</b></td>
+    <td><b>Sign Up</b></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/e322583c-0ce0-4f27-aed5-cb90969bef44" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/50c8827e-53bb-441f-af10-a8ec32b4f0ce" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/7a710513-4090-4cf5-98f8-4e7fc1bd432f" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/000044e8-831a-4346-8b86-c80ab5242fcf" width="200"/></td>
+  </tr>
+  <tr>
+    <td><b>Sign In</b></td>
+    <td><b>Home</b></td>
+    <td><b>Search Categories</b></td>
+    <td><b>Meal Details</b></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/f54eac10-0722-475e-a75a-6cc549f58cc4" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/e3762a45-4b98-4800-860b-1a6e1e124625" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/77bf1a1b-9f49-4515-92f3-007719898058" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/f8797c1f-bebd-4340-b43c-6663a9014f71" width="200"/></td>
+  </tr>
+  <tr>
+    <td><b>Favourites</b></td>
+    <td><b>Planner</b></td>
+    <td><b>Settings</b></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/871e0f69-8522-4389-963f-1547460945f8" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/c475daad-77f6-4893-b46b-f135838744e2" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/ae869746-23fb-40d2-a51e-17704730bebc" width="200"/></td>
+  </tr>
+</table>
+
+
 ## Technical Specifications
 - **Language**: Kotlin/Java
 - **Architecture**: MVP (Model-View-Presenter)
